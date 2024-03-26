@@ -1,0 +1,15 @@
+version: '3.9'
+services:
+  db:
+    image: 'postgres:latest'
+    container_name: my-bento-db
+    ports:
+      - '5432:5432'
+    volumes:
+      - db_data:/var/lib/postgresql/data:rw
+    environment:
+      POSTGRES_DB: my-bento-db
+      POSTGRES_USER: mybento
+      POSTGRES_PASSWORD: password
+volumes:
+  db_data:
