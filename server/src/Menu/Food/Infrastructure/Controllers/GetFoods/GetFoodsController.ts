@@ -8,7 +8,7 @@ export class GetFoodsController {
   constructor(private readonly queryBus: QueryBus) {}
 
   @Get('api/foods')
-  public async post(@Res() res: Response) {
+  public async get(@Res() res: Response) {
     try {
       const query = GetFoodsQuery.fromJson();
 

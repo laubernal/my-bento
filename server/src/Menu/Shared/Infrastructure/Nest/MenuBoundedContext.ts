@@ -4,13 +4,14 @@ import { CreateFoodController } from 'src/Menu/Food/Infrastructure/Controllers/C
 import { CreateFoodCommandHandler } from 'src/Menu/Food/Application/CreateFood/CreateFoodCommandHandler';
 import { GetFoodsController } from 'src/Menu/Food/Infrastructure/Controllers/GetFoods/GetFoodsController';
 import { GetFoodsQueryHandler } from 'src/Menu/Food/Application/GetFoods/GetFoodsQueryHandler';
+import { PgFoodRepository } from 'src/Menu/Food/Infrastructure/Persistance/Repository/PgFoodRepository';
 
-// const Repositories = [
-// {
-//   provide: 'IFoodRepository',
-//   useClass: PgFoodRepository,
-// },
-// ];
+const Repositories = [
+  {
+    provide: 'IFoodRepository',
+    useClass: PgFoodRepository,
+  },
+];
 
 const Controllers = [CreateFoodController, GetFoodsController];
 
@@ -22,7 +23,7 @@ const Handlers = [CreateFoodCommandHandler, GetFoodsQueryHandler];
   imports: [CqrsModule],
   controllers: [...Controllers],
   providers: [
-    // ...Repositories,
+    ...Repositories,
     ...Handlers,
     // ...Mappers,
   ],
