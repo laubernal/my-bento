@@ -9,8 +9,8 @@ export class Unit {
     this.validate();
   }
 
-  public unit(): StringVo {
-    return this._unit;
+  public value(): string {
+    return this._unit.value;
   }
 
   private validate() {
