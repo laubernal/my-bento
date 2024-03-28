@@ -1,6 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { CreateFoodCommand } from './CreateFoodCommand';
-import { Inject, Logger } from '@nestjs/common';
+import { Inject } from '@nestjs/common';
 import { IFoodRepository } from '../../Domain/Repository/IFoodRepository';
 import { Name } from 'Shared/Domain/Vo/Name.vo';
 import { FoodFilter } from '../../Domain/Filter/FoodFilter';

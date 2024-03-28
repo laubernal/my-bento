@@ -9,6 +9,8 @@ import { GetFoodQueryHandler } from 'src/Menu/Food/Application/GetFood/GetFoodQu
 import { GetFoodController } from 'src/Menu/Food/Infrastructure/Controllers/GetFood/GetFoodController';
 import { UpdateFoodCommandHandler } from 'src/Menu/Food/Application/UpdateFood/UpdateFoodCommandHandler';
 import { UpdateFoodController } from 'src/Menu/Food/Infrastructure/Controllers/UpdateFood/UpdateFoodController';
+import { DeleteFoodCommandHandler } from 'src/Menu/Food/Application/DeleteFood/DeleteFoodCommandHandler';
+import { DeleteFoodController } from 'src/Menu/Food/Infrastructure/Controllers/DeleteFood/DeleteFoodController';
 
 const Repositories = [
   {
@@ -22,6 +24,7 @@ const Controllers = [
   GetFoodsController,
   GetFoodController,
   UpdateFoodController,
+  DeleteFoodController,
 ];
 
 const Handlers = [
@@ -29,6 +32,7 @@ const Handlers = [
   GetFoodsQueryHandler,
   GetFoodQueryHandler,
   UpdateFoodCommandHandler,
+  DeleteFoodCommandHandler,
 ];
 
 // const Mappers = [PgFoodMapper];
