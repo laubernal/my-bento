@@ -1,7 +1,8 @@
 import { IQuery } from '@nestjs/cqrs';
+import { GetFoodParams } from '../../Infrastructure/Controllers/GetFood/GetFoodParams';
 
 export class GetFoodQuery implements IQuery {
-  public static fromJson(params: any): GetFoodQuery {
+  public static fromJson(params: GetFoodParams): GetFoodQuery {
     return new GetFoodQuery(params.id);
   }
 

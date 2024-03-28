@@ -7,6 +7,8 @@ import { GetFoodsQueryHandler } from 'src/Menu/Food/Application/GetFoods/GetFood
 import { PgFoodRepository } from 'src/Menu/Food/Infrastructure/Persistance/Repository/PgFoodRepository';
 import { GetFoodQueryHandler } from 'src/Menu/Food/Application/GetFood/GetFoodQueryHandler';
 import { GetFoodController } from 'src/Menu/Food/Infrastructure/Controllers/GetFood/GetFoodController';
+import { UpdateFoodCommandHandler } from 'src/Menu/Food/Application/UpdateFood/UpdateFoodCommandHandler';
+import { UpdateFoodController } from 'src/Menu/Food/Infrastructure/Controllers/UpdateFood/UpdateFoodController';
 
 const Repositories = [
   {
@@ -15,9 +17,19 @@ const Repositories = [
   },
 ];
 
-const Controllers = [CreateFoodController, GetFoodsController, GetFoodController];
+const Controllers = [
+  CreateFoodController,
+  GetFoodsController,
+  GetFoodController,
+  UpdateFoodController,
+];
 
-const Handlers = [CreateFoodCommandHandler, GetFoodsQueryHandler, GetFoodQueryHandler];
+const Handlers = [
+  CreateFoodCommandHandler,
+  GetFoodsQueryHandler,
+  GetFoodQueryHandler,
+  UpdateFoodCommandHandler,
+];
 
 // const Mappers = [PgFoodMapper];
 

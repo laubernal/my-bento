@@ -2,13 +2,14 @@ import { Body, Controller, Post, Res } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { Response } from 'express';
 import { CreateFoodCommand } from 'src/Menu/Food/Application/CreateFood/CreateFoodCommand';
+import { CreateFoodApiRequest } from './CreateFoodApiReqeust';
 
 @Controller()
 export class CreateFoodController {
   constructor(private readonly commandBus: CommandBus) {}
 
   @Post('api/foods')
-  public async post(@Body() body: any, @Res() res: Response) {
+  public async post(@Body() body: CreateFoodApiRequest, @Res() res: Response) {
     try {
       const command = CreateFoodCommand.fromJson(body);
 
