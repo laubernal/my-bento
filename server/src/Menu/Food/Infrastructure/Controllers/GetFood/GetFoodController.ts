@@ -1,16 +1,16 @@
-import { Controller, Get, Res } from '@nestjs/common';
+import { Controller, Get, Param, Res } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { Response } from 'express';
-import { GetFoodsQuery } from 'src/Menu/Food/Application/GetFoods/GetFoodsQuery';
+import { GetFoodQuery } from 'src/Menu/Food/Application/GetFood/GetFoodQuery';
 
 @Controller()
-export class GetFoodsController {
+export class GetFoodController {
   constructor(private readonly queryBus: QueryBus) {}
 
-  @Get('api/foods')
-  public async get(@Res() res: Response) {
+  @Get('api/foods/:id')
+  public async get(@Param() params: any, @Res() res: Response) {
     try {
-      const query = GetFoodsQuery.fromJson();
+      const query = GetFoodQuery.fromJson(params);
 
       const response = await this.queryBus.execute(query);
 
