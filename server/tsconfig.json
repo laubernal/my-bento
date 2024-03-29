@@ -1,6 +1,11 @@
 {
-  "extends": "@tsconfig/node16/tsconfig.json",
   "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": false,
+    "target": "es2017",
+    "esModuleInterop": true,
+    "incremental": true,
     "sourceMap": true,
     "outDir": "./dist",
     "rootDir": "./",
@@ -17,11 +22,5 @@
         "./src/Authorization"
       ]
     },
-  },
-  "include": [
-    "src", 
-   ],
-  "exclude": [
-    "node_modules", "dist", "bin"
-  ]
+  }
 }
