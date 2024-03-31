@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start:dev": "nest start --watch",
-    "test": "jest"
+    "test": "jest",
+    "migrate:up": "npx mikro-orm migration:up",
+    "migrate:down": "npx mikro-orm migration:down",
+    "migrate:pending": "npx mikro-orm migration:pending"
   },
   "keywords": [],
   "author": "",

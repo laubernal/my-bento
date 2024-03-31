@@ -18,7 +18,7 @@ import { FoodEntity } from './Model/FoodEntityMikroOrm';
         extensions: [Migrator],
         migrations: {
           tableName: 'mikro_orm_migrations',
-          path: './dist/MikroORM/migrations',
+          path: './dist/src/MikroORM/migrations',
           pathTs: './src/MikroORM/migrations',
           glob: '!(*.d).{js,ts}',
           transactional: true,
