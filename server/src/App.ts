@@ -16,6 +16,6 @@ import { MikroOrmDatabaseModule } from 'Shared/Infrastructure/Persistance/MikroO
   ],
   controllers: [],
   providers: [CryptoService],
-  exports: [CqrsModule, CryptoService],
+  exports: [CqrsModule, CryptoService, MikroOrmDatabaseModule],
 })
 export default class App {}

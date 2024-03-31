@@ -3,7 +3,7 @@ import { MikroOrmModule, MikroOrmModuleOptions } from '@mikro-orm/nestjs';
 import { PostgreSqlDriver } from '@mikro-orm/postgresql';
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { FoodEntity } from './Model/FoodEntity';
+import { FoodEntity } from './Model/FoodEntityMikroOrm';
 
 @Module({
   imports: [
@@ -11,9 +11,9 @@ import { FoodEntity } from './Model/FoodEntity';
       inject: [ConfigService],
       useFactory: async (configService: ConfigService): Promise<MikroOrmModuleOptions> => ({
         entities: [FoodEntity],
-        dbName: configService.get<string>('POSTGRES_DB'),
-        user: configService.get<string>('POSTGRES_USER'),
-        password: configService.get<string>('POSTGRES_PASSWORD'),
+        dbName: configService.get<string>('MIKRO_ORM_DB_NAME'),
+        user: configService.get<string>('MIKRO_ORM_USER'),
+        password: configService.get<string>('MIKRO_ORM_PASSWORD'),
         driver: PostgreSqlDriver,
         extensions: [Migrator],
         migrations: {
