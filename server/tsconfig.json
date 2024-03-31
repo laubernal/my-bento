@@ -20,6 +20,10 @@
       "Authorization/*": [
         "./src/Authorization/*",
         "./src/Authorization"
+      ],
+      "Menu/*": [
+        "./src/Menu/*",
+        "./src/Menu"
       ]
     },
   }

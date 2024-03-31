@@ -4,7 +4,7 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { AuthorizationBoundedContext } from 'Authorization/Shared/Infrastructure/Nest/AuthorizationBoundedContext';
 import { CryptoService } from 'Shared/Domain/Services/CryptoService';
 import { MenuBoundedContext } from './Menu/Shared/Infrastructure/Nest/MenuBoundedContext';
-import { MikroOrmDatabaseModule } from 'Shared/Infrastructure/Persistance/MikroOrmDatabaseModule';
+import { SharedModule } from 'Shared/Infrastructure/Nest/SharedModule';
 
 @Module({
   imports: [
@@ -12,10 +12,10 @@ import { MikroOrmDatabaseModule } from 'Shared/Infrastructure/Persistance/MikroO
     ConfigModule.forRoot({ isGlobal: true }),
     AuthorizationBoundedContext,
     MenuBoundedContext,
-    MikroOrmDatabaseModule,
+    SharedModule,
   ],
   controllers: [],
   providers: [CryptoService],
-  exports: [CqrsModule, CryptoService, MikroOrmDatabaseModule],
+  exports: [CqrsModule, CryptoService],
 })
 export default class App {}
