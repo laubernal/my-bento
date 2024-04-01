@@ -1,26 +1,23 @@
+import { NumberVo } from '../Vo/Number.vo';
+
 export class Pagination {
-  public static PAGINATION_FILTER = 'pagination';
   public static PAGE_FILTER = 'page';
-  public static QUANTITY_FILTER = 'quantity';
+  public static PER_PAGE_FILTER = 'perPage';
+  public static PAGINATION_FILTER = 'pagination';
 
-  private pagination = new Map<string, number>();
+  private pagination: Map<string, any> = new Map();
 
-  public setPage(page: number): this {
+  public setPage(page: NumberVo): this {
     this.pagination.set(Pagination.PAGE_FILTER, page);
     return this;
   }
 
-  public setQuantity(quantity: number): this {
-    this.pagination.set(Pagination.QUANTITY_FILTER, quantity);
+  public setPerPage(perPage: NumberVo): this {
+    this.pagination.set(Pagination.PER_PAGE_FILTER, perPage);
     return this;
   }
 
-  public first(): this {
-    this.pagination.set(Pagination.QUANTITY_FILTER, 1);
-    return this;
-  }
-
-  public build(): Map<string, number> {
+  public build(): Map<string, any> {
     return this.pagination;
   }
 }

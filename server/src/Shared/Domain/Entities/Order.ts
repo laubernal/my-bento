@@ -1,32 +1,15 @@
 export class Order {
-  public static ORDER_FILTER = 'order';
-  public static DESC_FILTER = 'desc';
-  public static ASC_FILTER = 'asc';
+  public static ORDER_BY_FILTER = 'orderBy';
 
-  private order = new Map<string, string>();
+  private order: Map<string, any> = new Map();
 
-  constructor(private _field: string) {}
+  public orderBy(order: string[][]): this {
+    this.order.set(Order.ORDER_BY_FILTER, order);
 
-  public desc(): this {
-    this.order.set(this._field, 'desc');
-    return this;
-  }
-
-  public asc(): this {
-    this.order.set(this._field, 'asc');
     return this;
   }
 
   public build(): Map<string, string> {
     return this.order;
-  }
-
-  public set field(value: string) {
-    this._field = value;
-  }
-
-
-  get field(): string {
-    return this._field;
   }
 }

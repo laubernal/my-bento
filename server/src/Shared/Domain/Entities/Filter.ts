@@ -1,72 +1,49 @@
-import { Order } from "Shared/Domain/Entities/Order";
-import { Pagination } from "Shared/Domain/Entities/Pagination";
-import { FilterError } from "Shared/Domain/Error/FilterError";
+import { NumberVo } from '../Vo/Number.vo';
+import { Order } from './Order';
+import { Pagination } from './Pagination';
 
 export abstract class Filter {
   protected abstract data: Map<string, any>;
 
-  public paginate(): this {
-    const pagination = new Pagination();
-    this.data.set(Pagination.PAGINATION_FILTER, pagination);
-    return this;
-  }
-
-  public orderBy(field: string): this {
-    const existingOrderFilter = this.data.get(Order.ORDER_FILTER) as Order | undefined;
-
-    if (existingOrderFilter) {
-      existingOrderFilter.field = field;
-
-      return this;
-    }
-
-    const order = new Order(field);
-    this.data.set(Order.ORDER_FILTER, order);
-
-    return this;
-  }
-
   public abstract apply(): Map<string, any>;
 
-  public setQuantity(quantity: number): this {
-    const pagination = this.getFilter<Pagination>(Pagination.PAGINATION_FILTER);
+  public paginate(): this {
+    const pagination = new Pagination();
 
-    pagination.setQuantity(quantity);
+    this.data.set(Pagination.PAGINATION_FILTER, pagination);
 
     return this;
   }
 
-  public setPage(page: number): this {
-    const pagination = this.getFilter<Pagination>(Pagination.PAGINATION_FILTER);
+  public setPage(page: NumberVo): this {
+    const pagination = this.data.get(Pagination.PAGINATION_FILTER);
 
     pagination.setPage(page);
 
     return this;
   }
 
-  public desc(): this {
-    const order = this.getFilter<Order>(Order.ORDER_FILTER)
+  public setPerPage(perPage: NumberVo): this {
+    const pagination = this.data.get(Pagination.PAGINATION_FILTER);
 
-    order.desc();
-
-    return this;
-  }
-
-  public asc(): this {
-    const order = this.getFilter<Order>(Order.ORDER_FILTER);
-
-    order.asc();
+    pagination.setPerPage(perPage);
 
     return this;
   }
 
-  private getFilter<T>(filterName: string): T {
-    const filter: T | undefined = this.data.get(filterName);
+  public order(): this {
+    const order = new Order();
 
-    if (!filter) {
-      throw new FilterError(`${filterName} is not in filter collection`);
-    }
+    this.data.set(Order.ORDER_BY_FILTER, order);
 
-    return filter;
+    return this;
+  }
+
+  public orderBy(orderBy: string[][]): this {
+    const order = this.data.get(Order.ORDER_BY_FILTER);
+
+    order.orderBy(orderBy);
+
+    return this;
   }
 }

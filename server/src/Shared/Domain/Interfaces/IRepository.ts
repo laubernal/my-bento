@@ -1,7 +1,7 @@
-import { Filter } from "../Entities/Filter";
+import { Filter } from '../Entities/Filter';
 
 export interface IRepository<T> {
-  findOne(filter: Filter): Promise<T>;
+  findOne(filter: Filter): Promise<T | undefined>;
 
   find(filter: Filter): Promise<T[]>;
 
