@@ -1,5 +1,5 @@
 import { ICommand } from '@nestjs/cqrs';
-import { CreateFoodApiRequest } from '../../Infrastructure/Controllers/CreateFood/CreateFoodApiReqeust';
+import { CreateFoodApiRequest } from '../../Infrastructure/Controllers/CreateFood/CreateFoodApiRequest';
 
 export class CreateFoodCommand implements ICommand {
   public static fromJson(body: CreateFoodApiRequest): CreateFoodCommand {

@@ -47,9 +47,9 @@ export class MikroOrmFoodRepository implements IFoodRepository {
     try {
       const newEntity = this.mapper.toModel(entity);
 
-      const client = this.entityManager.create(FoodEntity, newEntity);
+      const food = this.entityManager.create(FoodEntity, newEntity);
 
-      await this.entityManager.persistAndFlush(client);
+      await this.entityManager.persistAndFlush(food);
     } catch (error: any) {
       throw new Error(`Food Repository Error -- ${error}`);
     }
@@ -62,9 +62,9 @@ export class MikroOrmFoodRepository implements IFoodRepository {
       const adapter = new MikroOrmFoodFilterAdapter(filter);
       const adapterQuery = adapter.apply();
 
-      const newClient = this.mapper.toModel(entity);
+      const newFood = this.mapper.toModel(entity);
 
-      this.entityManager.nativeUpdate(FoodEntity, adapterQuery, newClient);
+      this.entityManager.nativeUpdate(FoodEntity, adapterQuery, newFood);
     } catch (error: any) {
       throw new Error(`Food Repository Error -- ${error}`);
     }
