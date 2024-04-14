@@ -14,8 +14,10 @@ export class Unit {
   }
 
   private validate() {
-    if (this._unit.value !== this.GRAMS || this._unit.value !== this.KILOGRAMS) {
-      throw new UnitFormatError();
+    if (this._unit.value === this.GRAMS || this._unit.value === this.KILOGRAMS) {
+      return;
     }
+
+    throw new UnitFormatError();
   }
 }
