@@ -11,9 +11,14 @@ import { FoodEntity } from './Model/FoodEntityMikroOrm';
       inject: [ConfigService],
       useFactory: async (configService: ConfigService): Promise<MikroOrmModuleOptions> => ({
         entities: [FoodEntity],
-        dbName: configService.get<string>('MIKRO_ORM_DB_NAME'),
-        user: configService.get<string>('MIKRO_ORM_USER'),
-        password: configService.get<string>('MIKRO_ORM_PASSWORD'),
+        // dbName: configService.get<string>('MIKRO_ORM_DB_NAME'),
+        // user: configService.get<string>('MIKRO_ORM_USER'),
+        // password: configService.get<string>('MIKRO_ORM_PASSWORD'),
+        // dbName: 'my-bento-db',
+        // user: 'mybento',
+        // password: 'passwordeeeee',
+        // host: 'postgres_test',
+        // clientUrl: 'postgresql://mybento:password@postgres_test:5432/my-bento-db',
         driver: PostgreSqlDriver,
         extensions: [Migrator],
         migrations: {

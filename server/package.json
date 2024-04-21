@@ -5,10 +5,12 @@
   "main": "index.js",
   "scripts": {
     "start:dev": "nest start --watch",
+    "build": "nest build",
     "test": "jest",
     "migrate:up": "npx mikro-orm migration:up",
     "migrate:down": "npx mikro-orm migration:down",
-    "migrate:pending": "npx mikro-orm migration:pending"
+    "migrate:pending": "npx mikro-orm migration:pending",
+    "docker:up": "docker-compose --env-file ./.env up -d"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +21,7 @@
     "@mikro-orm/migrations": "^6.1.12",
     "@mikro-orm/nestjs": "^5.2.3",
     "@mikro-orm/postgresql": "^6.1.12",
+    "@nestjs/cli": "^10.3.2",
     "@nestjs/common": "^10.3.5",
     "@nestjs/config": "^3.2.0",
     "@nestjs/core": "^10.3.5",

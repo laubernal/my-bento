@@ -5,6 +5,7 @@ export default defineConfig({
   dbName: process.env.MIKRO_ORM_DB_NAME,
   user: process.env.MIKRO_ORM_USER,
   password: process.env.MIKRO_ORM_PASSWORD,
+  host:process.env.MIKRO_ORM_HOST,
   entities: ['dist/**/*EntityMikroOrm.js'],
   entitiesTs: ['src/**/*EntityMikroOrm.ts'],
   extensions: [Migrator],

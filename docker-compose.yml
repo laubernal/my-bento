@@ -1,15 +1,74 @@
 version: '3.9'
 services:
-  db:
+  postgres_test:
     image: 'postgres:latest'
-    container_name: my-bento-db
+    container_name: postgres_test
     ports:
       - '5432:5432'
     volumes:
       - db_data:/var/lib/postgresql/data:rw
+    env_file:
+      - ./server/.env
     environment:
-      POSTGRES_DB: my-bento-db
-      POSTGRES_USER: mybento
-      POSTGRES_PASSWORD: password
+      POSTGRES_DB: ${MIKRO_ORM_DB_NAME}
+      POSTGRES_USER: ${MIKRO_ORM_USER}
+      POSTGRES_PASSWORD: ${MIKRO_ORM_PASSWORD}
+
+  my-bento:
+    container_name: my-bento
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # restart: unless-stopped
+    env_file:
+      - ./server/.env
+    ports:
+      - 5000:5000
+    environment:
+      MIKRO_ORM_DB_NAME: ${MIKRO_ORM_DB_NAME}
+      MIKRO_ORM_USER: ${MIKRO_ORM_USER}
+      MIKRO_ORM_PASSWORD: ${MIKRO_ORM_PASSWORD}
+      MIKRO_ORM_PORT: ${MIKRO_ORM_PORT}
+      MIKRO_ORM_HOST: postgres_test
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    restart: unless-stopped
+    ports:
+      - 9090:9090
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+
+  # node-exporter:
+  #   image: quay.io/prometheus/node-exporter:latest
+  #   container_name: node-exporter
+  #   command:
+  #     - '--path.rootfs=/host'
+  #   network_mode: host
+  #   pid: host
+  #   restart: unless-stopped
+  #   volumes:
+  #     - '/:/host:ro,rslave'
+
+  # postgres-exporter:
+  #   image: prometheuscommunity/postgres-exporter
+  #   container_name: postgres-exporter
+  #   restart: unless-stopped
+  #   ports:
+  #     - 9187:9187
+  #   environment:
+  #     DATA_SOURCE_NAME: "postgresql://mybento:password@my-bento-db:5432/my-bento-db?sslmode=disable"
+  #   links:
+  #     - postgres
+  #     - prometheus
+
 volumes:
   db_data:
