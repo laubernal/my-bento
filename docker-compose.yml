@@ -7,29 +7,27 @@ services:
       - '5432:5432'
     volumes:
       - db_data:/var/lib/postgresql/data:rw
-    env_file:
-      - ./server/.env
     environment:
-      POSTGRES_DB: ${MIKRO_ORM_DB_NAME}
-      POSTGRES_USER: ${MIKRO_ORM_USER}
-      POSTGRES_PASSWORD: ${MIKRO_ORM_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
 
   my-bento:
     container_name: my-bento
     build:
       context: .
       dockerfile: Dockerfile
-    # restart: unless-stopped
-    env_file:
-      - ./server/.env
     ports:
       - 5000:5000
     environment:
-      MIKRO_ORM_DB_NAME: ${MIKRO_ORM_DB_NAME}
-      MIKRO_ORM_USER: ${MIKRO_ORM_USER}
-      MIKRO_ORM_PASSWORD: ${MIKRO_ORM_PASSWORD}
-      MIKRO_ORM_PORT: ${MIKRO_ORM_PORT}
-      MIKRO_ORM_HOST: postgres_test
+      NODE_ENV: ${NODE_ENV}
+      LOG_LEVEL: ${LOG_LEVEL}
+      JWT_KEY: ${JWT_KEY}
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_PORT: ${DB_PORT}
+      DB_HOST: ${DB_HOST}
 
   grafana:
     image: grafana/grafana
@@ -65,7 +63,7 @@ services:
   #   ports:
   #     - 9187:9187
   #   environment:
-  #     DATA_SOURCE_NAME: "postgresql://mybento:password@my-bento-db:5432/my-bento-db?sslmode=disable"
+  #     DATA_SOURCE_NAME: ${DB_URL}
   #   links:
   #     - postgres
   #     - prometheus
