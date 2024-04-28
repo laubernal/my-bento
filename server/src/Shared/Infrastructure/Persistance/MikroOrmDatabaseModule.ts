@@ -16,6 +16,7 @@ import { FoodEntity } from './Model/FoodEntityMikroOrm';
         password: configService.get<string>('DB_PASSWORD'),
         port: configService.get<number>('DB_PORT'),
         host: configService.get<string>('DB_HOST'),
+        // host: '127.0.0.1',
         driver: PostgreSqlDriver,
         extensions: [Migrator],
         migrations: {
