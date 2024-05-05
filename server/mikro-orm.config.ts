@@ -2,9 +2,9 @@ import { Migrator, TSMigrationGenerator } from '@mikro-orm/migrations';
 import { defineConfig } from '@mikro-orm/postgresql';
 
 export default defineConfig({
-  dbName: process.env.MIKRO_ORM_DB_NAME,
-  user: process.env.MIKRO_ORM_USER,
-  password: process.env.MIKRO_ORM_PASSWORD,
+  dbName: process.env.DB_NAME,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
   entities: ['dist/**/*EntityMikroOrm.js'],
   entitiesTs: ['src/**/*EntityMikroOrm.ts'],
   extensions: [Migrator],

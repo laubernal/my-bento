@@ -10,6 +10,7 @@ export class GetFoodsController {
   @Get('/api/foods')
   public async get(@Res() res: Response) {
     try {
+      throw new Error('sdfadfa');
       const query = GetFoodsQuery.fromJson();
 
       const response = await this.queryBus.execute(query);

@@ -11,9 +11,11 @@ import { FoodEntity } from './Model/FoodEntityMikroOrm';
       inject: [ConfigService],
       useFactory: async (configService: ConfigService): Promise<MikroOrmModuleOptions> => ({
         entities: [FoodEntity],
-        dbName: configService.get<string>('MIKRO_ORM_DB_NAME'),
-        user: configService.get<string>('MIKRO_ORM_USER'),
-        password: configService.get<string>('MIKRO_ORM_PASSWORD'),
+        dbName: configService.get<string>('DB_NAME'),
+        user: configService.get<string>('DB_USER'),
+        password: configService.get<string>('DB_PASSWORD'),
+        host: configService.get<string>('DB_HOST'),
+        port: configService.get<number>('DB_PORT'),
         driver: PostgreSqlDriver,
         extensions: [Migrator],
         migrations: {

@@ -12,7 +12,7 @@
     "strict": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "baseUrl": ".",
+    "baseUrl": ".",    
     "paths": {
       "Shared/*": [
         "./src/Shared/*"
@@ -26,5 +26,9 @@
         "./src/Menu"
       ]
     },
+  },
+  "watchOptions": {
+    "watchFile": "dynamicPriorityPolling",
+    "excludeDirectories": ["**/node_modules", "_build"],
   }
 }
