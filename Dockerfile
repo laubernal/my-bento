@@ -40,6 +40,8 @@ RUN npm install
 
 COPY ./server/tsconfig*.json ./
 
+COPY ./server/mikro-orm.config.ts ./
+
 COPY ./server/src ./src
 
 RUN npm run build
