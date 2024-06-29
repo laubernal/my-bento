@@ -6,9 +6,10 @@ import { AppEventBus } from 'Shared/Domain/Entities/AppEventBus';
 import { ErrorsInterceptor } from 'Shared/Infrastructure/Interceptor/ErrorInterceptor';
 import App from './App';
 import CookieSession from 'cookie-session';
+import { MyBentoLogger } from 'Shared/Infrastructure/Logger/MyBentoLogger';
 
 async function bootstrap() {
-  const app = await NestFactory.create(App);
+  const app = await NestFactory.create(App, { logger: new MyBentoLogger() });
 
   const config = app.get(ConfigService);
   // const eventBus = app.get(EventBus);
