@@ -9,9 +9,7 @@ import CookieSession from 'cookie-session';
 import { MyBentoLogger } from 'Shared/Infrastructure/Logger/MyBentoLogger';
 
 async function bootstrap() {
-  const app = await NestFactory.create(
-    App
-  );
+  const app = await NestFactory.create(App);
 
   const config = app.get(ConfigService);
   // const eventBus = app.get(EventBus);
