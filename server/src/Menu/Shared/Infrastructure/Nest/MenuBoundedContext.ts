@@ -13,6 +13,7 @@ import { FoodMapper } from 'Menu/Food/Infrastructure/Persistance/Mapper/FoodMapp
 import { SharedModule } from 'Shared/Infrastructure/Nest/SharedModule';
 import { GetFoodsController } from 'Menu/Food/Infrastructure/Controllers/GetFoods/GetFoodsController';
 import { CreateFoodController } from 'Menu/Food/Infrastructure/Controllers/CreateFood/CreateFoodController';
+import { MyBentoLogger } from 'Shared/Infrastructure/Logger/MyBentoLogger';
 
 const Repositories = [
   {
@@ -39,10 +40,12 @@ const Handlers = [
 
 const Mappers = [FoodMapper];
 
+const Services = [MyBentoLogger];
+
 @Module({
   imports: [CqrsModule, SharedModule],
   controllers: [...Controllers],
-  providers: [...Repositories, ...Handlers, ...Mappers],
+  providers: [...Repositories, ...Handlers, ...Mappers, ...Services],
   exports: [],
 })
 export class MenuBoundedContext {}

@@ -1,4 +1,5 @@
 import { Injectable, LogLevel, LoggerService } from '@nestjs/common';
+import { readFileSync, writeFileSync } from 'fs';
 
 const LOG_LEVELS: Record<string, string> = {
   Log: 'LOG',
@@ -9,7 +10,7 @@ const LOG_LEVELS: Record<string, string> = {
   Fatal: 'FATAL',
 };
 
-type LogType = {
+type LogMessageType = {
   time: string;
   level: string;
   message: string;
@@ -19,14 +20,14 @@ type LogType = {
 @Injectable()
 export class MyBentoLogger implements LoggerService {
   public log(message: any, ...optionalParams: any[]) {
-    console.log(message);
-
-    const traceId: string = optionalParams[0];
+    const traceId: string = optionalParams[0] ? optionalParams[0] : '';
 
     const logMessage = this.buildLogMessage('Log', message, traceId);
-    // WRITE LOG IN FILE
 
-    // throw new Error('Method not implemented.');
+    console.log(' ------------ LOG MESSAGE ---------------- \n', logMessage);
+
+    // WRITE LOG IN FILE
+    // this.writeLog(logMessage);
   }
 
   public error(message: any, ...optionalParams: any[]) {
@@ -69,11 +70,41 @@ export class MyBentoLogger implements LoggerService {
     // throw new Error('Method not implemented.');
   }
 
-  //   setLogLevels?(levels: LogLevel[]) {
-  //     throw new Error('Method not implemented.');
-  //   }
+  private buildLogMessage(logLevel: string, message: string, traceId: string): LogMessageType {
+    return { time: `${new Date().toISOString()}`, level: LOG_LEVELS[logLevel], traceId, message };
+  }
 
-  private buildLogMessage(logLevel: string, message: string, traceId: string): LogType {
-    return { time: `${new Date()}`, level: LOG_LEVELS[logLevel], message, traceId };
+  private writeLog(log: LogMessageType): void {
+    const { day, month, year } = this.getCurrentDate();
+
+    const logFilename = `${year}-${month}-${day}-my-bento-log.log`;
+    console.log('LOG FILE', logFilename);
+
+    try {
+      // -------------
+      // 1. Check if already exists a file with the logFilename
+      // 1.1 If not exists, create file and write the log message
+      // 1.2 If exists, append the log message to the file
+      // -------------
+      // const currentLogFileData = readFileSync(`./server/log/${logFilename}`, { encoding: 'utf8' });
+      // const fullLog = `${currentLogFileData}\n${log}`;
+      // writeFileSync(logFilename, `${fullLog}`);
+    } catch (err) {
+      // If error is file not exists, create file and write the log in the file
+      // writeFileSync(`./server/log/${logFilename}`, `${log}`, {
+      //   encoding: 'utf8',
+      // });
+      // console.error('Error writing file:', err);
+    }
+  }
+
+  private getCurrentDate(): { day: string; month: string; year: string } {
+    const currentDate = new Date();
+
+    const day = currentDate.getDate().toString().padStart(2, '0');
+    const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+    const year = currentDate.getFullYear().toString();
+
+    return { day, month, year };
   }
 }

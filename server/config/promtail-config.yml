@@ -21,9 +21,11 @@ scrape_configs:
           expressions:
             timestamp: time
             level: level
+            traceId: traceId
             msg: message
       - labels:
           level:
+          traceId:
           msg:
       - timestamp:
           source: time

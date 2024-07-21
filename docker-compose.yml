@@ -27,7 +27,7 @@ services:
       NODE_ENV: ${NODE_ENV}
       LOG_LEVEL: ${LOG_LEVEL}
       JWT_KEY: ${JWT_KEY}
-      DB_NAME: ${DB_NAME}
+      DB_NAME: ${DB_NAME} 
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
       DB_PORT: ${DB_PORT}
@@ -84,45 +84,5 @@ services:
     networks:
       - loki
 
-  # grafana:
-  #   image: grafana/grafana
-  #   container_name: grafana
-  #   restart: unless-stopped
-  #   ports:
-  #     - 3000:3000
-
-  # prometheus:
-  #   image: prom/prometheus
-  #   container_name: prometheus
-  #   restart: unless-stopped
-  #   ports:
-  #     - 9090:9090
-  #   volumes:
-  #     - ./prometheus.yml:/etc/prometheus/prometheus.yml
-
-  # node-exporter:
-  #   image: quay.io/prometheus/node-exporter:latest
-  #   container_name: node-exporter
-  #   command:
-  #     - '--path.rootfs=/host'
-  #   network_mode: host
-  #   pid: host
-  #   restart: unless-stopped
-  #   volumes:
-  #     - 'host_metrics:/host:ro,rslave'
-
-  # postgres-exporter:
-  #   image: prometheuscommunity/postgres-exporter
-  #   container_name: postgres-exporter
-  #   restart: unless-stopped
-  #   ports:
-  #     - 9187:9187
-  #   environment:
-  #     DATA_SOURCE_NAME: ${DB_URL}
-  #   links:
-  #     - postgres
-  #     - prometheus
-
 volumes:
   db_data:
-  # host_metrics:
