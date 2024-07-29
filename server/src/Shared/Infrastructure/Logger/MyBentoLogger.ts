@@ -84,7 +84,7 @@ export class MyBentoLogger implements LoggerService {
       if (existsSync(`${logDirectoryPath}${logFilename}`)) {
         console.log('FILE EXISTS');
 
-        appendFileSync(logFilename, `${JSON.stringify(log)}`);
+        appendFileSync(`${logDirectoryPath}${logFilename}`, `${JSON.stringify(log)}\n`);
 
         return;
       }
