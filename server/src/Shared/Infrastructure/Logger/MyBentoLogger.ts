@@ -1,5 +1,5 @@
 import { Injectable, LogLevel, LoggerService } from '@nestjs/common';
-import { readFileSync, writeFileSync } from 'fs';
+import { appendFileSync, existsSync, readdirSync, readFileSync, writeFileSync } from 'fs';
 
 const LOG_LEVELS: Record<string, string> = {
   Log: 'LOG',
@@ -19,18 +19,17 @@ type LogMessageType = {
 
 @Injectable()
 export class MyBentoLogger implements LoggerService {
-  public log(message: any, ...optionalParams: any[]) {
+  public log(message: string, optionalParams: any[]) {
     const traceId: string = optionalParams[0] ? optionalParams[0] : '';
 
     const logMessage = this.buildLogMessage('Log', message, traceId);
 
     console.log(' ------------ LOG MESSAGE ---------------- \n', logMessage);
 
-    // WRITE LOG IN FILE
-    // this.writeLog(logMessage);
+    this.writeLog(logMessage);
   }
 
-  public error(message: any, ...optionalParams: any[]) {
+  public error(message: any, optionalParams: any[]) {
     console.log(message);
 
     // WRITE LOG IN FILE
@@ -38,7 +37,7 @@ export class MyBentoLogger implements LoggerService {
     // throw new Error('Method not implemented.');
   }
 
-  public warn(message: any, ...optionalParams: any[]) {
+  public warn(message: any, optionalParams: any[]) {
     console.log(message);
 
     // WRITE LOG IN FILE
@@ -46,7 +45,7 @@ export class MyBentoLogger implements LoggerService {
     // throw new Error('Method not implemented.');
   }
 
-  public debug?(message: any, ...optionalParams: any[]) {
+  public debug?(message: any, optionalParams: any[]) {
     console.log(message);
 
     // WRITE LOG IN FILE
@@ -54,7 +53,7 @@ export class MyBentoLogger implements LoggerService {
     // throw new Error('Method not implemented.');
   }
 
-  public verbose?(message: any, ...optionalParams: any[]) {
+  public verbose?(message: any, optionalParams: any[]) {
     console.log(message);
 
     // WRITE LOG IN FILE
@@ -62,7 +61,7 @@ export class MyBentoLogger implements LoggerService {
     // throw new Error('Method not implemented.');
   }
 
-  public fatal?(message: any, ...optionalParams: any[]) {
+  public fatal?(message: any, optionalParams: any[]) {
     console.log(message);
 
     // WRITE LOG IN FILE
@@ -75,26 +74,28 @@ export class MyBentoLogger implements LoggerService {
   }
 
   private writeLog(log: LogMessageType): void {
+    const logDirectoryPath = '/app/log/';
     const { day, month, year } = this.getCurrentDate();
 
-    const logFilename = `${year}-${month}-${day}-my-bento-log.log`;
+    const logFilename = `${year}${month}${day}-my-bento-log.log`;
     console.log('LOG FILE', logFilename);
 
     try {
-      // -------------
-      // 1. Check if already exists a file with the logFilename
-      // 1.1 If not exists, create file and write the log message
-      // 1.2 If exists, append the log message to the file
-      // -------------
-      // const currentLogFileData = readFileSync(`./server/log/${logFilename}`, { encoding: 'utf8' });
-      // const fullLog = `${currentLogFileData}\n${log}`;
-      // writeFileSync(logFilename, `${fullLog}`);
+      if (existsSync(`${logDirectoryPath}${logFilename}`)) {
+        console.log('FILE EXISTS');
+
+        appendFileSync(logFilename, `${JSON.stringify(log)}`);
+
+        return;
+      }
+
+      console.log('FILE NOT EXISTS');
+
+      writeFileSync(`${logDirectoryPath}${logFilename}`, `${JSON.stringify(log)}`, {
+        encoding: 'utf8',
+      });
     } catch (err) {
-      // If error is file not exists, create file and write the log in the file
-      // writeFileSync(`./server/log/${logFilename}`, `${log}`, {
-      //   encoding: 'utf8',
-      // });
-      // console.error('Error writing file:', err);
+      console.error('Error writing log message:', err);
     }
   }
 

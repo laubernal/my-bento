@@ -15,8 +15,7 @@ export class GetFoodsQueryHandler implements IQueryHandler<GetFoodsQuery> {
   ) {}
 
   public async execute(query: GetFoodsQuery): Promise<GetFoodsResponse[]> {
-    this.logger.log('HERE --- GETTING FOODS', ['20283394-91d0-4346-be1b-11df0f4d3503']);
-    
+    this.logger.log('GETTING FOODS', ['20283394-91d0-4346-be1b-11df0f4d3504']);
 
     const foods = await this.findFoods();
     const response = foods.map((food: Food) => {
