@@ -1,6 +1,6 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetFoodsQuery } from './GetFoodsQuery';
-import { Inject, Logger } from '@nestjs/common';
+import { Inject } from '@nestjs/common';
 import { IFoodRepository } from '../../Domain/Repository/IFoodRepository';
 import { Food } from '../../Domain/Entity/Food';
 import { FoodFilter } from '../../Domain/Filter/FoodFilter';
@@ -15,9 +15,8 @@ export class GetFoodsQueryHandler implements IQueryHandler<GetFoodsQuery> {
   ) {}
 
   public async execute(query: GetFoodsQuery): Promise<GetFoodsResponse[]> {
-    this.logger.log('GETTING FOODS', ['20283394-91d0-4346-be1b-11df0f4d3505']);
+    const foods = await this.findFoods(query.traceId);
 
-    const foods = await this.findFoods();
     const response = foods.map((food: Food) => {
       return GetFoodsResponse.toResponse(food);
     });
@@ -25,10 +24,15 @@ export class GetFoodsQueryHandler implements IQueryHandler<GetFoodsQuery> {
     return response;
   }
 
-  private async findFoods(): Promise<Food[]> {
+  private async findFoods(traceId: string): Promise<Food[]> {
+    throw new Error('Database error');
     const filter = FoodFilter.create();
 
+    this.logger.log('Before querying DB to get foods', [traceId]);
+
     const result = await this.repository.find(filter);
+
+    this.logger.log('After querying DB to get foods', [traceId]);
 
     return result;
   }

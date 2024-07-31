@@ -1,9 +1,13 @@
 import { IQuery } from '@nestjs/cqrs';
 
 export class GetFoodsQuery implements IQuery {
-  public static fromJson(): GetFoodsQuery {
-    return new GetFoodsQuery();
+  public static fromJson(traceId: string): GetFoodsQuery {
+    return new GetFoodsQuery(traceId);
   }
 
-  constructor() {}
+  constructor(private _traceId: string) {}
+
+  public get traceId(): string {
+    return this._traceId;
+  }
 }
