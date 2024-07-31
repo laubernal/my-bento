@@ -17,7 +17,7 @@ export class GetFoodsController {
 
       const response = await this.queryBus.execute(query);
 
-      this.logger.log('Sending foods found', [traceId]);
+      this.logger.log('Sending found foods', [traceId]);
       res.status(200).send(response);
     } catch (error: any) {
       this.logger.error(`Error getting foods: ${error.message}`, [traceId]);
