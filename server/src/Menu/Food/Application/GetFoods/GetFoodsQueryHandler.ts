@@ -25,7 +25,6 @@ export class GetFoodsQueryHandler implements IQueryHandler<GetFoodsQuery> {
   }
 
   private async findFoods(traceId: string): Promise<Food[]> {
-    throw new Error('Database error');
     const filter = FoodFilter.create();
 
     this.logger.log('Before querying DB to get foods', [traceId]);
