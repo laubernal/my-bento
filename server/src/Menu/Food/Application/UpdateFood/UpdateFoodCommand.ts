@@ -3,8 +3,12 @@ import { UpdateFoodApiRequest } from '../../Infrastructure/Controllers/UpdateFoo
 import { UpdateFoodParams } from '../../Infrastructure/Controllers/UpdateFood/UpdateFoodParams';
 
 export class UpdateFoodCommand implements ICommand {
-  public static fromJson(body: UpdateFoodApiRequest, params: UpdateFoodParams): UpdateFoodCommand {
-    return new UpdateFoodCommand(params.id, body.name, body.category, body.amount, body.unit);
+  public static fromJson(
+    body: UpdateFoodApiRequest,
+    params: UpdateFoodParams,
+    traceId: string
+  ): UpdateFoodCommand {
+    return new UpdateFoodCommand(params.id, body.name, body.category, body.amount, body.unit, traceId);
   }
 
   constructor(
@@ -12,7 +16,8 @@ export class UpdateFoodCommand implements ICommand {
     private _name: string,
     private _category: string,
     private _amount: number,
-    private _unit: string
+    private _unit: string,
+    private _traceId: string
   ) {}
 
   public get id(): string {
@@ -33,5 +38,9 @@ export class UpdateFoodCommand implements ICommand {
 
   public get unit(): string {
     return this._unit;
+  }
+
+  public get traceId(): string {
+    return this._traceId;
   }
 }

@@ -13,10 +13,14 @@ import { StringVo } from 'Shared/Domain/Vo/String.vo';
 import { Food } from '../../Domain/Entity/Food';
 import { UpdateFoodCommand } from './UpdateFoodCommand';
 import { RecordNotFoundError } from 'Shared/Domain/Error/RecordNotFoundError';
+import { MyBentoLogger } from 'Shared/Infrastructure/Logger/MyBentoLogger';
 
 @CommandHandler(UpdateFoodCommand)
 export class UpdateFoodCommandHandler implements ICommandHandler<UpdateFoodCommand> {
-  constructor(@Inject('IFoodRepository') private readonly repository: IFoodRepository) {}
+  constructor(
+    @Inject('IFoodRepository') private readonly repository: IFoodRepository,
+    private readonly logger: MyBentoLogger
+  ) {}
 
   public async execute(command: UpdateFoodCommand): Promise<any> {
     const name = new Name(command.name);
@@ -27,17 +31,21 @@ export class UpdateFoodCommandHandler implements ICommandHandler<UpdateFoodComma
     const unit = new Unit(new StringVo(command.unit));
     const quantity = new Quantity(amount, unit);
 
-    const oldFood = await this.findFood(id);
+    const oldFood = await this.findFood(id, command.traceId);
 
     const food = new Food(id, name, category, quantity, oldFood.createdAt(), new Date());
 
     await this.repository.update(food);
   }
 
-  private async findFood(id: Id): Promise<Food> {
+  private async findFood(id: Id, traceId: string): Promise<Food> {
     const filter = FoodFilter.create().withId(id);
 
+    this.logger.log('Before querying DB to update food', [traceId]);
+
     const result = await this.repository.findOne(filter);
+
+    this.logger.log('After querying DB to update food', [traceId]);
 
     if (typeof result === 'undefined') {
       throw new RecordNotFoundError();
