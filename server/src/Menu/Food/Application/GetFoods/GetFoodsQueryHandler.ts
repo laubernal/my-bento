@@ -5,13 +5,15 @@ import { IFoodRepository } from '../../Domain/Repository/IFoodRepository';
 import { Food } from '../../Domain/Entity/Food';
 import { FoodFilter } from '../../Domain/Filter/FoodFilter';
 import { GetFoodsResponse } from './GetFoodsResponse';
-import { MyBentoLogger } from 'Shared/Infrastructure/Logger/MyBentoLogger';
+import { IMyBentoLogger } from 'Shared/Domain/Interfaces/IMyBentoLogger';
+import { MY_BENTO_LOGGER } from 'Shared/Domain/constants';
 
 @QueryHandler(GetFoodsQuery)
 export class GetFoodsQueryHandler implements IQueryHandler<GetFoodsQuery> {
   constructor(
     @Inject('IFoodRepository') private readonly repository: IFoodRepository,
-    private readonly logger: MyBentoLogger
+    @Inject(MY_BENTO_LOGGER) private readonly logger: IMyBentoLogger
+
   ) {}
 
   public async execute(query: GetFoodsQuery): Promise<GetFoodsResponse[]> {

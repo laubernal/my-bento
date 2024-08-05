@@ -12,13 +12,14 @@ import { Unit } from 'Shared/Domain/Vo/Unit.vo';
 import { Quantity } from 'Shared/Domain/Vo/Quantity.vo';
 import { StringVo } from 'Shared/Domain/Vo/String.vo';
 import { Food } from '../../Domain/Entity/Food';
-import { MyBentoLogger } from 'Shared/Infrastructure/Logger/MyBentoLogger';
+import { IMyBentoLogger } from 'Shared/Domain/Interfaces/IMyBentoLogger';
+import { MY_BENTO_LOGGER } from 'Shared/Domain/constants';
 
 @CommandHandler(CreateFoodCommand)
 export class CreateFoodCommandHandler implements ICommandHandler<CreateFoodCommand> {
   constructor(
     @Inject('IFoodRepository') private readonly repository: IFoodRepository,
-    private readonly logger: MyBentoLogger
+    @Inject(MY_BENTO_LOGGER) private readonly logger: IMyBentoLogger
   ) {}
 
   public async execute(command: CreateFoodCommand): Promise<any> {

@@ -5,7 +5,6 @@ import { CryptoService } from 'Shared/Domain/Services/CryptoService';
 import { MenuBoundedContext } from './Menu/Shared/Infrastructure/Nest/MenuBoundedContext';
 import { SharedModule } from 'Shared/Infrastructure/Nest/SharedModule';
 import { ConfigModule } from '@nestjs/config';
-import { MyBentoLogger } from 'Shared/Infrastructure/Logger/MyBentoLogger';
 
 @Module({
   imports: [
@@ -16,7 +15,7 @@ import { MyBentoLogger } from 'Shared/Infrastructure/Logger/MyBentoLogger';
     MenuBoundedContext,
   ],
   controllers: [],
-  providers: [CryptoService, MyBentoLogger],
+  providers: [CryptoService],
   exports: [CqrsModule, CryptoService],
 })
 export default class App {}

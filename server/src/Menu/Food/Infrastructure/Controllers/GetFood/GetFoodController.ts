@@ -1,13 +1,17 @@
-import { Controller, Get, Headers, Param, Res } from '@nestjs/common';
+import { Controller, Get, Headers, Inject, Param, Res } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { Response } from 'express';
 import { GetFoodQuery } from 'src/Menu/Food/Application/GetFood/GetFoodQuery';
 import { GetFoodParams } from './GetFoodParams';
-import { MyBentoLogger } from 'Shared/Infrastructure/Logger/MyBentoLogger';
+import { IMyBentoLogger } from 'Shared/Domain/Interfaces/IMyBentoLogger';
+import { MY_BENTO_LOGGER } from 'Shared/Domain/constants';
 
 @Controller()
 export class GetFoodController {
-  constructor(private readonly queryBus: QueryBus, private readonly logger: MyBentoLogger) {}
+  constructor(
+    private readonly queryBus: QueryBus,
+    @Inject(MY_BENTO_LOGGER) private readonly logger: IMyBentoLogger
+  ) {}
 
   @Get('api/foods/:id')
   public async get(

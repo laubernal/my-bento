@@ -1,6 +1,7 @@
-import { Injectable, LoggerService } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { appendFileSync, existsSync, writeFileSync } from 'fs';
 import { LogMessageType } from '../Types';
+import { IMyBentoLogger } from 'Shared/Domain/Interfaces/IMyBentoLogger';
 
 enum LOG_LEVELS {
   Log = 'LOG',
@@ -12,7 +13,7 @@ enum LOG_LEVELS {
 }
 
 @Injectable()
-export class MyBentoLogger implements LoggerService {
+export class MyBentoLogger implements IMyBentoLogger {
   public log(message: string, optionalParams: any[]) {
     const traceId: string = optionalParams[0] ? optionalParams[0] : '';
 

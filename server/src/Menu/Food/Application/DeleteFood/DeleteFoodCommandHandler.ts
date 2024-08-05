@@ -6,13 +6,14 @@ import { Id } from 'Shared/Domain/Vo/Id.vo';
 import { Food } from '../../Domain/Entity/Food';
 import { DeleteFoodCommand } from './DeleteFoodCommand';
 import { RecordNotFoundError } from 'Shared/Domain/Error/RecordNotFoundError';
-import { MyBentoLogger } from 'Shared/Infrastructure/Logger/MyBentoLogger';
+import { IMyBentoLogger } from 'Shared/Domain/Interfaces/IMyBentoLogger';
+import { MY_BENTO_LOGGER } from 'Shared/Domain/constants';
 
 @CommandHandler(DeleteFoodCommand)
 export class DeleteFoodCommandHandler implements ICommandHandler<DeleteFoodCommand> {
   constructor(
     @Inject('IFoodRepository') private readonly repository: IFoodRepository,
-    private readonly logger: MyBentoLogger
+    @Inject(MY_BENTO_LOGGER) private readonly logger: IMyBentoLogger
   ) {}
 
   public async execute(command: DeleteFoodCommand): Promise<any> {

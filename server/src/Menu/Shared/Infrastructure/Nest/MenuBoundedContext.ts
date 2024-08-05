@@ -40,7 +40,12 @@ const Handlers = [
 
 const Mappers = [FoodMapper];
 
-const Services = [MyBentoLogger];
+const Services = [
+  {
+    provide: 'IMyBentoLogger',
+    useClass: MyBentoLogger,
+  },
+];
 
 @Module({
   imports: [CqrsModule, SharedModule],

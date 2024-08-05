@@ -1,13 +1,17 @@
-import { Controller, Delete, Headers, Param, Res } from '@nestjs/common';
+import { Controller, Delete, Headers, Inject, Param, Res } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { Response } from 'express';
 import { DeleteFoodParams } from './DeleteFoodParams';
 import { DeleteFoodCommand } from 'src/Menu/Food/Application/DeleteFood/DeleteFoodCommand';
-import { MyBentoLogger } from 'Shared/Infrastructure/Logger/MyBentoLogger';
+import { IMyBentoLogger } from 'Shared/Domain/Interfaces/IMyBentoLogger';
+import { MY_BENTO_LOGGER } from 'Shared/Domain/constants';
 
 @Controller()
 export class DeleteFoodController {
-  constructor(private readonly commandBus: CommandBus, private readonly logger: MyBentoLogger) {}
+  constructor(
+    private readonly commandBus: CommandBus,
+    @Inject(MY_BENTO_LOGGER) private readonly logger: IMyBentoLogger
+  ) {}
 
   @Delete('api/foods/:id')
   public async post(

@@ -1,14 +1,18 @@
-import { Body, Controller, Headers, Param, Put, Res } from '@nestjs/common';
+import { Body, Controller, Headers, Inject, Param, Put, Res } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { Response } from 'express';
 import { UpdateFoodCommand } from 'src/Menu/Food/Application/UpdateFood/UpdateFoodCommand';
 import { UpdateFoodParams } from './UpdateFoodParams';
 import { UpdateFoodApiRequest } from './UpdateFoodApiRequest';
-import { MyBentoLogger } from 'Shared/Infrastructure/Logger/MyBentoLogger';
+import { IMyBentoLogger } from 'Shared/Domain/Interfaces/IMyBentoLogger';
+import { MY_BENTO_LOGGER } from 'Shared/Domain/constants';
 
 @Controller()
 export class UpdateFoodController {
-  constructor(private readonly commandBus: CommandBus, private readonly logger: MyBentoLogger) {}
+  constructor(
+    private readonly commandBus: CommandBus,
+    @Inject(MY_BENTO_LOGGER) private readonly logger: IMyBentoLogger
+  ) {}
 
   @Put('api/foods/:id')
   public async post(

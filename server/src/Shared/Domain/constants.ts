@@ -1,3 +1,5 @@
+export const MY_BENTO_LOGGER = 'IMyBentoLogger'
+
 export enum OPERATORS {
   equal = 'equals',
   gt = 'gt',
@@ -16,10 +18,6 @@ export const ADMIN_ROLE = 'admin';
 
 export enum Roles {
   ADMIN = 'admin',
-}
-
-export enum MARKET {
-  ES = 'ES',
 }
 
 export interface HttpMethod {

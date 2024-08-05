@@ -7,13 +7,14 @@ import { FoodFilter } from '../../Domain/Filter/FoodFilter';
 import { GetFoodResponse } from './GetFoodResponse';
 import { RecordNotFoundError } from 'Shared/Domain/Error/RecordNotFoundError';
 import { Id } from 'Shared/Domain/Vo/Id.vo';
-import { MyBentoLogger } from 'Shared/Infrastructure/Logger/MyBentoLogger';
+import { IMyBentoLogger } from 'Shared/Domain/Interfaces/IMyBentoLogger';
+import { MY_BENTO_LOGGER } from 'Shared/Domain/constants';
 
 @QueryHandler(GetFoodQuery)
 export class GetFoodQueryHandler implements IQueryHandler<GetFoodQuery> {
   constructor(
     @Inject('IFoodRepository') private readonly repository: IFoodRepository,
-    private readonly logger: MyBentoLogger
+    @Inject(MY_BENTO_LOGGER) private readonly logger: IMyBentoLogger
   ) {}
 
   public async execute(query: GetFoodQuery): Promise<GetFoodResponse> {
