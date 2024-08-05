@@ -4,7 +4,7 @@ import { Response } from 'express';
 import { CreateFoodCommand } from 'src/Menu/Food/Application/CreateFood/CreateFoodCommand';
 import { CreateFoodApiRequest } from './CreateFoodApiRequest';
 import { IMyBentoLogger } from 'Shared/Domain/Interfaces/IMyBentoLogger';
-import { MY_BENTO_LOGGER } from 'Shared/Domain/constants';
+import { MY_BENTO_LOGGER } from 'Shared/Domain/InterfacesConstants';
 
 @Controller()
 export class CreateFoodController {

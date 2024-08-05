@@ -4,7 +4,7 @@ import { Response } from 'express';
 import { DeleteFoodParams } from './DeleteFoodParams';
 import { DeleteFoodCommand } from 'src/Menu/Food/Application/DeleteFood/DeleteFoodCommand';
 import { IMyBentoLogger } from 'Shared/Domain/Interfaces/IMyBentoLogger';
-import { MY_BENTO_LOGGER } from 'Shared/Domain/constants';
+import { MY_BENTO_LOGGER } from 'Shared/Domain/InterfacesConstants';
 
 @Controller()
 export class DeleteFoodController {

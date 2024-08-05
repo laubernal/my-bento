@@ -13,12 +13,12 @@ import { Quantity } from 'Shared/Domain/Vo/Quantity.vo';
 import { StringVo } from 'Shared/Domain/Vo/String.vo';
 import { Food } from '../../Domain/Entity/Food';
 import { IMyBentoLogger } from 'Shared/Domain/Interfaces/IMyBentoLogger';
-import { MY_BENTO_LOGGER } from 'Shared/Domain/constants';
+import { IFOOD_REPOSITORY, MY_BENTO_LOGGER } from 'Shared/Domain/InterfacesConstants';
 
 @CommandHandler(CreateFoodCommand)
 export class CreateFoodCommandHandler implements ICommandHandler<CreateFoodCommand> {
   constructor(
-    @Inject('IFoodRepository') private readonly repository: IFoodRepository,
+    @Inject(IFOOD_REPOSITORY) private readonly repository: IFoodRepository,
     @Inject(MY_BENTO_LOGGER) private readonly logger: IMyBentoLogger
   ) {}
 

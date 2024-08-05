@@ -14,10 +14,11 @@ import { SharedModule } from 'Shared/Infrastructure/Nest/SharedModule';
 import { GetFoodsController } from 'Menu/Food/Infrastructure/Controllers/GetFoods/GetFoodsController';
 import { CreateFoodController } from 'Menu/Food/Infrastructure/Controllers/CreateFood/CreateFoodController';
 import { MyBentoLogger } from 'Shared/Infrastructure/Logger/MyBentoLogger';
+import { IFOOD_REPOSITORY, MY_BENTO_LOGGER } from 'Shared/Domain/InterfacesConstants';
 
 const Repositories = [
   {
-    provide: 'IFoodRepository',
+    provide: IFOOD_REPOSITORY,
     useClass: MikroOrmFoodRepository,
   },
 ];
@@ -42,7 +43,7 @@ const Mappers = [FoodMapper];
 
 const Services = [
   {
-    provide: 'IMyBentoLogger',
+    provide: MY_BENTO_LOGGER,
     useClass: MyBentoLogger,
   },
 ];

@@ -8,12 +8,12 @@ import { GetFoodResponse } from './GetFoodResponse';
 import { RecordNotFoundError } from 'Shared/Domain/Error/RecordNotFoundError';
 import { Id } from 'Shared/Domain/Vo/Id.vo';
 import { IMyBentoLogger } from 'Shared/Domain/Interfaces/IMyBentoLogger';
-import { MY_BENTO_LOGGER } from 'Shared/Domain/constants';
+import { IFOOD_REPOSITORY, MY_BENTO_LOGGER } from 'Shared/Domain/InterfacesConstants';
 
 @QueryHandler(GetFoodQuery)
 export class GetFoodQueryHandler implements IQueryHandler<GetFoodQuery> {
   constructor(
-    @Inject('IFoodRepository') private readonly repository: IFoodRepository,
+    @Inject(IFOOD_REPOSITORY) private readonly repository: IFoodRepository,
     @Inject(MY_BENTO_LOGGER) private readonly logger: IMyBentoLogger
   ) {}
 

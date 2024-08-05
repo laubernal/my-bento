@@ -7,12 +7,12 @@ import { Food } from '../../Domain/Entity/Food';
 import { DeleteFoodCommand } from './DeleteFoodCommand';
 import { RecordNotFoundError } from 'Shared/Domain/Error/RecordNotFoundError';
 import { IMyBentoLogger } from 'Shared/Domain/Interfaces/IMyBentoLogger';
-import { MY_BENTO_LOGGER } from 'Shared/Domain/constants';
+import { IFOOD_REPOSITORY, MY_BENTO_LOGGER } from 'Shared/Domain/InterfacesConstants';
 
 @CommandHandler(DeleteFoodCommand)
 export class DeleteFoodCommandHandler implements ICommandHandler<DeleteFoodCommand> {
   constructor(
-    @Inject('IFoodRepository') private readonly repository: IFoodRepository,
+    @Inject(IFOOD_REPOSITORY) private readonly repository: IFoodRepository,
     @Inject(MY_BENTO_LOGGER) private readonly logger: IMyBentoLogger
   ) {}
 

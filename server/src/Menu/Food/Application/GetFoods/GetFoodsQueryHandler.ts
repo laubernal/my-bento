@@ -6,12 +6,12 @@ import { Food } from '../../Domain/Entity/Food';
 import { FoodFilter } from '../../Domain/Filter/FoodFilter';
 import { GetFoodsResponse } from './GetFoodsResponse';
 import { IMyBentoLogger } from 'Shared/Domain/Interfaces/IMyBentoLogger';
-import { MY_BENTO_LOGGER } from 'Shared/Domain/constants';
+import { IFOOD_REPOSITORY, MY_BENTO_LOGGER } from 'Shared/Domain/InterfacesConstants';
 
 @QueryHandler(GetFoodsQuery)
 export class GetFoodsQueryHandler implements IQueryHandler<GetFoodsQuery> {
   constructor(
-    @Inject('IFoodRepository') private readonly repository: IFoodRepository,
+    @Inject(IFOOD_REPOSITORY) private readonly repository: IFoodRepository,
     @Inject(MY_BENTO_LOGGER) private readonly logger: IMyBentoLogger
 
   ) {}

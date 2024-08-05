@@ -2,7 +2,7 @@ import { Controller, Get, Headers, Inject, Res } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { GetFoodsQuery } from 'Menu/Food/Application/GetFoods/GetFoodsQuery';
 import { IMyBentoLogger } from 'Shared/Domain/Interfaces/IMyBentoLogger';
-import { MY_BENTO_LOGGER } from 'Shared/Domain/constants';
+import { MY_BENTO_LOGGER } from 'Shared/Domain/InterfacesConstants';
 import { Response } from 'express';
 
 @Controller()

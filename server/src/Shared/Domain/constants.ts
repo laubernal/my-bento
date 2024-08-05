@@ -1,5 +1,3 @@
-export const MY_BENTO_LOGGER = 'IMyBentoLogger'
-
 export enum OPERATORS {
   equal = 'equals',
   gt = 'gt',

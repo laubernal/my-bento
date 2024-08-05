@@ -3,7 +3,6 @@ import { Inject } from '@nestjs/common';
 import { IFoodRepository } from '../../Domain/Repository/IFoodRepository';
 import { Name } from 'Shared/Domain/Vo/Name.vo';
 import { FoodFilter } from '../../Domain/Filter/FoodFilter';
-import { FoodAlreadyExistsError } from '../../Domain/Error/FoodAlreadyExists';
 import { Id } from 'Shared/Domain/Vo/Id.vo';
 import { Category } from 'Shared/Domain/Vo/Category.vo';
 import { Amount } from 'Shared/Domain/Vo/Amount.vo';
@@ -14,12 +13,12 @@ import { Food } from '../../Domain/Entity/Food';
 import { UpdateFoodCommand } from './UpdateFoodCommand';
 import { RecordNotFoundError } from 'Shared/Domain/Error/RecordNotFoundError';
 import { IMyBentoLogger } from 'Shared/Domain/Interfaces/IMyBentoLogger';
-import { MY_BENTO_LOGGER } from 'Shared/Domain/constants';
+import { IFOOD_REPOSITORY, MY_BENTO_LOGGER } from 'Shared/Domain/InterfacesConstants';
 
 @CommandHandler(UpdateFoodCommand)
 export class UpdateFoodCommandHandler implements ICommandHandler<UpdateFoodCommand> {
   constructor(
-    @Inject('IFoodRepository') private readonly repository: IFoodRepository,
+    @Inject(IFOOD_REPOSITORY) private readonly repository: IFoodRepository,
     @Inject(MY_BENTO_LOGGER) private readonly logger: IMyBentoLogger
   ) {}
 

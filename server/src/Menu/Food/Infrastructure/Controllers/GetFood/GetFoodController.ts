@@ -4,7 +4,7 @@ import { Response } from 'express';
 import { GetFoodQuery } from 'src/Menu/Food/Application/GetFood/GetFoodQuery';
 import { GetFoodParams } from './GetFoodParams';
 import { IMyBentoLogger } from 'Shared/Domain/Interfaces/IMyBentoLogger';
-import { MY_BENTO_LOGGER } from 'Shared/Domain/constants';
+import { MY_BENTO_LOGGER } from 'Shared/Domain/InterfacesConstants';
 
 @Controller()
 export class GetFoodController {
