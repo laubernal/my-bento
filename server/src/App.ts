@@ -5,11 +5,13 @@ import { CryptoService } from 'Shared/Domain/Services/CryptoService';
 import { MenuBoundedContext } from './Menu/Shared/Infrastructure/Nest/MenuBoundedContext';
 import { SharedModule } from 'Shared/Infrastructure/Nest/SharedModule';
 import { ConfigModule } from '@nestjs/config';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
     CqrsModule,
     ConfigModule.forRoot({ isGlobal: true }),
+    ScheduleModule.forRoot(),
     SharedModule,
     AuthorizationBoundedContext,
     MenuBoundedContext,
