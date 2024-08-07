@@ -8,3 +8,10 @@ export type UserSession = {
 export type Primitives = string | boolean | number | Date | null;
 
 export type ValueObjectConstructor<T> = new (_value: any) => T;
+
+export type LogMessageType = {
+  time: string;
+  level: string;
+  message: string;
+  traceId: string;
+};

@@ -18,10 +18,6 @@ export enum Roles {
   ADMIN = 'admin',
 }
 
-export enum MARKET {
-  ES = 'ES',
-}
-
 export interface HttpMethod {
   POST: 'POST';
   GET: 'GET';
