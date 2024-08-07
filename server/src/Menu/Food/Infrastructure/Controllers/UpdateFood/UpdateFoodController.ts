@@ -6,6 +6,7 @@ import { UpdateFoodParams } from './UpdateFoodParams';
 import { UpdateFoodApiRequest } from './UpdateFoodApiRequest';
 import { IMyBentoLogger } from 'Shared/Domain/Interfaces/IMyBentoLogger';
 import { MY_BENTO_LOGGER } from 'Shared/Domain/InterfacesConstants';
+import { MyBentoResponse } from 'Shared/Domain/MyBentoResponse';
 
 @Controller()
 export class UpdateFoodController {
@@ -28,11 +29,21 @@ export class UpdateFoodController {
 
       await this.commandBus.execute(command);
 
-      return res.status(200).json({});
+      const myBentoResponse = new MyBentoResponse<null>(null, {
+        success: true,
+        error: null,
+      });
+
+      return res.status(200).json(myBentoResponse);
     } catch (error: any) {
       this.logger.error(`Error updating food: ${error.message}`, [traceId]);
 
-      return res.status(400).json({ error: error.message });
+      const myBentoResponse = new MyBentoResponse<null>(null, {
+        success: false,
+        error: error.message,
+      });
+
+      return res.status(400).json(myBentoResponse);
     }
   }
 }

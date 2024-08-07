@@ -5,6 +5,8 @@ import { GetFoodQuery } from 'src/Menu/Food/Application/GetFood/GetFoodQuery';
 import { GetFoodParams } from './GetFoodParams';
 import { IMyBentoLogger } from 'Shared/Domain/Interfaces/IMyBentoLogger';
 import { MY_BENTO_LOGGER } from 'Shared/Domain/InterfacesConstants';
+import { MyBentoResponse } from 'Shared/Domain/MyBentoResponse';
+import { GetFoodResponse } from 'Menu/Food/Application/GetFood/GetFoodResponse';
 
 @Controller()
 export class GetFoodController {
@@ -24,14 +26,25 @@ export class GetFoodController {
 
       const query = GetFoodQuery.fromJson(params, traceId);
 
-      const response = await this.queryBus.execute(query);
+      const response = await this.queryBus.execute<GetFoodQuery, GetFoodResponse>(query);
 
       this.logger.log('Sending found food', [traceId]);
-      return res.status(200).json(response);
+
+      const myBentoResponse = new MyBentoResponse<GetFoodResponse>(response, {
+        success: true,
+        error: null,
+      });
+
+      return res.status(200).json(myBentoResponse);
     } catch (error: any) {
       this.logger.error(`Error getting food: ${error.message}`, [traceId]);
 
-      return res.status(400).json({ error: error.message });
+      const myBentoResponse = new MyBentoResponse<null>(null, {
+        success: false,
+        error: error.message,
+      });
+
+      return res.status(400).json(myBentoResponse);
     }
   }
 }

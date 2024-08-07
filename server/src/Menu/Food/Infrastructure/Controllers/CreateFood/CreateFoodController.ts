@@ -5,6 +5,7 @@ import { CreateFoodCommand } from 'src/Menu/Food/Application/CreateFood/CreateFo
 import { CreateFoodApiRequest } from './CreateFoodApiRequest';
 import { IMyBentoLogger } from 'Shared/Domain/Interfaces/IMyBentoLogger';
 import { MY_BENTO_LOGGER } from 'Shared/Domain/InterfacesConstants';
+import { MyBentoResponse } from 'Shared/Domain/MyBentoResponse';
 
 @Controller()
 export class CreateFoodController {
@@ -26,11 +27,21 @@ export class CreateFoodController {
 
       await this.commandBus.execute(command);
 
-      return res.status(200).json({});
+      const response = new MyBentoResponse(null, {
+        success: true,
+        error: null,
+      });
+
+      return res.status(200).json(response);
     } catch (error: any) {
       this.logger.error(`Error creating food: ${error.message}`, [traceId]);
 
-      return res.status(400).json({ error: error.message });
+      const errorResponse = new MyBentoResponse(null, {
+        success: false,
+        error: error.message,
+      });
+
+      return res.status(400).json(errorResponse);
     }
   }
 }
