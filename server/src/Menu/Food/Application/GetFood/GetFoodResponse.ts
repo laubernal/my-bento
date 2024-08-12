@@ -7,7 +7,7 @@ export class GetFoodResponse {
       food.name().value,
       food.category().value,
       food.quantity().amount().value,
-      food.quantity().unit().value()
+      food.quantity().unit().value
     );
   }
 

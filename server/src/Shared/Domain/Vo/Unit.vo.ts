@@ -9,7 +9,7 @@ export class Unit {
     this.validate();
   }
 
-  public value(): string {
+  get value(): string {
     return this._unit.value;
   }
 
