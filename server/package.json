@@ -62,7 +62,7 @@
       "json",
       "ts"
     ],
-    "rootDir": "test",
+    "rootDir": ".",
     "testRegex": ".spec.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
@@ -72,6 +72,12 @@
     "moduleDirectories": [
       "node_modules",
       "src"
-    ]
+    ],
+    "moduleNameMapper": {
+      "^Shared/(.*)$": "<rootDir>/src/Shared/$1",
+      "^Authorization/(.*)$": "<rootDir>/src/Authorization/$1",
+      "^Menu/(.*)$": "<rootDir>/src/Menu/$1",
+      "^test/(.*)$": "<rootDir>/test/$1"
+    }
   }
 }

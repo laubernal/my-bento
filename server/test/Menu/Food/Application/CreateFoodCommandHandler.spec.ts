@@ -4,8 +4,8 @@ import { CreateFoodCommandHandler } from 'Menu/Food/Application/CreateFood/Creat
 import { FoodAlreadyExistsError } from 'Menu/Food/Domain/Error/FoodAlreadyExists';
 import { IFoodRepository } from 'Menu/Food/Domain/Repository/IFoodRepository';
 import { IFOOD_REPOSITORY, MY_BENTO_LOGGER } from 'Shared/Domain/InterfacesConstants';
-import { foodStub } from '../../../stubs/Food.stub';
 import { FoodFilter } from 'Menu/Food/Domain/Filter/FoodFilter';
+import { foodStub } from 'test/stubs/Food.stub';
 
 describe('CreateFoodCommandHandler', () => {
   let createFoodCommandHandler: CreateFoodCommandHandler;

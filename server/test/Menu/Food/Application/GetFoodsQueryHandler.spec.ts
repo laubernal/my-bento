@@ -5,7 +5,7 @@ import { GetFoodsResponse } from 'Menu/Food/Application/GetFoods/GetFoodsRespons
 import { FoodFilter } from 'Menu/Food/Domain/Filter/FoodFilter';
 import { IFoodRepository } from 'Menu/Food/Domain/Repository/IFoodRepository';
 import { IFOOD_REPOSITORY, MY_BENTO_LOGGER } from 'Shared/Domain/InterfacesConstants';
-import { foodStub } from '../../../stubs/Food.stub';
+import { foodStub } from 'test/stubs/Food.stub';
 
 describe('GetFoodsQueryHandler', () => {
   let getFoodsQueryHandler: GetFoodsQueryHandler;

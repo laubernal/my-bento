@@ -6,7 +6,7 @@ import { IFoodRepository } from 'Menu/Food/Domain/Repository/IFoodRepository';
 import { RecordNotFoundError } from 'Shared/Domain/Error/RecordNotFoundError';
 import { IFOOD_REPOSITORY, MY_BENTO_LOGGER } from 'Shared/Domain/InterfacesConstants';
 import { Id } from 'Shared/Domain/Vo/Id.vo';
-import { foodStub } from '../../../stubs/Food.stub';
+import { foodStub } from 'test/stubs/Food.stub';
 
 describe('DeleteFoodCommandHandler', () => {
   let deleteFoodCommandHandler: DeleteFoodCommandHandler;

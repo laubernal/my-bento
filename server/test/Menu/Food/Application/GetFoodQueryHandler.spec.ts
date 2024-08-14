@@ -7,8 +7,8 @@ import { GetFoodQuery } from 'Menu/Food/Application/GetFood/GetFoodQuery';
 import { Id } from 'Shared/Domain/Vo/Id.vo';
 import { GetFoodResponse } from 'Menu/Food/Application/GetFood/GetFoodResponse';
 import { RecordNotFoundError } from 'Shared/Domain/Error/RecordNotFoundError';
-import { foodStub } from '../../../stubs/Food.stub';
 import { FoodFilter } from 'Menu/Food/Domain/Filter/FoodFilter';
+import { foodStub } from 'test/stubs/Food.stub';
 
 describe('GetFoodQueryHandler', () => {
   let getFoodQueryHandler: GetFoodQueryHandler;

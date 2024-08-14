@@ -5,7 +5,7 @@ import { FoodFilter } from 'Menu/Food/Domain/Filter/FoodFilter';
 import { IFoodRepository } from 'Menu/Food/Domain/Repository/IFoodRepository';
 import { RecordNotFoundError } from 'Shared/Domain/Error/RecordNotFoundError';
 import { IFOOD_REPOSITORY, MY_BENTO_LOGGER } from 'Shared/Domain/InterfacesConstants';
-import { foodStub } from '../../../stubs/Food.stub';
+import { foodStub } from 'test/stubs/Food.stub';
 
 describe('UpdateFoodCommandHandler', () => {
   let updateFoodCommandHandler: UpdateFoodCommandHandler;
