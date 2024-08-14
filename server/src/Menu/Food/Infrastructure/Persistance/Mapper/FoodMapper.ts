@@ -17,7 +17,7 @@ export class FoodMapper implements IMapper<Food, FoodEntity> {
     model.name = entity.name().value;
     model.category = entity.category().value;
     model.amount = entity.quantity().amount().value;
-    model.unit = entity.quantity().unit().value();
+    model.unit = entity.quantity().unit().value;
     model.created_at = entity.createdAt();
     model.updated_at = entity.updatedAt();
 

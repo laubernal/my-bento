@@ -29,7 +29,6 @@
     "@nestjs/cqrs": "^10.2.7",
     "@nestjs/platform-express": "^10.3.5",
     "@nestjs/schedule": "^4.1.0",
-    "@nestjs/testing": "^10.3.5",
     "@types/express": "^4.17.21",
     "@types/node": "^20.11.30",
     "chalk": "^4.1.2",
@@ -47,6 +46,7 @@
     "zod": "^3.14.4"
   },
   "devDependencies": {
+    "@nestjs/testing": "^10.3.10",
     "@types/cookie-session": "^2.0.44",
     "@types/jest": "^29.5.12",
     "@types/jsonwebtoken": "^8.5.8",
@@ -62,7 +62,7 @@
       "json",
       "ts"
     ],
-    "rootDir": "test",
+    "rootDir": ".",
     "testRegex": ".spec.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
@@ -72,6 +72,12 @@
     "moduleDirectories": [
       "node_modules",
       "src"
-    ]
+    ],
+    "moduleNameMapper": {
+      "^Shared/(.*)$": "<rootDir>/src/Shared/$1",
+      "^Authorization/(.*)$": "<rootDir>/src/Authorization/$1",
+      "^Menu/(.*)$": "<rootDir>/src/Menu/$1",
+      "^test/(.*)$": "<rootDir>/test/$1"
+    }
   }
 }
