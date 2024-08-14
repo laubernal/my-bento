@@ -6,13 +6,15 @@ import { IFoodRepository } from 'Menu/Food/Domain/Repository/IFoodRepository';
 import { IFOOD_REPOSITORY, MY_BENTO_LOGGER } from 'Shared/Domain/InterfacesConstants';
 import { foodStub } from '../../../stubs/Food.stub';
 import { FoodFilter } from 'Menu/Food/Domain/Filter/FoodFilter';
-import { Id } from 'Shared/Domain/Vo/Id.vo';
 
 describe('CreateFoodCommandHandler', () => {
   let createFoodCommandHandler: CreateFoodCommandHandler;
   let foodRepository: IFoodRepository;
 
   beforeEach(async () => {
+    const fixedDate = new Date();
+    jest.spyOn(global, 'Date').mockImplementation(() => fixedDate);
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         CreateFoodCommandHandler,
@@ -34,6 +36,10 @@ describe('CreateFoodCommandHandler', () => {
 
     createFoodCommandHandler = module.get<CreateFoodCommandHandler>(CreateFoodCommandHandler);
     foodRepository = module.get<IFoodRepository>(IFOOD_REPOSITORY);
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
   });
 
   it('should create a food when it does not exist already', async () => {
