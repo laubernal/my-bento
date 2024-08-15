@@ -1,10 +1,12 @@
 import { UnitFormatError } from '../Error/UnitFormatError';
 import { StringVo } from './String.vo';
 
-export class Unit {
-  GRAMS = 'grams';
-  KILOGRAMS = 'kilograms';
+export enum UnitEnum {
+  GRAMS = 'grams',
+  KILOGRAMS = 'kilograms',
+}
 
+export class Unit {
   constructor(private _unit: StringVo) {
     this.validate();
   }
@@ -14,10 +16,8 @@ export class Unit {
   }
 
   private validate() {
-    if (this._unit.value === this.GRAMS || this._unit.value === this.KILOGRAMS) {
-      return;
+    if (!Object.values(UnitEnum).includes(this._unit.value as UnitEnum)) {
+      throw new UnitFormatError();
     }
-
-    throw new UnitFormatError();
   }
 }
