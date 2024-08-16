@@ -2,7 +2,11 @@ import { ICommandHandler } from '@nestjs/cqrs';
 import { CreateMealCommand } from './CreateMealCommand';
 import { Inject } from '@nestjs/common';
 import { IMealRepository } from 'Menu/Meal/Domain/Repository/IMealRepository';
-import { IFOOD_REPOSITORY, MY_BENTO_LOGGER } from 'Shared/Domain/InterfacesConstants';
+import {
+  IFOOD_REPOSITORY,
+  IMEAL_REPOSITORY,
+  MY_BENTO_LOGGER,
+} from 'Shared/Domain/InterfacesConstants';
 import { IMyBentoLogger } from 'Shared/Domain/Interfaces/IMyBentoLogger';
 import { MealFilter } from 'Menu/Meal/Domain/Filter/MealFilter';
 import { Name } from 'Shared/Domain/Vo/Name.vo';
@@ -18,7 +22,7 @@ import { RecordNotFoundError } from 'Shared/Domain/Error/RecordNotFoundError';
 
 export class CreateMealCommandHandler implements ICommandHandler {
   constructor(
-    @Inject('IMealRepository') private readonly mealRepository: IMealRepository,
+    @Inject(IMEAL_REPOSITORY) private readonly mealRepository: IMealRepository,
     @Inject(IFOOD_REPOSITORY) private readonly foodRepository: IFoodRepository,
     @Inject(MY_BENTO_LOGGER) private readonly logger: IMyBentoLogger
   ) {}
