@@ -1,8 +1,9 @@
 import { ICommand } from '@nestjs/cqrs';
+import { CreateMealApiRequest } from 'Menu/Meal/Infrastructure/Controllers/CreateMeal/CreateMealApiRequest';
 import { MealFoodType } from 'Menu/Shared/Domain/types';
 
 export class CreateMealCommand implements ICommand {
-  public static fromJson(body: any, traceId: string): CreateMealCommand {
+  public static fromJson(body: CreateMealApiRequest, traceId: string): CreateMealCommand {
     return new CreateMealCommand(body.id, body.name, body.type, body.foods, traceId);
   }
 
