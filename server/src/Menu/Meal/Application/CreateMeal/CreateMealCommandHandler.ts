@@ -15,15 +15,14 @@ import { MealType } from 'Shared/Domain/Vo/MealType';
 import { StringVo } from 'Shared/Domain/Vo/String.vo';
 import { Id } from 'Shared/Domain/Vo/Id.vo';
 import { Meal } from 'Menu/Meal/Domain/Entity/Meal';
-import { FoodFilter } from 'Menu/Food/Domain/Filter/FoodFilter';
-import { Food } from 'Menu/Food/Domain/Entity/Food';
-import { IFoodRepository } from 'Menu/Food/Domain/Repository/IFoodRepository';
-import { RecordNotFoundError } from 'Shared/Domain/Error/RecordNotFoundError';
+import { Food } from 'Menu/Meal/Domain/Entity/Food';
+import { Quantity } from 'Shared/Domain/Vo/Quantity.vo';
+import { Unit } from 'Shared/Domain/Vo/Unit.vo';
+import { Amount } from 'Shared/Domain/Vo/Amount.vo';
 
 export class CreateMealCommandHandler implements ICommandHandler {
   constructor(
     @Inject(IMEAL_REPOSITORY) private readonly mealRepository: IMealRepository,
-    @Inject(IFOOD_REPOSITORY) private readonly foodRepository: IFoodRepository,
     @Inject(MY_BENTO_LOGGER) private readonly logger: IMyBentoLogger
   ) {}
 
@@ -37,7 +36,11 @@ export class CreateMealCommandHandler implements ICommandHandler {
     const foods: Food[] = [];
 
     for (const food of command.foods) {
-      const foundFood = await this.findFood(new Id(food));
+      const foundFood = new Food(
+        new Id(food.id),
+        new Id(food.foodId),
+        new Quantity(new Amount(food.amount), new Unit(new StringVo(food.unit)))
+      );
 
       foods.push(foundFood);
     }
@@ -55,17 +58,5 @@ export class CreateMealCommandHandler implements ICommandHandler {
     if (typeof result !== 'undefined') {
       throw new MealAlreadyExistsError();
     }
-  }
-
-  private async findFood(id: Id): Promise<Food> {
-    const filter = FoodFilter.create().withId(id);
-
-    const result = await this.foodRepository.findOne(filter);
-
-    if (typeof result == 'undefined') {
-      throw new RecordNotFoundError();
-    }
-
-    return result;
   }
 }

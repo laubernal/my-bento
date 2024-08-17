@@ -1,4 +1,5 @@
 import { ICommand } from '@nestjs/cqrs';
+import { MealFoodType } from 'Menu/Shared/Domain/types';
 
 export class CreateMealCommand implements ICommand {
   public static fromJson(body: any, traceId: string): CreateMealCommand {
@@ -9,7 +10,7 @@ export class CreateMealCommand implements ICommand {
     private _id: string,
     private _name: string,
     private _type: string,
-    private _foods: string[],
+    private _foods: MealFoodType[],
     private _traceId: string
   ) {}
 
@@ -25,7 +26,7 @@ export class CreateMealCommand implements ICommand {
     return this._type;
   }
 
-  public get foods(): string[] {
+  public get foods(): MealFoodType[] {
     return this._foods;
   }
 
