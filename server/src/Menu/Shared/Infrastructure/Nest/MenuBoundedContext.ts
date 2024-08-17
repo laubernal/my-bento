@@ -15,6 +15,10 @@ import { GetFoodsController } from 'Menu/Food/Infrastructure/Controllers/GetFood
 import { CreateFoodController } from 'Menu/Food/Infrastructure/Controllers/CreateFood/CreateFoodController';
 import { MyBentoLogger } from 'Shared/Infrastructure/Logger/MyBentoLogger';
 import { IFOOD_REPOSITORY, MY_BENTO_LOGGER } from 'Shared/Domain/InterfacesConstants';
+import { CreateMealCommandHandler } from 'Menu/Meal/Application/CreateMeal/CreateMealCommandHandler';
+import { GetMealsQueryHandler } from 'Menu/Meal/Application/GetMeals/GetMealsQueryHandler';
+import { UpdateMealCommandHandler } from 'Menu/Meal/Application/UpdateMeal/UpdateMealCommandHandler';
+import { DeleteMealCommandHandler } from 'Menu/Meal/Application/DeleteMeal/DeleteMealCommandHandler';
 
 const Repositories = [
   {
@@ -24,6 +28,7 @@ const Repositories = [
 ];
 
 const Controllers = [
+  // FOOD
   CreateFoodController,
   GetFoodController,
   UpdateFoodController,
@@ -32,11 +37,18 @@ const Controllers = [
 ];
 
 const Handlers = [
+  // FOOD
   CreateFoodCommandHandler,
   GetFoodsQueryHandler,
   GetFoodQueryHandler,
   UpdateFoodCommandHandler,
   DeleteFoodCommandHandler,
+  // MEAL
+  CreateMealCommandHandler,
+  GetMealsQueryHandler,
+  GetMealsQueryHandler,
+  UpdateMealCommandHandler,
+  DeleteMealCommandHandler,
 ];
 
 const Mappers = [FoodMapper];
