@@ -5,10 +5,6 @@ import { Name } from 'Shared/Domain/Vo/Name.vo';
 import { FoodFilter } from '../../Domain/Filter/FoodFilter';
 import { Id } from 'Shared/Domain/Vo/Id.vo';
 import { Category } from 'Shared/Domain/Vo/Category.vo';
-import { Amount } from 'Shared/Domain/Vo/Amount.vo';
-import { Unit } from 'Shared/Domain/Vo/Unit.vo';
-import { Quantity } from 'Shared/Domain/Vo/Quantity.vo';
-import { StringVo } from 'Shared/Domain/Vo/String.vo';
 import { Food } from '../../Domain/Entity/Food';
 import { UpdateFoodCommand } from './UpdateFoodCommand';
 import { RecordNotFoundError } from 'Shared/Domain/Error/RecordNotFoundError';
@@ -27,13 +23,9 @@ export class UpdateFoodCommandHandler implements ICommandHandler<UpdateFoodComma
     const id = new Id(command.id);
     const category = new Category(command.category);
 
-    const amount = new Amount(command.amount);
-    const unit = new Unit(new StringVo(command.unit));
-    const quantity = new Quantity(amount, unit);
-
     const oldFood = await this.findFood(id, command.traceId);
 
-    const food = new Food(id, name, category, quantity, oldFood.createdAt(), new Date());
+    const food = new Food(id, name, category, oldFood.createdAt(), new Date());
 
     await this.repository.update(food);
   }

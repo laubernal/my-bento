@@ -7,10 +7,6 @@ import { FoodFilter } from '../../Domain/Filter/FoodFilter';
 import { FoodAlreadyExistsError } from '../../Domain/Error/FoodAlreadyExists';
 import { Id } from 'Shared/Domain/Vo/Id.vo';
 import { Category } from 'Shared/Domain/Vo/Category.vo';
-import { Amount } from 'Shared/Domain/Vo/Amount.vo';
-import { Unit } from 'Shared/Domain/Vo/Unit.vo';
-import { Quantity } from 'Shared/Domain/Vo/Quantity.vo';
-import { StringVo } from 'Shared/Domain/Vo/String.vo';
 import { Food } from '../../Domain/Entity/Food';
 import { IMyBentoLogger } from 'Shared/Domain/Interfaces/IMyBentoLogger';
 import { IFOOD_REPOSITORY, MY_BENTO_LOGGER } from 'Shared/Domain/InterfacesConstants';
@@ -27,13 +23,12 @@ export class CreateFoodCommandHandler implements ICommandHandler<CreateFoodComma
     const id = new Id(command.id);
     const category = new Category(command.category);
 
-    const amount = new Amount(command.amount);
-    const unit = new Unit(new StringVo(command.unit));
-    const quantity = new Quantity(amount, unit);
 
     await this.ensureFoodNotExists(name, command.traceId);
 
-    const food = new Food(id, name, category, quantity);
+    const food = new Food(id, name, category, 
+      // quantity
+    );
 
     await this.repository.save(food);
   }
