@@ -2,11 +2,7 @@ import { ICommandHandler } from '@nestjs/cqrs';
 import { CreateMealCommand } from './CreateMealCommand';
 import { Inject } from '@nestjs/common';
 import { IMealRepository } from 'Menu/Meal/Domain/Repository/IMealRepository';
-import {
-  IFOOD_REPOSITORY,
-  IMEAL_REPOSITORY,
-  MY_BENTO_LOGGER,
-} from 'Shared/Domain/InterfacesConstants';
+import { IMEAL_REPOSITORY, MY_BENTO_LOGGER } from 'Shared/Domain/InterfacesConstants';
 import { IMyBentoLogger } from 'Shared/Domain/Interfaces/IMyBentoLogger';
 import { MealFilter } from 'Menu/Meal/Domain/Filter/MealFilter';
 import { Name } from 'Shared/Domain/Vo/Name.vo';
@@ -19,6 +15,7 @@ import { Food } from 'Menu/Meal/Domain/Entity/Food';
 import { Quantity } from 'Shared/Domain/Vo/Quantity.vo';
 import { Unit } from 'Shared/Domain/Vo/Unit.vo';
 import { Amount } from 'Shared/Domain/Vo/Amount.vo';
+import { MealFoodType } from 'Menu/Shared/Domain/types';
 
 export class CreateMealCommandHandler implements ICommandHandler {
   constructor(
@@ -33,17 +30,13 @@ export class CreateMealCommandHandler implements ICommandHandler {
 
     await this.ensureMealNotExists(name);
 
-    const foods: Food[] = [];
-
-    for (const food of command.foods) {
-      const foundFood = new Food(
+    const foods: Food[] = command.foods.map((food: MealFoodType) => {
+      return new Food(
         new Id(food.id),
         new Id(food.foodId),
         new Quantity(new Amount(food.amount), new Unit(new StringVo(food.unit)))
       );
-
-      foods.push(foundFood);
-    }
+    });
 
     const meal = new Meal(id, name, type, foods);
 
