@@ -1,9 +1,11 @@
 import { ICommand } from '@nestjs/cqrs';
+import { UpdateMealApiRequest } from 'Menu/Meal/Infrastructure/Controllers/UpdateMeal/UpdateMealApiRequest';
+import { UpdateMealParams } from 'Menu/Meal/Infrastructure/Controllers/UpdateMeal/UpdateMealParams';
 import { MealFoodType } from 'Menu/Shared/Domain/types';
 
 export class UpdateMealCommand implements ICommand {
-  public static fromJson(body: any, traceId: string): UpdateMealCommand {
-    return new UpdateMealCommand(body.id, body.name, body.type, body.foods, traceId);
+  public static fromJson(params: UpdateMealParams, body: UpdateMealApiRequest, traceId: string): UpdateMealCommand {
+    return new UpdateMealCommand(params.id, body.name, body.type, body.foods, traceId);
   }
 
   constructor(

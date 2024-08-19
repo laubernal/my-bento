@@ -23,6 +23,7 @@ import { CreateMealController } from 'Menu/Meal/Infrastructure/Controllers/Creat
 import { GetMealController } from 'Menu/Meal/Infrastructure/Controllers/GetMeal/GetMealController';
 import { GetMealsController } from 'Menu/Meal/Infrastructure/Controllers/GetMeals/GetMealsController';
 import { DeleteMealController } from 'Menu/Meal/Infrastructure/Controllers/DeleteMeal/DeleteMealController';
+import { UpdateMealController } from 'Menu/Meal/Infrastructure/Controllers/UpdateMeal/UpdateMealController';
 
 const Repositories = [
   {
@@ -42,7 +43,8 @@ const Controllers = [
   CreateMealController,
   GetMealController,
   GetMealsController,
-  DeleteMealController
+  DeleteMealController,
+  UpdateMealController,
 ];
 
 const Handlers = [
