@@ -14,7 +14,11 @@ import { SharedModule } from 'Shared/Infrastructure/Nest/SharedModule';
 import { GetFoodsController } from 'Menu/Food/Infrastructure/Controllers/GetFoods/GetFoodsController';
 import { CreateFoodController } from 'Menu/Food/Infrastructure/Controllers/CreateFood/CreateFoodController';
 import { MyBentoLogger } from 'Shared/Infrastructure/Logger/MyBentoLogger';
-import { IFOOD_REPOSITORY, MY_BENTO_LOGGER } from 'Shared/Domain/InterfacesConstants';
+import {
+  IFOOD_REPOSITORY,
+  IMEAL_REPOSITORY,
+  MY_BENTO_LOGGER,
+} from 'Shared/Domain/InterfacesConstants';
 import { CreateMealCommandHandler } from 'Menu/Meal/Application/CreateMeal/CreateMealCommandHandler';
 import { GetMealsQueryHandler } from 'Menu/Meal/Application/GetMeals/GetMealsQueryHandler';
 import { UpdateMealCommandHandler } from 'Menu/Meal/Application/UpdateMeal/UpdateMealCommandHandler';
@@ -24,11 +28,17 @@ import { GetMealController } from 'Menu/Meal/Infrastructure/Controllers/GetMeal/
 import { GetMealsController } from 'Menu/Meal/Infrastructure/Controllers/GetMeals/GetMealsController';
 import { DeleteMealController } from 'Menu/Meal/Infrastructure/Controllers/DeleteMeal/DeleteMealController';
 import { UpdateMealController } from 'Menu/Meal/Infrastructure/Controllers/UpdateMeal/UpdateMealController';
+import { MikroOrmMealRepository } from 'Menu/Meal/Infrastructure/Persistance/Persistance/MikroOrmMealRepository';
+import { MealMapper } from 'Menu/Meal/Infrastructure/Persistance/Mapper/MealMapper';
 
 const Repositories = [
   {
     provide: IFOOD_REPOSITORY,
     useClass: MikroOrmFoodRepository,
+  },
+  {
+    provide: IMEAL_REPOSITORY,
+    useClass: MikroOrmMealRepository,
   },
 ];
 
@@ -62,7 +72,7 @@ const Handlers = [
   DeleteMealCommandHandler,
 ];
 
-const Mappers = [FoodMapper];
+const Mappers = [FoodMapper, MealMapper];
 
 const Services = [
   {
