@@ -1,4 +1,4 @@
-import { ICommandHandler } from '@nestjs/cqrs';
+import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { CreateMealCommand } from './CreateMealCommand';
 import { Inject } from '@nestjs/common';
 import { IMealRepository } from 'Menu/Meal/Domain/Repository/IMealRepository';
@@ -17,6 +17,7 @@ import { Unit } from 'Shared/Domain/Vo/Unit.vo';
 import { Amount } from 'Shared/Domain/Vo/Amount.vo';
 import { MealFoodType } from 'Menu/Shared/Domain/types';
 
+@CommandHandler(CreateMealCommand)
 export class CreateMealCommandHandler implements ICommandHandler {
   constructor(
     @Inject(IMEAL_REPOSITORY) private readonly mealRepository: IMealRepository,

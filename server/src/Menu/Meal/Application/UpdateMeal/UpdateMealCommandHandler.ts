@@ -1,4 +1,4 @@
-import { ICommandHandler } from '@nestjs/cqrs';
+import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { UpdateMealCommand } from './UpdateMealCommand';
 import { Inject } from '@nestjs/common';
 import { IMEAL_REPOSITORY } from 'Shared/Domain/InterfacesConstants';
@@ -16,6 +16,7 @@ import { MealFilter } from 'Menu/Meal/Domain/Filter/MealFilter';
 import { RecordNotFoundError } from 'Shared/Domain/Error/RecordNotFoundError';
 import { MealFoodType } from 'Menu/Shared/Domain/types';
 
+@CommandHandler(UpdateMealCommand)
 export class UpdateMealCommandHandler implements ICommandHandler {
   constructor(@Inject(IMEAL_REPOSITORY) private readonly repository: IMealRepository) {}
 

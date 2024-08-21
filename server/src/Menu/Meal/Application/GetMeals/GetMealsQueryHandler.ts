@@ -1,5 +1,5 @@
 import { Inject } from '@nestjs/common';
-import { IQueryHandler } from '@nestjs/cqrs';
+import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Meal } from 'Menu/Meal/Domain/Entity/Meal';
 import { MealFilter } from 'Menu/Meal/Domain/Filter/MealFilter';
 import { IMealRepository } from 'Menu/Meal/Domain/Repository/IMealRepository';
@@ -8,6 +8,7 @@ import { IMEAL_REPOSITORY, MY_BENTO_LOGGER } from 'Shared/Domain/InterfacesConst
 import { GetMealsResponse } from './GetMealsResponse';
 import { GetMealsQuery } from './GetMealsQuery';
 
+@QueryHandler(GetMealsQuery)
 export class GetMealsQueryHandler implements IQueryHandler {
   constructor(
     @Inject(IMEAL_REPOSITORY) private readonly mealRepository: IMealRepository,

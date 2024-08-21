@@ -1,4 +1,4 @@
-import { ICommandHandler } from '@nestjs/cqrs';
+import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { DeleteMealCommand } from './DeleteMealCommand';
 import { Inject } from '@nestjs/common';
 import { IMEAL_REPOSITORY } from 'Shared/Domain/InterfacesConstants';
@@ -8,6 +8,7 @@ import { MealFilter } from 'Menu/Meal/Domain/Filter/MealFilter';
 import { RecordNotFoundError } from 'Shared/Domain/Error/RecordNotFoundError';
 import { Meal } from 'Menu/Meal/Domain/Entity/Meal';
 
+@CommandHandler(DeleteMealCommand)
 export class DeleteMealCommandHandler implements ICommandHandler {
   constructor(@Inject(IMEAL_REPOSITORY) private readonly repository: IMealRepository) {}
 
