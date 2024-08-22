@@ -17,7 +17,10 @@ export class MikroOrmMealRepository implements IMealRepository {
       const adapter = new MikroOrmMealFilterAdapter(filter);
       const adapterQuery = adapter.apply();
 
-      const result = await this.entityManager.findOne(MealEntity, adapterQuery);
+      const result = await this.entityManager.findOne(MealEntity, {
+        ...adapterQuery,
+        populate: ['mealFoods'],
+      });
 
       if (!result) {
         return undefined;
@@ -34,7 +37,10 @@ export class MikroOrmMealRepository implements IMealRepository {
       const adapter = new MikroOrmMealFilterAdapter(filter);
       const adapterQuery = adapter.apply();
 
-      const result = await this.entityManager.findAll(MealEntity, adapterQuery);
+      const result = await this.entityManager.findAll(MealEntity, {
+        ...adapterQuery,
+        populate: ['mealFoods'],
+      });
 
       return result.map((meal: MealEntity) => {
         return this.mapper.toDomain(meal);
@@ -48,10 +54,10 @@ export class MikroOrmMealRepository implements IMealRepository {
     try {
       const newEntity = this.mapper.toModel(entity);
 
-      for (const mealFood of newEntity.foods) {
-        const food = this.entityManager.create(MealFoodEntity, mealFood);
-
-        await this.entityManager.persistAndFlush(food);
+      for (const food of newEntity.foods) {
+        // TODO: Call mealFoodMapper toModel method
+        // const food = this.entityManager.create(MealFoodEntity, mealFood);
+        // await this.entityManager.persistAndFlush(food);
       }
 
       const meal = this.entityManager.create(MealEntity, newEntity);
@@ -71,8 +77,9 @@ export class MikroOrmMealRepository implements IMealRepository {
 
       const newMeal = this.mapper.toModel(entity);
 
-      for (const mealFood of newMeal.foods) {
-        await this.entityManager.nativeUpdate(MealFoodEntity, { id: mealFood.id }, mealFood);
+      for (const food of newMeal.foods) {
+        // TODO: Call mealFoodMapper toModel method
+        // await this.entityManager.nativeUpdate(MealFoodEntity, { id: mealFood.id }, mealFood);
       }
 
       this.entityManager.nativeUpdate(MealEntity, adapterQuery, newMeal);

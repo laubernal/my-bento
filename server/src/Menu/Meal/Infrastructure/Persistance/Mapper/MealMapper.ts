@@ -22,22 +22,22 @@ export class MealMapper implements IMapper<Meal, MealEntity> {
     model.type = entity.type().value;
 
     const foods = entity.foods().map((food: Food) => {
-      const model = new MealFoodEntity();
-      const foodModel = new FoodEntity();
+      // const model = new MealFoodEntity();
+      const model = new FoodEntity();
 
-      foodModel.id = food.foodId().value;
+      model.id = food.foodId().value;
 
-      model.id = food.id().value;
-      model.food = foodModel;
-      model.amount = food.quantity().amount().value;
-      model.unit = food.quantity().unit().value;
-      model.created_at = food.createdAt();
-      model.updated_at = food.updatedAt();
+      // model.id = food.id().value;
+      // model.food = foodModel;
+      // model.amount = food.quantity().amount().value;
+      // model.unit = food.quantity().unit().value;
+      // model.created_at = food.createdAt();
+      // model.updated_at = food.updatedAt();
 
       return model;
     });
 
-    model.foods = new Collection(MealEntity, foods);
+    // model.foods = new Collection(MealEntity, foods);
 
     model.created_at = entity.createdAt();
     model.updated_at = entity.updatedAt();
@@ -50,14 +50,22 @@ export class MealMapper implements IMapper<Meal, MealEntity> {
     const name = new Name(model.name);
     const type = new MealType(new StringVo(model.type));
 
-    const foods = model.foods.map((food: MealFoodEntity) => {
-      const id = new Id(food.id);
-      const foodId = new Id(food.food.id);
-      const quantity = new Quantity(new Amount(food.amount), new Unit(new StringVo(food.unit)));
+    // const foods = model.foods.map((food: FoodEntity) => {
+    //   const id = new Id(food.id);
+    //   const foodId = new Id(food.food.id);
+    //   const quantity = new Quantity(new Amount(food.amount), new Unit(new StringVo(food.unit)));
 
-      return new Food(id, foodId, quantity, food.created_at, food.updated_at);
-    });
+    //   return new Food(id, foodId, quantity, food.created_at, food.updated_at);
+    // });
 
-    return new Meal(id, name, type, foods, model.created_at, model.updated_at);
+    return new Meal(
+      id,
+      name,
+      type,
+      // foods,
+      [],
+      model.created_at,
+      model.updated_at
+    );
   }
 }

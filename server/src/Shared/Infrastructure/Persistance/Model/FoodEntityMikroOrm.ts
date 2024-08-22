@@ -1,5 +1,4 @@
-import { Collection, Entity, OneToMany, PrimaryKey, Property } from '@mikro-orm/core';
-import { MealFoodEntity } from './MealFoodEntityMikroOrm';
+import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
 
 @Entity({ tableName: 'foods' })
 export class FoodEntity {
@@ -11,9 +10,6 @@ export class FoodEntity {
 
   @Property()
   category!: string;
-
-  @OneToMany({ entity: () => MealFoodEntity, mappedBy: 'food' })
-  meal_foods: Collection<MealFoodEntity> = new Collection<MealFoodEntity>(this);
 
   @Property()
   created_at!: Date;

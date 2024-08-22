@@ -1,5 +1,6 @@
 import { Entity, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core';
 import { FoodEntity } from './FoodEntityMikroOrm';
+import { MealEntity } from './MealEntityMikroOrm';
 
 @Entity({ tableName: 'meal-foods' })
 export class MealFoodEntity {
@@ -8,6 +9,9 @@ export class MealFoodEntity {
 
   @ManyToOne({ entity: () => FoodEntity })
   food!: FoodEntity;
+
+  @ManyToOne({ entity: () => MealEntity })
+  meal!: MealEntity;
 
   @Property()
   amount!: number;
