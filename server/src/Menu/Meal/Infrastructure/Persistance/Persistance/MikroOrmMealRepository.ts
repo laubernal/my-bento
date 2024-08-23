@@ -7,10 +7,15 @@ import { Meal } from 'Menu/Meal/Domain/Entity/Meal';
 import { MikroOrmMealFilterAdapter } from '../File/MikroOrmMealFilterAdapter';
 import { MealEntity } from 'Shared/Infrastructure/Persistance/Model/MealEntityMikroOrm';
 import { MealFoodEntity } from 'Shared/Infrastructure/Persistance/Model/MealFoodEntityMikroOrm';
+import { MealFoodMapper } from '../Mapper/MealFoodMapper';
 
 @Injectable()
 export class MikroOrmMealRepository implements IMealRepository {
-  constructor(private readonly mapper: MealMapper, private readonly entityManager: EntityManager) {}
+  constructor(
+    private readonly mealMapper: MealMapper,
+    private readonly mealFoodMapper: MealFoodMapper,
+    private readonly entityManager: EntityManager
+  ) {}
 
   public async findOne(filter: MealFilter): Promise<Meal | undefined> {
     try {
@@ -19,14 +24,14 @@ export class MikroOrmMealRepository implements IMealRepository {
 
       const result = await this.entityManager.findOne(MealEntity, {
         ...adapterQuery,
-        populate: ['mealFoods'],
+        populate: ['foods'],
       });
 
       if (!result) {
         return undefined;
       }
 
-      return this.mapper.toDomain(result);
+      return this.mealMapper.toDomain(result);
     } catch (error: any) {
       throw new Error(`Meal Repository Error -- ${error}`);
     }
@@ -39,11 +44,11 @@ export class MikroOrmMealRepository implements IMealRepository {
 
       const result = await this.entityManager.findAll(MealEntity, {
         ...adapterQuery,
-        populate: ['mealFoods'],
+        populate: ['foods'],
       });
 
       return result.map((meal: MealEntity) => {
-        return this.mapper.toDomain(meal);
+        return this.mealMapper.toDomain(meal);
       });
     } catch (error: any) {
       throw new Error(`Meal Repository Error -- ${error}`);
@@ -52,12 +57,14 @@ export class MikroOrmMealRepository implements IMealRepository {
 
   public async save(entity: Meal): Promise<void> {
     try {
-      const newEntity = this.mapper.toModel(entity);
+      const newEntity = this.mealMapper.toModel(entity);
 
-      for (const food of newEntity.foods) {
-        // TODO: Call mealFoodMapper toModel method
-        // const food = this.entityManager.create(MealFoodEntity, mealFood);
-        // await this.entityManager.persistAndFlush(food);
+      for (const mealFood of entity.foods()) {
+        const entity = this.mealFoodMapper.toModel(mealFood);
+
+        const food = this.entityManager.create(MealFoodEntity, entity);
+
+        await this.entityManager.persistAndFlush(food);
       }
 
       const meal = this.entityManager.create(MealEntity, newEntity);
@@ -75,11 +82,15 @@ export class MikroOrmMealRepository implements IMealRepository {
       const adapter = new MikroOrmMealFilterAdapter(filter);
       const adapterQuery = adapter.apply();
 
-      const newMeal = this.mapper.toModel(entity);
+      const newMeal = this.mealMapper.toModel(entity);
 
-      for (const food of newMeal.foods) {
+      for (const mealFood of entity.foods()) {
         // TODO: Call mealFoodMapper toModel method
-        // await this.entityManager.nativeUpdate(MealFoodEntity, { id: mealFood.id }, mealFood);
+        const entity = this.mealFoodMapper.toModel(mealFood);
+
+        const food = this.entityManager.create(MealFoodEntity, entity);
+
+        await this.entityManager.nativeUpdate(MealFoodEntity, { id: food.id }, food);
       }
 
       this.entityManager.nativeUpdate(MealEntity, adapterQuery, newMeal);

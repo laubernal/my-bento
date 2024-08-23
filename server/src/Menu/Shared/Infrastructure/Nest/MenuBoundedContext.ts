@@ -30,6 +30,7 @@ import { DeleteMealController } from 'Menu/Meal/Infrastructure/Controllers/Delet
 import { UpdateMealController } from 'Menu/Meal/Infrastructure/Controllers/UpdateMeal/UpdateMealController';
 import { MikroOrmMealRepository } from 'Menu/Meal/Infrastructure/Persistance/Persistance/MikroOrmMealRepository';
 import { MealMapper } from 'Menu/Meal/Infrastructure/Persistance/Mapper/MealMapper';
+import { MealFoodMapper } from 'Menu/Meal/Infrastructure/Persistance/Mapper/MealFoodMapper';
 
 const Repositories = [
   {
@@ -72,7 +73,7 @@ const Handlers = [
   DeleteMealCommandHandler,
 ];
 
-const Mappers = [FoodMapper, MealMapper];
+const Mappers = [FoodMapper, MealMapper, MealFoodMapper];
 
 const Services = [
   {

@@ -2,7 +2,7 @@ import { Entity, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core';
 import { FoodEntity } from './FoodEntityMikroOrm';
 import { MealEntity } from './MealEntityMikroOrm';
 
-@Entity({ tableName: 'meal-foods' })
+@Entity({ tableName: 'meal_foods' })
 export class MealFoodEntity {
   @PrimaryKey({ type: 'uuid' })
   id!: string;
