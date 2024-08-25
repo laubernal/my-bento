@@ -35,6 +35,7 @@ import { MealFoodEntity } from './Model/MealFoodEntityMikroOrm';
             emit: 'ts',
             generator: TSMigrationGenerator,
           },
+          // debug: true,
         };
       },
     }),

@@ -1,4 +1,4 @@
-import { Collection, Entity, ManyToMany, PrimaryKey, Property } from '@mikro-orm/core';
+import { Collection, Entity, ManyToMany, OneToMany, PrimaryKey, Property } from '@mikro-orm/core';
 import { MealFoodEntity } from './MealFoodEntityMikroOrm';
 import { FoodEntity } from './FoodEntityMikroOrm';
 
@@ -13,8 +13,15 @@ export class MealEntity {
   @Property()
   type!: string;
 
-  @ManyToMany({ entity: () => FoodEntity, pivotEntity: () => MealFoodEntity })
+  @ManyToMany({
+    entity: () => FoodEntity,
+    pivotEntity: () => MealFoodEntity,
+    cascade: [],
+  })
   foods: Collection<FoodEntity> = new Collection<FoodEntity>(this);
+
+  @OneToMany(() => MealFoodEntity, mealFood => mealFood.meal)
+  mealFoods = new Collection<MealFoodEntity>(this);
 
   @Property()
   created_at!: Date;

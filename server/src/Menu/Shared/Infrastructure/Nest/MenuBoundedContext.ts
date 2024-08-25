@@ -31,6 +31,7 @@ import { UpdateMealController } from 'Menu/Meal/Infrastructure/Controllers/Updat
 import { MikroOrmMealRepository } from 'Menu/Meal/Infrastructure/Persistance/Persistance/MikroOrmMealRepository';
 import { MealMapper } from 'Menu/Meal/Infrastructure/Persistance/Mapper/MealMapper';
 import { MealFoodMapper } from 'Menu/Meal/Infrastructure/Persistance/Mapper/MealFoodMapper';
+import { GetMealQueryHandler } from 'Menu/Meal/Application/GetMeal/GetMealQueryHandler';
 
 const Repositories = [
   {
@@ -68,7 +69,7 @@ const Handlers = [
   // MEAL
   CreateMealCommandHandler,
   GetMealsQueryHandler,
-  GetMealsQueryHandler,
+  GetMealQueryHandler,
   UpdateMealCommandHandler,
   DeleteMealCommandHandler,
 ];

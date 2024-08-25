@@ -6,12 +6,12 @@ import { MealEntity } from './MealEntityMikroOrm';
 export class MealFoodEntity {
   @PrimaryKey({ type: 'uuid' })
   id!: string;
-
-  @ManyToOne({ entity: () => FoodEntity })
-  food!: FoodEntity;
-
-  @ManyToOne({ entity: () => MealEntity })
+  
+  @ManyToOne({ entity: () => MealEntity, cascade: [] })
   meal!: MealEntity;
+
+  @ManyToOne({ entity: () => FoodEntity, cascade: [] })
+  food!: FoodEntity;
 
   @Property()
   amount!: number;

@@ -1,3 +1,5 @@
+import { EntityManager } from '@mikro-orm/postgresql';
+import { Injectable } from '@nestjs/common';
 import { Food } from 'Menu/Meal/Domain/Entity/Food';
 import { IMapper } from 'Shared/Domain/Interfaces/IMapper';
 import { Amount } from 'Shared/Domain/Vo/Amount.vo';
@@ -8,15 +10,17 @@ import { Unit } from 'Shared/Domain/Vo/Unit.vo';
 import { FoodEntity } from 'Shared/Infrastructure/Persistance/Model/FoodEntityMikroOrm';
 import { MealFoodEntity } from 'Shared/Infrastructure/Persistance/Model/MealFoodEntityMikroOrm';
 
+@Injectable()
 export class MealFoodMapper implements IMapper<Food, MealFoodEntity> {
+  constructor(private readonly entityManager: EntityManager) {}
+
   public toModel(entity: Food): MealFoodEntity {
     const model = new MealFoodEntity();
-    const foodModel = new FoodEntity();
 
-    foodModel.id = entity.foodId().value;
+    const foodRef = this.entityManager.getReference(FoodEntity, entity.foodId().value);
 
     model.id = entity.id().value;
-    model.food = foodModel;
+    model.food = foodRef;
     model.amount = entity.quantity().amount().value;
     model.unit = entity.quantity().unit().value;
     model.created_at = entity.createdAt();

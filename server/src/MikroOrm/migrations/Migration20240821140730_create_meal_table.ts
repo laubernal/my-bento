@@ -12,8 +12,8 @@ export class Migration20240821140730_create_meal_table extends Migration {
 
     this.addSql(`create table "meal_foods" (
       "id" uuid primary key,
-      "food_id" uuid not null,
       "meal_id" uuid not null,
+      "food_id" uuid not null,
       "amount" integer not null,
       "unit" varchar(255) not null,
       "created_at" timestamptz not null, 

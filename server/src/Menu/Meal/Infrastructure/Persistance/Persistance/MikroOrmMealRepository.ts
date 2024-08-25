@@ -22,9 +22,8 @@ export class MikroOrmMealRepository implements IMealRepository {
       const adapter = new MikroOrmMealFilterAdapter(filter);
       const adapterQuery = adapter.apply();
 
-      const result = await this.entityManager.findOne(MealEntity, {
-        ...adapterQuery,
-        populate: ['foods'],
+      const result = await this.entityManager.findOne(MealEntity, adapterQuery, {
+        populate: ['foods', 'mealFoods'],
       });
 
       if (!result) {
@@ -44,7 +43,7 @@ export class MikroOrmMealRepository implements IMealRepository {
 
       const result = await this.entityManager.findAll(MealEntity, {
         ...adapterQuery,
-        populate: ['foods'],
+        populate: ['foods', 'mealFoods'],
       });
 
       return result.map((meal: MealEntity) => {
@@ -59,17 +58,19 @@ export class MikroOrmMealRepository implements IMealRepository {
     try {
       const newEntity = this.mealMapper.toModel(entity);
 
-      for (const mealFood of entity.foods()) {
-        const entity = this.mealFoodMapper.toModel(mealFood);
-
-        const food = this.entityManager.create(MealFoodEntity, entity);
-
-        await this.entityManager.persistAndFlush(food);
-      }
-
       const meal = this.entityManager.create(MealEntity, newEntity);
 
       await this.entityManager.persistAndFlush(meal);
+
+      for (const mealFood of entity.foods()) {
+        const mealFoodEntity = this.mealFoodMapper.toModel(mealFood);
+
+        mealFoodEntity.meal = newEntity;
+
+        const food = this.entityManager.create(MealFoodEntity, mealFoodEntity);
+
+        await this.entityManager.persistAndFlush(food);
+      }
     } catch (error: any) {
       throw new Error(`Meal Repository Error -- ${error}`);
     }
