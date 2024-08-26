@@ -14,10 +14,14 @@ import { Unit } from 'Shared/Domain/Vo/Unit.vo';
 import { FoodEntity } from 'Shared/Infrastructure/Persistance/Model/FoodEntityMikroOrm';
 import { MealEntity } from 'Shared/Infrastructure/Persistance/Model/MealEntityMikroOrm';
 import { MealFoodEntity } from 'Shared/Infrastructure/Persistance/Model/MealFoodEntityMikroOrm';
+import { MealFoodMapper } from './MealFoodMapper';
 
 @Injectable()
 export class MealMapper implements IMapper<Meal, MealEntity> {
-  constructor(private readonly entityManager: EntityManager) {}
+  constructor(
+    private readonly entityManager: EntityManager,
+    private readonly mealFoodMapper: MealFoodMapper
+  ) {}
 
   public toModel(entity: Meal): MealEntity {
     const model = new MealEntity();
@@ -46,11 +50,7 @@ export class MealMapper implements IMapper<Meal, MealEntity> {
     const type = new MealType(new StringVo(model.type));
 
     const foods = model.mealFoods.map((food: MealFoodEntity) => {
-      const id = new Id(food.id);
-      const foodId = new Id(food.food.id);
-      const quantity = new Quantity(new Amount(food.amount), new Unit(new StringVo(food.unit)));
-
-      return new Food(id, foodId, quantity, food.created_at, food.updated_at);
+      return this.mealFoodMapper.toDomain(food);
     });
 
     return new Meal(id, name, type, foods, model.created_at, model.updated_at);
