@@ -36,7 +36,16 @@ export class MealMapper implements IMapper<Meal, MealEntity> {
       return foodRef;
     });
 
-    model.foods = new Collection(FoodEntity, foods);
+    model.foods = foods;
+
+    // const mealFoods = entity.foods().map((food: Food) => {
+    //   const foodRef = this.entityManager.getReference(MealFoodEntity, food.id().value);
+
+    //   return foodRef;
+    // });
+
+    // model.mealFoods = new Collection(MealFoodEntity, mealFoods);
+    // model.mealFoods = [];
 
     model.created_at = entity.createdAt();
     model.updated_at = entity.updatedAt();
@@ -49,10 +58,18 @@ export class MealMapper implements IMapper<Meal, MealEntity> {
     const name = new Name(model.name);
     const type = new MealType(new StringVo(model.type));
 
-    const foods = model.mealFoods.map((food: MealFoodEntity) => {
-      return this.mealFoodMapper.toDomain(food);
-    });
+    // const foods = model.mealFoods!.map((food: MealFoodEntity) => {
+    //   return this.mealFoodMapper.toDomain(food);
+    // });
 
-    return new Meal(id, name, type, foods, model.created_at, model.updated_at);
+    return new Meal(
+      id,
+      name,
+      type,
+      // foods,
+      [],
+      model.created_at,
+      model.updated_at
+    );
   }
 }

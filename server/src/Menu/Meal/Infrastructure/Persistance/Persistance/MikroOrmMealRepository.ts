@@ -23,7 +23,10 @@ export class MikroOrmMealRepository implements IMealRepository {
       const adapterQuery = adapter.apply();
 
       const result = await this.entityManager.findOne(MealEntity, adapterQuery, {
-        populate: ['foods', 'mealFoods'],
+        populate: [
+          'foods',
+          // 'mealFoods'
+        ],
       });
 
       if (!result) {
@@ -68,7 +71,6 @@ export class MikroOrmMealRepository implements IMealRepository {
         mealFoodEntity.meal = newEntity;
 
         const food = this.entityManager.create(MealFoodEntity, mealFoodEntity);
-
         await this.entityManager.persistAndFlush(food);
       }
     } catch (error: any) {
@@ -85,16 +87,32 @@ export class MikroOrmMealRepository implements IMealRepository {
 
       const newMeal = this.mealMapper.toModel(entity);
 
-      for (const mealFood of entity.foods()) {
-        // TODO: Call mealFoodMapper toModel method
-        const entity = this.mealFoodMapper.toModel(mealFood);
+      const newMealEntity = this.entityManager.create(MealEntity, newMeal);
 
-        const food = this.entityManager.create(MealFoodEntity, entity);
+      await this.entityManager.nativeUpdate(MealEntity, adapterQuery, newMealEntity);
+
+      const currentMealFoods = await this.entityManager.findAll(MealFoodEntity, {
+        where: { meal: newMeal.id },
+      });
+
+      const newMealFoodIds = entity.foods().map(mealFood => mealFood.id().value);
+
+      const missingMealFoods = currentMealFoods.filter(
+        mealFood => !newMealFoodIds.includes(mealFood.id)
+      );
+
+      for (const mealFood of missingMealFoods) {
+        await this.entityManager.nativeDelete(MealFoodEntity, { id: mealFood.id });
+      }
+
+      for (const mealFood of entity.foods()) {
+        const mealFoodEntity = this.mealFoodMapper.toModel(mealFood);
+        mealFoodEntity.meal = newMealEntity;
+
+        const food = this.entityManager.create(MealFoodEntity, mealFoodEntity);
 
         await this.entityManager.nativeUpdate(MealFoodEntity, { id: food.id }, food);
       }
-
-      this.entityManager.nativeUpdate(MealEntity, adapterQuery, newMeal);
     } catch (error: any) {
       throw new Error(`Meal Repository Error -- ${error}`);
     }

@@ -25,7 +25,7 @@ export class MealFoodMapper implements IMapper<Food, MealFoodEntity> {
     model.unit = entity.quantity().unit().value;
     model.created_at = entity.createdAt();
     model.updated_at = entity.updatedAt();
-
+    console.log('FOOD', model);
     return model;
   }
 
