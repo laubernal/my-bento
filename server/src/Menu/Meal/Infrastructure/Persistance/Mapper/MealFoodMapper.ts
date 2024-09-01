@@ -12,15 +12,15 @@ import { MealFoodEntity } from 'Shared/Infrastructure/Persistance/Model/MealFood
 
 @Injectable()
 export class MealFoodMapper implements IMapper<Food, MealFoodEntity> {
-  constructor(private readonly entityManager: EntityManager) {}
+  // constructor(private readonly entityManager: EntityManager) {}
 
   public toModel(entity: Food): MealFoodEntity {
     const model = new MealFoodEntity();
 
-    const foodRef = this.entityManager.getReference(FoodEntity, entity.foodId().value);
+    // const foodRef = this.entityManager.getReference(FoodEntity, entity.foodId().value);
 
     model.id = entity.id().value;
-    model.food = foodRef;
+    // model.food = foodRef;
     model.amount = entity.quantity().amount().value;
     model.unit = entity.quantity().unit().value;
     model.created_at = entity.createdAt();

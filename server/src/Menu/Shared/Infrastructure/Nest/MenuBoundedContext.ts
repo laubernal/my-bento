@@ -32,15 +32,18 @@ import { MikroOrmMealRepository } from 'Menu/Meal/Infrastructure/Persistance/Per
 import { MealMapper } from 'Menu/Meal/Infrastructure/Persistance/Mapper/MealMapper';
 import { MealFoodMapper } from 'Menu/Meal/Infrastructure/Persistance/Mapper/MealFoodMapper';
 import { GetMealQueryHandler } from 'Menu/Meal/Application/GetMeal/GetMealQueryHandler';
+import { PostgreSqlFoodRepository } from 'Menu/Food/Infrastructure/Persistance/Repository/PostgreSqlFoodRepository';
 
 const Repositories = [
   {
     provide: IFOOD_REPOSITORY,
-    useClass: MikroOrmFoodRepository,
+    // useClass: MikroOrmFoodRepository,
+    useClass: PostgreSqlFoodRepository,
   },
   {
     provide: IMEAL_REPOSITORY,
-    useClass: MikroOrmMealRepository,
+    // useClass: MikroOrmMealRepository,
+    useClass: PostgreSqlFoodRepository,
   },
 ];
 

@@ -19,7 +19,7 @@ import { MealFoodMapper } from './MealFoodMapper';
 @Injectable()
 export class MealMapper implements IMapper<Meal, MealEntity> {
   constructor(
-    private readonly entityManager: EntityManager,
+    // private readonly entityManager: EntityManager,
     private readonly mealFoodMapper: MealFoodMapper
   ) {}
 
@@ -30,13 +30,13 @@ export class MealMapper implements IMapper<Meal, MealEntity> {
     model.name = entity.name().value;
     model.type = entity.type().value;
 
-    const foods = entity.foods().map((food: Food) => {
-      const foodRef = this.entityManager.getReference(FoodEntity, food.foodId().value);
+    // const foods = entity.foods().map((food: Food) => {
+    //   const foodRef = this.entityManager.getReference(FoodEntity, food.foodId().value);
 
-      return foodRef;
-    });
+    //   return foodRef;
+    // });
 
-    model.foods = foods;
+    // model.foods = foods;
 
     // const mealFoods = entity.foods().map((food: Food) => {
     //   const foodRef = this.entityManager.getReference(MealFoodEntity, food.id().value);
