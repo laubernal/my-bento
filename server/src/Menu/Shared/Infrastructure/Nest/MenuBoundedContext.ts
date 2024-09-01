@@ -33,6 +33,7 @@ import { MealMapper } from 'Menu/Meal/Infrastructure/Persistance/Mapper/MealMapp
 import { MealFoodMapper } from 'Menu/Meal/Infrastructure/Persistance/Mapper/MealFoodMapper';
 import { GetMealQueryHandler } from 'Menu/Meal/Application/GetMeal/GetMealQueryHandler';
 import { PostgreSqlFoodRepository } from 'Menu/Food/Infrastructure/Persistance/Repository/PostgreSqlFoodRepository';
+import { PostgreSqlFoodMapper } from 'Menu/Food/Infrastructure/Persistance/Mapper/PostgreSqlFoodMapper';
 
 const Repositories = [
   {
@@ -77,7 +78,7 @@ const Handlers = [
   DeleteMealCommandHandler,
 ];
 
-const Mappers = [FoodMapper, MealMapper, MealFoodMapper];
+const Mappers = [FoodMapper, MealMapper, MealFoodMapper, PostgreSqlFoodMapper];
 
 const Services = [
   {
