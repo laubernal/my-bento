@@ -8,24 +8,6 @@ export class PostgreSqlFoodFilterAdapter extends PostgreSqlAdapter {
     super();
   }
 
-  //   public apply(): any {
-  //     const filters = this.filter.apply();
-
-  //     if (filters.has(FoodFilter.FOOD_NAME_FILTER)) {
-  //       const name = filters.get(FoodFilter.FOOD_NAME_FILTER) as Name;
-
-  //       this.assign({ name: name.value });
-  //     }
-
-  //     if (filters.has(FoodFilter.FOOD_ID_FILTER)) {
-  //       const id = filters.get(FoodFilter.FOOD_ID_FILTER) as Id;
-
-  //       this.assign({ id: id.value });
-  //     }
-
-  //     return this.applyOrderBy(filters);
-  //   }
-
   public apply(): string {
     const filters = this.filter.apply();
     let conditions = [];
@@ -38,7 +20,7 @@ export class PostgreSqlFoodFilterAdapter extends PostgreSqlAdapter {
 
     if (filters.has(FoodFilter.FOOD_ID_FILTER)) {
       const id = filters.get(FoodFilter.FOOD_ID_FILTER) as Id;
-      
+
       conditions.push(`id = '${id.value}'`);
     }
 
