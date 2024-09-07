@@ -8,12 +8,6 @@ export class PostgreSqlDatabaseService implements OnModuleInit, OnModuleDestroy 
 
   constructor(private readonly configService: ConfigService) {
     this.pool = new Pool({
-      // host: 'postgres_db',
-      // port: 5432,
-      // user: 'mybento',
-      // password: 'password',
-      // database: 'my-bento-db',
-      // connectionString: 'postgresql://mybento:password@postgres_db:5432/my-bento-db',
       host: this.configService.get<string>('DB_HOST'),
       port: this.configService.get<number>('DB_PORT'),
       user: this.configService.get<string>('DB_USER'),
@@ -39,17 +33,40 @@ export class PostgreSqlDatabaseService implements OnModuleInit, OnModuleDestroy 
     console.log('Disconnected successfully from database');
   }
 
-  public async query(query: string, params?: any[]): Promise<any[]> {
+  public async query(
+    query: string,
+    params?: any[]
+  ): Promise<{ rows: any[]; rowCount: number | null }> {
     const client: PoolClient = await this.pool.connect();
     try {
       const result = await client.query(query, params);
 
-      return result.rows;
+      return { rows: result.rows, rowCount: result.rowCount };
     } catch (error: any) {
       console.log('ERROR', error);
       throw new Error(`Error executing query: ${error}`);
     } finally {
       client.release();
     }
+  }
+
+  public getColumnsAndValuesFromModel(model: Record<string, any>): {
+    columns: string;
+    values: string;
+  } {
+    const columns = Object.keys(model).join(', ');
+    const values = Object.values(model)
+      .map(value => {
+        if (value instanceof Date) {
+          return `'${value.toISOString()}'`;
+        }
+        if (typeof value === 'string') {
+          return `'${value}'`;
+        }
+        return value;
+      })
+      .join(', ');
+
+    return { columns, values };
   }
 }
