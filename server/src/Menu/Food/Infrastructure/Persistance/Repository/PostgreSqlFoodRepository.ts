@@ -7,6 +7,7 @@ import { FoodFilter } from 'Menu/Food/Domain/Filter/FoodFilter';
 import { PostgreSqlDatabaseService } from 'Shared/Infrastructure/Persistance/PostgreSql/PostgreSqlDatabase';
 import { PostgreSqlFoodMapper } from '../Mapper/PostgreSqlFoodMapper';
 import { FoodModel } from 'Shared/Infrastructure/Persistance/PostgreSql/Model/FoodModel';
+import { PostgreSqlFoodFilterAdapter } from '../Filter/PostgreSqlFoodFilterAdapter';
 
 @Injectable()
 export class PostgreSqlFoodRepository implements IFoodRepository {
@@ -17,20 +18,18 @@ export class PostgreSqlFoodRepository implements IFoodRepository {
 
   public async findOne(filter: FoodFilter): Promise<Food | undefined> {
     try {
-      
-      const adapter = new MikroOrmFoodFilterAdapter(filter);
+      const adapter = new PostgreSqlFoodFilterAdapter(filter);
       const adapterQuery = adapter.apply();
 
-      const query = `SELECT * FROM foods`;
-      console.log('QUERY', query);
+      const query = `SELECT * FROM foods ${adapterQuery};`;
 
       const result = await this.databaseService.query(query);
 
-      console.log('RESULT', result);
+      if (result.rowCount === 0) {
+        return undefined;
+      }
 
-      //   return this.mapper.toDomain(result);
-
-      throw new Error('Method not implemented');
+      return this.mapper.toDomain(result.rows[0]);
     } catch (error: any) {
       throw new Error(`Food Repository Error -- ${error}`);
     }
@@ -38,18 +37,14 @@ export class PostgreSqlFoodRepository implements IFoodRepository {
 
   public async find(filter: FoodFilter): Promise<Food[]> {
     try {
-      const adapter = new MikroOrmFoodFilterAdapter(filter);
+      const adapter = new PostgreSqlFoodFilterAdapter(filter);
       const adapterQuery = adapter.apply();
 
-      console.log('QUERY', adapterQuery);
-      const query = `SELECT * FROM foods`;
-      console.log('QUERY', query);
+      const query = `SELECT * FROM foods ${adapterQuery}`;
 
       const result = await this.databaseService.query(query);
 
-      console.log('RESULT', result);
-
-      return result.map((food: FoodModel) => {
+      return result.rows.map((food: FoodModel) => {
         return this.mapper.toDomain(food);
       });
     } catch (error: any) {
@@ -59,7 +54,14 @@ export class PostgreSqlFoodRepository implements IFoodRepository {
 
   public async save(entity: Food): Promise<void> {
     try {
-      throw new Error('Method not implemented');
+      const model = this.mapper.toModel(entity);
+
+      const { columns, values } = this.databaseService.getColumnsAndValuesFromModel(model);
+
+      const query = `INSERT INTO foods(${columns}) VALUES(${values});`;
+      console.log('QUERY', query);
+
+      await this.databaseService.query(query);
     } catch (error: any) {
       throw new Error(`Food Repository Error -- ${error}`);
     }

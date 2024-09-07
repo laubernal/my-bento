@@ -23,10 +23,12 @@ export class CreateFoodCommandHandler implements ICommandHandler<CreateFoodComma
     const id = new Id(command.id);
     const category = new Category(command.category);
 
-
     await this.ensureFoodNotExists(name, command.traceId);
 
-    const food = new Food(id, name, category, 
+    const food = new Food(
+      id,
+      name,
+      category
       // quantity
     );
 
