@@ -60,13 +60,34 @@ export class PostgreSqlDatabaseService implements OnModuleInit, OnModuleDestroy 
         if (value instanceof Date) {
           return `'${value.toISOString()}'`;
         }
+
         if (typeof value === 'string') {
           return `'${value}'`;
         }
+
         return value;
       })
       .join(', ');
 
     return { columns, values };
+  }
+
+  public getColumnEqualValueFromModel(model: Record<string, any>): string {
+    return Object.keys(model)
+      .filter(key => key !== 'id')
+      .map(key => {
+        const value = model[key];
+        
+        if (value instanceof Date) {
+          return `${key} = '${value.toISOString()}'`;
+        }
+
+        if (typeof value === 'string') {
+          return `${key} = '${value}'`;
+        }
+
+        return `${key} = ${value}`;
+      })
+      .join(', ');
   }
 }

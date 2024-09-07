@@ -4,4 +4,5 @@ export interface FoodModel {
   category: string;
   created_at: Date;
   updated_at: Date;
+  [key: string]: string | Date;
 }

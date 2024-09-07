@@ -66,7 +66,13 @@ export class PostgreSqlFoodRepository implements IFoodRepository {
 
   public async update(entity: Food): Promise<void> {
     try {
-      throw new Error('Method not implemented');
+      const model = this.mapper.toModel(entity);
+
+      const setClause = this.databaseService.getColumnEqualValueFromModel(model);
+
+      const query = `UPDATE foods SET ${setClause} WHERE id = '${model.id}';`;
+
+      await this.databaseService.query(query);
     } catch (error: any) {
       throw new Error(`Food Repository Error -- ${error}`);
     }
