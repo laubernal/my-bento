@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Food } from 'src/Menu/Food/Domain/Entity/Food';
 import { IFoodRepository } from 'src/Menu/Food/Domain/Repository/IFoodRepository';
-import { FoodMapper } from '../Mapper/FoodMapper';
-import { MikroOrmFoodFilterAdapter } from '../Filter/MikroOrmFoodFilterAdapter';
 import { FoodFilter } from 'Menu/Food/Domain/Filter/FoodFilter';
 import { PostgreSqlDatabaseService } from 'Shared/Infrastructure/Persistance/PostgreSql/PostgreSqlDatabase';
 import { PostgreSqlFoodMapper } from '../Mapper/PostgreSqlFoodMapper';
@@ -59,7 +57,6 @@ export class PostgreSqlFoodRepository implements IFoodRepository {
       const { columns, values } = this.databaseService.getColumnsAndValuesFromModel(model);
 
       const query = `INSERT INTO foods(${columns}) VALUES(${values});`;
-      console.log('QUERY', query);
 
       await this.databaseService.query(query);
     } catch (error: any) {
