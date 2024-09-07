@@ -5,7 +5,6 @@ import { GetFoodsQueryHandler } from 'src/Menu/Food/Application/GetFoods/GetFood
 import { MikroOrmFoodRepository } from 'Menu/Food/Infrastructure/Persistance/Repository/MikroOrmFoodRepository';
 import { GetFoodQueryHandler } from 'src/Menu/Food/Application/GetFood/GetFoodQueryHandler';
 import { UpdateFoodCommandHandler } from 'src/Menu/Food/Application/UpdateFood/UpdateFoodCommandHandler';
-import { UpdateFoodController } from 'src/Menu/Food/Infrastructure/Controllers/UpdateFood/UpdateFoodController';
 import { DeleteFoodCommandHandler } from 'src/Menu/Food/Application/DeleteFood/DeleteFoodCommandHandler';
 import { DeleteFoodController } from 'src/Menu/Food/Infrastructure/Controllers/DeleteFood/DeleteFoodController';
 import { FoodMapper } from 'Menu/Food/Infrastructure/Persistance/Mapper/FoodMapper';
@@ -34,6 +33,7 @@ import { GetMealQueryHandler } from 'Menu/Meal/Application/GetMeal/GetMealQueryH
 import { PostgreSqlFoodRepository } from 'Menu/Food/Infrastructure/Persistance/Repository/PostgreSqlFoodRepository';
 import { PostgreSqlFoodMapper } from 'Menu/Food/Infrastructure/Persistance/Mapper/PostgreSqlFoodMapper';
 import { GetFoodController } from 'Menu/Food/Infrastructure/Controllers/GetFood/GetFoodController';
+import { UpdateFoodController } from 'Menu/Food/Infrastructure/Controllers/UpdateFood/UpdateFoodController';
 
 const Repositories = [
   {
