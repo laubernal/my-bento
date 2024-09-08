@@ -80,7 +80,11 @@ export class PostgreSqlFoodRepository implements IFoodRepository {
 
   public async delete(entity: Food): Promise<void> {
     try {
-      throw new Error('Method not implemented');
+      const model = this.mapper.toModel(entity);
+
+      const query = `DELETE FROM foods WHERE id = '${model.id}';`;
+
+      await this.databaseService.query(query);
     } catch (error: any) {
       throw new Error(`Food Repository Error -- ${error}`);
     }
