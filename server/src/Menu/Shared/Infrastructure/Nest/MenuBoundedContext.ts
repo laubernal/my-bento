@@ -34,6 +34,8 @@ import { PostgreSqlFoodMapper } from 'Menu/Food/Infrastructure/Persistance/Mappe
 import { GetFoodController } from 'Menu/Food/Infrastructure/Controllers/GetFood/GetFoodController';
 import { UpdateFoodController } from 'Menu/Food/Infrastructure/Controllers/UpdateFood/UpdateFoodController';
 import { DeleteFoodController } from 'Menu/Food/Infrastructure/Controllers/DeleteFood/DeleteFoodController';
+import { PostgreSqlMealMapper } from 'Menu/Meal/Infrastructure/Persistance/Mapper/PostgreSqlMealMapper';
+import { PostgreSqlMealRepository } from 'Menu/Meal/Infrastructure/Persistance/Persistance/PostgreSqlMealRepository';
 
 const Repositories = [
   {
@@ -44,7 +46,7 @@ const Repositories = [
   {
     provide: IMEAL_REPOSITORY,
     // useClass: MikroOrmMealRepository,
-    useClass: PostgreSqlFoodRepository,
+    useClass: PostgreSqlMealRepository,
   },
 ];
 
@@ -78,7 +80,13 @@ const Handlers = [
   DeleteMealCommandHandler,
 ];
 
-const Mappers = [FoodMapper, MealMapper, MealFoodMapper, PostgreSqlFoodMapper];
+const Mappers = [
+  FoodMapper,
+  MealMapper,
+  MealFoodMapper,
+  PostgreSqlFoodMapper,
+  PostgreSqlMealMapper,
+];
 
 const Services = [
   {
