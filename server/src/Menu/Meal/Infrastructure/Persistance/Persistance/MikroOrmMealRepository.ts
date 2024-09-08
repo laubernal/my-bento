@@ -4,7 +4,7 @@ import { IMealRepository } from 'Menu/Meal/Domain/Repository/IMealRepository';
 import { MealMapper } from '../Mapper/MealMapper';
 import { MealFilter } from 'Menu/Meal/Domain/Filter/MealFilter';
 import { Meal } from 'Menu/Meal/Domain/Entity/Meal';
-import { MikroOrmMealFilterAdapter } from '../File/MikroOrmMealFilterAdapter';
+import { MikroOrmMealFilterAdapter } from '../Filter/MikroOrmMealFilterAdapter';
 import { MealEntity } from 'Shared/Infrastructure/Persistance/Model/MealEntityMikroOrm';
 import { MealFoodEntity } from 'Shared/Infrastructure/Persistance/Model/MealFoodEntityMikroOrm';
 import { MealFoodMapper } from '../Mapper/MealFoodMapper';
