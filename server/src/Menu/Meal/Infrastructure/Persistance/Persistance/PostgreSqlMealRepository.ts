@@ -38,8 +38,6 @@ export class PostgreSqlMealRepository implements IMealRepository {
       const adapter = new PostgreSqlMealFilterAdapter(filter);
       const adapterQuery = adapter.apply();
 
-      console.log('ADAPTER QUERY', adapterQuery);
-
       const query = `SELECT 
       meals.id,
       meals.name,
@@ -58,8 +56,6 @@ export class PostgreSqlMealRepository implements IMealRepository {
       ON meals.id = meal_foods.meal_id;`;
 
       const result = await this.databaseService.query(query);
-
-      console.log('RESULT', result.rows);
 
       const mealsMap: { [key: string]: MealModel } = {};
 
@@ -90,22 +86,7 @@ export class PostgreSqlMealRepository implements IMealRepository {
         }
       });
 
-      console.log('HEREEEEEEEEEEEEEEEE ------------------', JSON.stringify(mealsMap, null, 4));
-
-      return result.rows.map((meal: MealModel) => {
-        // const mealFoodModel = Object.fromEntries(
-        //   Object.entries(meal)
-        //     .filter(([key]) => key.startsWith('mealfood_'))
-        //     .map(([key, value]) => [key.replace('mealfood_', ''), value])
-        // );
-
-        // console.log('HEREEE', mealFoodModel);
-        // const mealModel = Object.fromEntries(
-        //     Object.entries(meal).filter(([key]) => !key.startsWith('mealfood_'))
-        // );
-
-        // mealModel.foods = mealFoodModel
-
+      return Object.values(mealsMap).map((meal: MealModel) => {
         return this.mapper.toDomain(meal);
       });
     } catch (error: any) {

@@ -1,10 +1,14 @@
 import { Food } from 'Menu/Meal/Domain/Entity/Food';
 import { Meal } from 'Menu/Meal/Domain/Entity/Meal';
 import { IMapper } from 'Shared/Domain/Interfaces/IMapper';
+import { Amount } from 'Shared/Domain/Vo/Amount.vo';
 import { Id } from 'Shared/Domain/Vo/Id.vo';
 import { MealType } from 'Shared/Domain/Vo/MealType';
 import { Name } from 'Shared/Domain/Vo/Name.vo';
+import { Quantity } from 'Shared/Domain/Vo/Quantity.vo';
 import { StringVo } from 'Shared/Domain/Vo/String.vo';
+import { Unit } from 'Shared/Domain/Vo/Unit.vo';
+import { MealFoodModel } from 'Shared/Infrastructure/Persistance/PostgreSql/Model/MealFoodModel';
 import { MealModel } from 'Shared/Infrastructure/Persistance/PostgreSql/Model/MealModel';
 
 export class PostgreSqlMealMapper implements IMapper<Meal, MealModel> {
@@ -27,13 +31,18 @@ export class PostgreSqlMealMapper implements IMapper<Meal, MealModel> {
   }
 
   public toDomain(model: MealModel): Meal {
-    // console.log('MODEL', model);
     const id = new Id(model.id);
     const name = new Name(model.name);
     const type = new MealType(new StringVo(model.type));
 
-    new Meal(id, name, type, [], model.created_at, model.updated_at);
+    const foods = model.foods.map((food: MealFoodModel) => {
+      const id = new Id(food.id);
+      const foodId = new Id(food.food as string);
+      const quantity = new Quantity(new Amount(food.amount), new Unit(new StringVo(food.unit)));
 
-    throw new Error('Method not implemented');
+      return new Food(id, foodId, quantity, food.created_at, food.updated_at);
+    });
+
+    return new Meal(id, name, type, foods, model.created_at, model.updated_at);
   }
 }
