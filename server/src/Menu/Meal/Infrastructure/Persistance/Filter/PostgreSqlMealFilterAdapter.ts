@@ -15,13 +15,13 @@ export class PostgreSqlMealFilterAdapter extends PostgreSqlAdapter {
     if (filters.has(MealFilter.MEAL_NAME_FILTER)) {
       const name = filters.get(MealFilter.MEAL_NAME_FILTER) as Name;
 
-      conditions.push(`name = ${name.value}`);
+      conditions.push(`meals.name = '${name.value}'`);
     }
 
     if (filters.has(MealFilter.MEAL_ID_FILTER)) {
       const id = filters.get(MealFilter.MEAL_ID_FILTER) as Id;
 
-      conditions.push(`id = ${id.value}`);
+      conditions.push(`meals.id = '${id.value}'`);
     }
 
     const whereClause = conditions.length ? `WHERE ${conditions.join(' AND ')}` : '';
