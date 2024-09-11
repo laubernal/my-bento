@@ -61,8 +61,8 @@ export class PostgreSqlMealRepository implements IMealRepository {
         if (row.mealfood_id) {
           mealMap[mealId].foods.push({
             id: row.mealfood_id,
-            meal: row.mealfood_meal,
-            food: row.mealfood_food,
+            meal_id: row.mealfood_meal,
+            food_id: row.mealfood_food,
             amount: row.mealfood_amount,
             unit: row.mealfood_unit,
             created_at: row.mealfood_created_at,
@@ -120,8 +120,8 @@ export class PostgreSqlMealRepository implements IMealRepository {
         if (row.mealfood_id) {
           mealsMap[mealId].foods.push({
             id: row.mealfood_id,
-            meal: row.mealfood_meal,
-            food: row.mealfood_food,
+            meal_id: row.mealfood_meal,
+            food_id: row.mealfood_food,
             amount: row.mealfood_amount,
             unit: row.mealfood_unit,
             created_at: row.mealfood_created_at,
@@ -141,12 +141,22 @@ export class PostgreSqlMealRepository implements IMealRepository {
   public async save(entity: Meal): Promise<void> {
     try {
       const model = this.mapper.toModel(entity);
+      
+      const { foods, ...mealModel } = model;
 
-      const { columns, values } = this.databaseService.getColumnsAndValuesFromModel(model);
+      const { columns, values } = this.databaseService.getColumnsAndValuesFromModel(mealModel);
 
-      const query = `INSERT INTO meals(${columns}) VALUES(${values});`;
+      const insertMealQuery = `INSERT INTO meals(${columns}) VALUES(${values});`;
 
-      await this.databaseService.query(query);
+      await this.databaseService.query(insertMealQuery);
+
+      for (const food of foods) {
+        const { columns, values } = this.databaseService.getColumnsAndValuesFromModel(food);
+
+        const insertMealFoodQuery = `INSERT INTO meal_foods(${columns}) VALUES(${values})`;
+
+        await this.databaseService.query(insertMealFoodQuery);
+      }
     } catch (error: any) {
       throw new Error(`Meal Repository Error -- ${error}`);
     }

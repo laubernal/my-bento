@@ -3,8 +3,8 @@ import { MealModel } from './MealModel';
 
 export interface MealFoodModel {
   id: string;
-  meal: MealModel;
-  food: FoodModel | string;
+  meal_id: MealModel | string;
+  food_id: FoodModel | string;
   amount: number;
   unit: string;
   created_at: Date;

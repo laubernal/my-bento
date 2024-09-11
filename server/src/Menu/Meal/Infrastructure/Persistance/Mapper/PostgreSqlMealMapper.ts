@@ -14,15 +14,22 @@ import { MealModel } from 'Shared/Infrastructure/Persistance/PostgreSql/Model/Me
 export class PostgreSqlMealMapper implements IMapper<Meal, MealModel> {
   public toModel(entity: Meal): MealModel {
     const foods = entity.foods().map((food: Food) => {
-      return food.id().value;
+      return {
+        id: food.id().value,
+        meal_id: entity.id().value,
+        food_id: food.foodId().value,
+        amount: food.quantity().amount().value,
+        unit: food.quantity().unit().value,
+        created_at: food.createdAt(),
+        updated_at: food.updatedAt(),
+      };
     });
 
     const model = {
       id: entity.id().value,
       name: entity.name().value,
       type: entity.type().value,
-      //   foods,
-      foods: [],
+      foods,
       created_at: entity.createdAt(),
       updated_at: entity.updatedAt(),
     };
@@ -37,7 +44,7 @@ export class PostgreSqlMealMapper implements IMapper<Meal, MealModel> {
 
     const foods = model.foods.map((food: MealFoodModel) => {
       const id = new Id(food.id);
-      const foodId = new Id(food.food as string);
+      const foodId = new Id(food.food_id as string);
       const quantity = new Quantity(new Amount(food.amount), new Unit(new StringVo(food.unit)));
 
       return new Food(id, foodId, quantity, food.created_at, food.updated_at);
