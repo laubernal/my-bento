@@ -140,9 +140,7 @@ export class PostgreSqlMealRepository implements IMealRepository {
 
   public async save(entity: Meal): Promise<void> {
     try {
-      const model = this.mapper.toModel(entity);
-      
-      const { foods, ...mealModel } = model;
+      const { foods, ...mealModel } = this.mapper.toModel(entity);
 
       const { columns, values } = this.databaseService.getColumnsAndValuesFromModel(mealModel);
 
@@ -164,13 +162,21 @@ export class PostgreSqlMealRepository implements IMealRepository {
 
   public async update(entity: Meal): Promise<void> {
     try {
-      const model = this.mapper.toModel(entity);
+      const { foods, ...mealModel } = this.mapper.toModel(entity);
 
-      const setClause = this.databaseService.getColumnEqualValueFromModel(model);
+      const setClause = this.databaseService.getColumnEqualValueFromModel(mealModel);
 
-      const query = `UPDATE meals SET ${setClause} WHERE id = '${model.id}';`;
+      const updateMealQuery = `UPDATE meals SET ${setClause} WHERE id = '${mealModel.id}';`;
 
-      await this.databaseService.query(query);
+      await this.databaseService.query(updateMealQuery);
+
+      for (const food of foods) {
+        const setClause = this.databaseService.getColumnEqualValueFromModel(food);
+
+        const updateMealFoodQuery = `UPDATE meal_foods SET ${setClause} WHERE id = '${food.id}';`;
+
+        await this.databaseService.query(updateMealFoodQuery);
+      }
     } catch (error: any) {
       throw new Error(`Meal Repository Error -- ${error}`);
     }
