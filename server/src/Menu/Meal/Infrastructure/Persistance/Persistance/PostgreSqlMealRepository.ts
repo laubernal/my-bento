@@ -184,11 +184,17 @@ export class PostgreSqlMealRepository implements IMealRepository {
 
   public async delete(entity: Meal): Promise<void> {
     try {
-      const model = this.mapper.toModel(entity);
+      const { foods, ...mealModel } = this.mapper.toModel(entity);
 
-      const query = `DELETE FROM meals WHERE id = '${model.id}';`;
+      const deleteMealQuery = `DELETE FROM meals WHERE id = '${mealModel.id}';`;
 
-      await this.databaseService.query(query);
+      await this.databaseService.query(deleteMealQuery);
+
+      for (const food of foods) {
+        const deleteMealFoodQuery = `DELETE FROM meal_foods WHERE id = '${food.id}';`;
+
+        await this.databaseService.query(deleteMealFoodQuery);
+      }
     } catch (error: any) {
       throw new Error(`Meal Repository Error -- ${error}`);
     }
