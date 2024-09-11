@@ -19,7 +19,22 @@ export class PostgreSqlMealRepository implements IMealRepository {
       const adapter = new PostgreSqlMealFilterAdapter(filter);
       const adapterQuery = adapter.apply();
 
-      const query = `SELECT * FROM meals ${adapterQuery};`;
+      const query = `SELECT 
+      meals.id,
+      meals.name,
+      meals.type,
+      meals.created_at,
+      meals.updated_at,
+      meal_foods.id AS mealFood_id,
+      meal_foods.meal_id AS mealFood_meal,
+      meal_foods.food_id AS mealFood_food,
+      meal_foods.amount AS mealFood_amount,
+      meal_foods.unit AS mealFood_unit,
+      meal_foods.created_at AS mealFood_created_at,
+      meal_foods.updated_at AS mealFood_updated_at
+      FROM meals      
+      LEFT JOIN meal_foods
+      ON meals.id = meal_foods.meal_id ${adapterQuery};`;
 
       const result = await this.databaseService.query(query);
 
@@ -27,7 +42,36 @@ export class PostgreSqlMealRepository implements IMealRepository {
         return undefined;
       }
 
-      return this.mapper.toDomain(result.rows[0]);
+      const mealMap: { [key: string]: MealModel } = {};
+
+      result.rows.forEach(row => {
+        const mealId = row.id;
+
+        if (!mealMap[mealId]) {
+          mealMap[mealId] = {
+            id: row.id,
+            name: row.name,
+            type: row.type,
+            created_at: row.created_at,
+            updated_at: row.updated_at,
+            foods: [],
+          };
+        }
+
+        if (row.mealfood_id) {
+          mealMap[mealId].foods.push({
+            id: row.mealfood_id,
+            meal: row.mealfood_meal,
+            food: row.mealfood_food,
+            amount: row.mealfood_amount,
+            unit: row.mealfood_unit,
+            created_at: row.mealfood_created_at,
+            updated_at: row.mealfood_updated_at,
+          });
+        }
+      });
+
+      return this.mapper.toDomain(Object.values(mealMap)[0]);
     } catch (error: any) {
       throw new Error(`Meal Repository Error -- ${error}`);
     }
