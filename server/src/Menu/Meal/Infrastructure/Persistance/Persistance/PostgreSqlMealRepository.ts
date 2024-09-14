@@ -144,6 +144,8 @@ export class PostgreSqlMealRepository implements IMealRepository {
 
       const { columns, values } = this.databaseService.getColumnsAndValuesFromModel(mealModel);
 
+      await this.databaseService.query('BEGIN;');
+
       const insertMealQuery = `INSERT INTO meals(${columns}) VALUES(${values});`;
 
       await this.databaseService.query(insertMealQuery);
@@ -155,7 +157,12 @@ export class PostgreSqlMealRepository implements IMealRepository {
 
         await this.databaseService.query(insertMealFoodQuery);
       }
+
+      await this.databaseService.query('COMMIT;');
     } catch (error: any) {
+      console.log('THERE WAS AN ERROR');
+      await this.databaseService.query('ROLLBACK;');
+
       throw new Error(`Meal Repository Error -- ${error}`);
     }
   }
@@ -165,6 +172,8 @@ export class PostgreSqlMealRepository implements IMealRepository {
       const { foods, ...mealModel } = this.mapper.toModel(entity);
 
       const setClause = this.databaseService.getColumnEqualValueFromModel(mealModel);
+
+      await this.databaseService.query('BEGIN;');
 
       const updateMealQuery = `UPDATE meals SET ${setClause} WHERE id = '${mealModel.id}';`;
 
@@ -177,7 +186,11 @@ export class PostgreSqlMealRepository implements IMealRepository {
 
         await this.databaseService.query(updateMealFoodQuery);
       }
+
+      await this.databaseService.query('COMMIT;');
     } catch (error: any) {
+      await this.databaseService.query('ROLLBACK;');
+
       throw new Error(`Meal Repository Error -- ${error}`);
     }
   }
@@ -185,6 +198,8 @@ export class PostgreSqlMealRepository implements IMealRepository {
   public async delete(entity: Meal): Promise<void> {
     try {
       const { foods, ...mealModel } = this.mapper.toModel(entity);
+
+      await this.databaseService.query('BEGIN;');
 
       const deleteMealQuery = `DELETE FROM meals WHERE id = '${mealModel.id}';`;
 
@@ -195,7 +210,11 @@ export class PostgreSqlMealRepository implements IMealRepository {
 
         await this.databaseService.query(deleteMealFoodQuery);
       }
+
+      await this.databaseService.query('COMMIT;');
     } catch (error: any) {
+      await this.databaseService.query('ROLLBACK;');
+
       throw new Error(`Meal Repository Error -- ${error}`);
     }
   }
