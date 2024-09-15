@@ -52,4 +52,38 @@ export class PostgreSqlMealMapper implements IMapper<Meal, MealModel> {
 
     return new Meal(id, name, type, foods, model.created_at, model.updated_at);
   }
+
+  public queryResultToModel(result: { rows: any[]; rowCount: number | null }): {
+    [key: string]: MealModel;
+  } {
+    const mealsMap: { [key: string]: MealModel } = {};
+    result.rows.forEach(row => {
+      const mealId = row.id;
+
+      if (!mealsMap[mealId]) {
+        mealsMap[mealId] = {
+          id: row.id,
+          name: row.name,
+          type: row.type,
+          created_at: row.created_at,
+          updated_at: row.updated_at,
+          foods: [],
+        };
+      }
+
+      if (row.mealfood_id) {
+        mealsMap[mealId].foods.push({
+          id: row.mealfood_id,
+          meal_id: row.mealfood_meal,
+          food_id: row.mealfood_food,
+          amount: row.mealfood_amount,
+          unit: row.mealfood_unit,
+          created_at: row.mealfood_created_at,
+          updated_at: row.mealfood_updated_at,
+        });
+      }
+    });
+
+    return mealsMap;
+  }
 }

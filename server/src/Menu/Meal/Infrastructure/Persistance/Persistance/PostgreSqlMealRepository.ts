@@ -6,7 +6,6 @@ import { PostgreSqlMealFilterAdapter } from '../Filter/PostgreSqlMealFilterAdapt
 import { Meal } from 'Menu/Meal/Domain/Entity/Meal';
 import { IMealRepository } from 'Menu/Meal/Domain/Repository/IMealRepository';
 import { MealModel } from 'Shared/Infrastructure/Persistance/PostgreSql/Model/MealModel';
-import { Food } from 'Menu/Meal/Domain/Entity/Food';
 import { Id } from 'Shared/Domain/Vo/Id.vo';
 
 @Injectable()
@@ -44,34 +43,7 @@ export class PostgreSqlMealRepository implements IMealRepository {
         return undefined;
       }
 
-      const mealMap: { [key: string]: MealModel } = {};
-
-      result.rows.forEach(row => {
-        const mealId = row.id;
-
-        if (!mealMap[mealId]) {
-          mealMap[mealId] = {
-            id: row.id,
-            name: row.name,
-            type: row.type,
-            created_at: row.created_at,
-            updated_at: row.updated_at,
-            foods: [],
-          };
-        }
-
-        if (row.mealfood_id) {
-          mealMap[mealId].foods.push({
-            id: row.mealfood_id,
-            meal_id: row.mealfood_meal,
-            food_id: row.mealfood_food,
-            amount: row.mealfood_amount,
-            unit: row.mealfood_unit,
-            created_at: row.mealfood_created_at,
-            updated_at: row.mealfood_updated_at,
-          });
-        }
-      });
+      const mealMap = this.mapper.queryResultToModel(result);
 
       return this.mapper.toDomain(Object.values(mealMap)[0]);
     } catch (error: any) {
@@ -103,34 +75,7 @@ export class PostgreSqlMealRepository implements IMealRepository {
 
       const result = await this.databaseService.query(query);
 
-      const mealsMap: { [key: string]: MealModel } = {};
-
-      result.rows.forEach(row => {
-        const mealId = row.id;
-
-        if (!mealsMap[mealId]) {
-          mealsMap[mealId] = {
-            id: row.id,
-            name: row.name,
-            type: row.type,
-            created_at: row.created_at,
-            updated_at: row.updated_at,
-            foods: [],
-          };
-        }
-
-        if (row.mealfood_id) {
-          mealsMap[mealId].foods.push({
-            id: row.mealfood_id,
-            meal_id: row.mealfood_meal,
-            food_id: row.mealfood_food,
-            amount: row.mealfood_amount,
-            unit: row.mealfood_unit,
-            created_at: row.mealfood_created_at,
-            updated_at: row.mealfood_updated_at,
-          });
-        }
-      });
+      const mealsMap = this.mapper.queryResultToModel(result);
 
       return Object.values(mealsMap).map((meal: MealModel) => {
         return this.mapper.toDomain(meal);
