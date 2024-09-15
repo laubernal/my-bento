@@ -8,6 +8,7 @@ import { MikroOrmMealFilterAdapter } from '../Filter/MikroOrmMealFilterAdapter';
 import { MealEntity } from 'Shared/Infrastructure/Persistance/Model/MealEntityMikroOrm';
 import { MealFoodEntity } from 'Shared/Infrastructure/Persistance/Model/MealFoodEntityMikroOrm';
 import { MealFoodMapper } from '../Mapper/MealFoodMapper';
+import { Id } from 'Shared/Domain/Vo/Id.vo';
 
 @Injectable()
 export class MikroOrmMealRepository implements IMealRepository {
@@ -133,5 +134,9 @@ export class MikroOrmMealRepository implements IMealRepository {
     } catch (error: any) {
       throw new Error(`Meal Repository Error -- ${error}`);
     }
+  }
+
+  public async deleteMealFood(id: Id): Promise<void> {
+    throw new Error('Method not implemented.');
   }
 }

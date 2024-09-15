@@ -6,6 +6,8 @@ import { PostgreSqlMealFilterAdapter } from '../Filter/PostgreSqlMealFilterAdapt
 import { Meal } from 'Menu/Meal/Domain/Entity/Meal';
 import { IMealRepository } from 'Menu/Meal/Domain/Repository/IMealRepository';
 import { MealModel } from 'Shared/Infrastructure/Persistance/PostgreSql/Model/MealModel';
+import { Food } from 'Menu/Meal/Domain/Entity/Food';
+import { Id } from 'Shared/Domain/Vo/Id.vo';
 
 @Injectable()
 export class PostgreSqlMealRepository implements IMealRepository {
@@ -160,7 +162,6 @@ export class PostgreSqlMealRepository implements IMealRepository {
 
       await this.databaseService.query('COMMIT;');
     } catch (error: any) {
-      console.log('THERE WAS AN ERROR');
       await this.databaseService.query('ROLLBACK;');
 
       throw new Error(`Meal Repository Error -- ${error}`);
@@ -184,7 +185,15 @@ export class PostgreSqlMealRepository implements IMealRepository {
 
         const updateMealFoodQuery = `UPDATE meal_foods SET ${setClause} WHERE id = '${food.id}';`;
 
-        await this.databaseService.query(updateMealFoodQuery);
+        const { rowCount } = await this.databaseService.query(updateMealFoodQuery);
+
+        if (rowCount === 0) {
+          const { columns, values } = this.databaseService.getColumnsAndValuesFromModel(food);
+
+          const insertMealFoodQuery = `INSERT INTO meal_foods(${columns}) VALUES(${values})`;
+
+          await this.databaseService.query(insertMealFoodQuery);
+        }
       }
 
       await this.databaseService.query('COMMIT;');
@@ -215,6 +224,16 @@ export class PostgreSqlMealRepository implements IMealRepository {
     } catch (error: any) {
       await this.databaseService.query('ROLLBACK;');
 
+      throw new Error(`Meal Repository Error -- ${error}`);
+    }
+  }
+
+  public async deleteMealFood(id: Id): Promise<void> {
+    try {
+      const deleteMealFoodQuery = `DELETE FROM meal_foods WHERE id = '${id.value}';`;
+
+      await this.databaseService.query(deleteMealFoodQuery);
+    } catch (error: any) {
       throw new Error(`Meal Repository Error -- ${error}`);
     }
   }

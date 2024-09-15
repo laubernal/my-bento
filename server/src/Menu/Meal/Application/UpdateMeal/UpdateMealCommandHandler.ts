@@ -27,13 +27,7 @@ export class UpdateMealCommandHandler implements ICommandHandler {
 
     const oldMeal = await this.findMeal(id);
 
-    const foods: Food[] = command.foods.map((food: MealFoodType) => {
-      return new Food(
-        new Id(food.id),
-        new Id(food.foodId),
-        new Quantity(new Amount(food.amount), new Unit(new StringVo(food.unit)))
-      );
-    });
+    const foods = await this.buildFoods(command, oldMeal);
 
     const newMeal = new Meal(id, name, type, foods, oldMeal.createdAt(), new Date());
 
@@ -50,5 +44,27 @@ export class UpdateMealCommandHandler implements ICommandHandler {
     }
 
     return result;
+  }
+
+  private async buildFoods(command: UpdateMealCommand, oldMeal: Meal): Promise<Food[]> {
+    for (const oldFood of oldMeal.foods()) {
+      const foodWasNotRemoved = command.foods.find(
+        (food: MealFoodType) => food.id === oldFood.id().value
+      );
+
+      if (!foodWasNotRemoved) {
+        await this.repository.deleteMealFood(oldFood.id());
+      }
+    }
+
+    const foods: Food[] = command.foods.map((food: MealFoodType) => {
+      return new Food(
+        new Id(food.id),
+        new Id(food.foodId),
+        new Quantity(new Amount(food.amount), new Unit(new StringVo(food.unit)))
+      );
+    });
+
+    return foods;
   }
 }
