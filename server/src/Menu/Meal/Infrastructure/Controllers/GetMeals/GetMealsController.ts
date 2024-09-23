@@ -1,4 +1,4 @@
-import { Controller, Get, Headers, Inject, Res } from '@nestjs/common';
+import { Controller, Get, Headers, Inject, Query, Res } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { GetMealsQuery } from 'Menu/Meal/Application/GetMeals/GetMealsQuery';
 import { GetMealsResponse } from 'Menu/Meal/Application/GetMeals/GetMealsResponse';
@@ -15,11 +15,15 @@ export class GetMealsController {
   ) {}
 
   @Get('/api/meals')
-  public async get(@Headers('traceId') traceId: string, @Res() res: Response) {
+  public async get(
+    @Headers('traceId') traceId: string,
+    @Res() res: Response,
+    @Query() requestQuery: Record<string, string>
+  ) {
     try {
       this.logger.log('Starting to get meals', [traceId]);
 
-      const query = GetMealsQuery.fromJson(traceId);
+      const query = GetMealsQuery.fromJson(traceId, requestQuery);
 
       const response = await this.queryBus.execute<GetMealsQuery, GetMealsResponse[]>(query);
 

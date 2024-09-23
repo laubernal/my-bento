@@ -7,6 +7,9 @@ import { IMyBentoLogger } from 'Shared/Domain/Interfaces/IMyBentoLogger';
 import { IMEAL_REPOSITORY, MY_BENTO_LOGGER } from 'Shared/Domain/InterfacesConstants';
 import { GetMealsResponse } from './GetMealsResponse';
 import { GetMealsQuery } from './GetMealsQuery';
+import { Name } from 'Shared/Domain/Vo/Name.vo';
+import { MealType } from 'Shared/Domain/Vo/MealType';
+import { StringVo } from 'Shared/Domain/Vo/String.vo';
 
 @QueryHandler(GetMealsQuery)
 export class GetMealsQueryHandler implements IQueryHandler {
@@ -16,7 +19,7 @@ export class GetMealsQueryHandler implements IQueryHandler {
   ) {}
 
   public async execute(query: GetMealsQuery): Promise<any> {
-    const meals = await this.findMeals();
+    const meals = await this.findMeals(query);
 
     const response = meals.map((meal: Meal) => {
       return GetMealsResponse.toResponse(meal);
@@ -25,8 +28,20 @@ export class GetMealsQueryHandler implements IQueryHandler {
     return response;
   }
 
-  private async findMeals(): Promise<Meal[]> {
+  private async findMeals(query: GetMealsQuery): Promise<Meal[]> {
     const filter = MealFilter.create();
+
+    if (Object.entries(query.searchQuery).length) {
+      const searchQueryKeys = Object.keys(query.searchQuery);
+
+      if (searchQueryKeys.includes(MealFilter.MEAL_NAME_FILTER)) {
+        filter.withName(new Name(query.searchQuery.name));
+      }
+
+      if (searchQueryKeys.includes(MealFilter.MEAL_TYPE_FILTER)) {
+        filter.withType(new MealType(new StringVo(query.searchQuery.type)));
+      }
+    }
 
     return await this.mealRepository.find(filter);
   }

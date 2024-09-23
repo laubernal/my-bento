@@ -71,7 +71,8 @@ export class PostgreSqlMealRepository implements IMealRepository {
       meal_foods.updated_at AS mealFood_updated_at
       FROM meals
       LEFT JOIN meal_foods
-      ON meals.id = meal_foods.meal_id;`;
+      ON meals.id = meal_foods.meal_id
+      ${adapterQuery};`;
 
       const result = await this.databaseService.query(query);
 
