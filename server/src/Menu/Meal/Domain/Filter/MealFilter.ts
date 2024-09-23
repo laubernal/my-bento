@@ -1,9 +1,11 @@
 import { Filter } from 'Shared/Domain/Entities/Filter';
 import { Id } from 'Shared/Domain/Vo/Id.vo';
+import { MealType } from 'Shared/Domain/Vo/MealType';
 import { Name } from 'Shared/Domain/Vo/Name.vo';
 
 export class MealFilter extends Filter {
   public static MEAL_NAME_FILTER = 'meal';
+  public static MEAL_TYPE_FILTER = 'type';
   public static MEAL_ID_FILTER = 'id';
 
   public static create(): MealFilter {
@@ -14,6 +16,11 @@ export class MealFilter extends Filter {
 
   public withName(name: Name): this {
     this.data.set(MealFilter.MEAL_NAME_FILTER, name);
+    return this;
+  }
+
+  public withType(type: MealType): this {
+    this.data.set(MealFilter.MEAL_TYPE_FILTER, type);
     return this;
   }
 
