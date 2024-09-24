@@ -1,9 +1,11 @@
 import { Migrator, TSMigrationGenerator } from '@mikro-orm/migrations';
 import { MikroOrmModule, MikroOrmModuleOptions } from '@mikro-orm/nestjs';
 import { PostgreSqlDriver } from '@mikro-orm/postgresql';
-import { Injectable, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { FoodEntity } from './Model/FoodEntityMikroOrm';
+import { MealEntity } from './Model/MealEntityMikroOrm';
+import { MealFoodEntity } from './Model/MealFoodEntityMikroOrm';
 
 @Module({
   imports: [
@@ -11,7 +13,7 @@ import { FoodEntity } from './Model/FoodEntityMikroOrm';
       inject: [ConfigService],
       useFactory: async (configService: ConfigService): Promise<MikroOrmModuleOptions> => {
         return {
-          entities: [FoodEntity],
+          entities: [FoodEntity, MealEntity, MealFoodEntity],
           dbName: configService.get<string>('DB_NAME'),
           user: configService.get<string>('DB_USER'),
           password: configService.get<string>('DB_PASSWORD'),
@@ -33,6 +35,7 @@ import { FoodEntity } from './Model/FoodEntityMikroOrm';
             emit: 'ts',
             generator: TSMigrationGenerator,
           },
+          // debug: true,
         };
       },
     }),

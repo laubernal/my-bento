@@ -1,8 +1,8 @@
-import { Food } from 'Menu/Food/Domain/Entity/Food';
 import { AggregateRoot } from 'Shared/Domain/Entities/AggregateRoot';
 import { Id } from 'Shared/Domain/Vo/Id.vo';
 import { MealType } from 'Shared/Domain/Vo/MealType';
 import { Name } from 'Shared/Domain/Vo/Name.vo';
+import { Food } from './Food';
 
 export class Meal extends AggregateRoot {
   constructor(

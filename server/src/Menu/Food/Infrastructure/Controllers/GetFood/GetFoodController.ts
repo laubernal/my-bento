@@ -1,11 +1,11 @@
 import { Controller, Get, Headers, Inject, Param, Res } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
-import { Response } from 'express';
-import { GetFoodQuery } from 'src/Menu/Food/Application/GetFood/GetFoodQuery';
-import { GetFoodParams } from './GetFoodParams';
 import { IMyBentoLogger } from 'Shared/Domain/Interfaces/IMyBentoLogger';
 import { MY_BENTO_LOGGER } from 'Shared/Domain/InterfacesConstants';
+import { GetFoodParams } from './GetFoodParams';
+import { Response } from 'express';
 import { MyBentoResponse } from 'Shared/Domain/MyBentoResponse';
+import { GetFoodQuery } from 'Menu/Food/Application/GetFood/GetFoodQuery';
 import { GetFoodResponse } from 'Menu/Food/Application/GetFood/GetFoodResponse';
 
 @Controller()
@@ -15,7 +15,7 @@ export class GetFoodController {
     @Inject(MY_BENTO_LOGGER) private readonly logger: IMyBentoLogger
   ) {}
 
-  @Get('api/foods/:id')
+  @Get('/api/foods/:id')
   public async get(
     @Param() params: GetFoodParams,
     @Headers('traceId') traceId: string,
@@ -30,10 +30,7 @@ export class GetFoodController {
 
       this.logger.log('Sending found food', [traceId]);
 
-      const myBentoResponse = new MyBentoResponse<GetFoodResponse>(response, {
-        success: true,
-        error: null,
-      });
+      const myBentoResponse = new MyBentoResponse(response, { success: true, error: null });
 
       return res.status(200).json(myBentoResponse);
     } catch (error: any) {

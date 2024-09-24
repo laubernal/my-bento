@@ -6,8 +6,6 @@ export class GetFoodResponse {
       food.id().value,
       food.name().value,
       food.category().value,
-      food.quantity().amount().value,
-      food.quantity().unit().value
     );
   }
 
@@ -15,7 +13,5 @@ export class GetFoodResponse {
     readonly id: string,
     readonly name: string,
     readonly category: string,
-    readonly amount: number,
-    readonly unit: string
   ) {}
 }

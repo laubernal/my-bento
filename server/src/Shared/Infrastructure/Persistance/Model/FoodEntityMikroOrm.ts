@@ -12,12 +12,6 @@ export class FoodEntity {
   category!: string;
 
   @Property()
-  amount!: number;
-
-  @Property()
-  unit!: string;
-
-  @Property()
   created_at!: Date;
 
   @Property()
