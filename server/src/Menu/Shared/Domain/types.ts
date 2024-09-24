@@ -10,3 +10,9 @@ export type MealFoodType = {
   amount: number;
   unit: string;
 };
+
+export type MenuMealType = {
+  id: string;
+  date: Date;
+  meal: string;
+};
