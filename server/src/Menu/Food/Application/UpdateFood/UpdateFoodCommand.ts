@@ -1,46 +1,37 @@
-import { ICommand } from '@nestjs/cqrs';
-import { UpdateFoodApiRequest } from '../../Infrastructure/Controllers/UpdateFood/UpdateFoodApiRequest';
-import { UpdateFoodParams } from '../../Infrastructure/Controllers/UpdateFood/UpdateFoodParams';
+import {ICommand} from '@nestjs/cqrs';
+import {UpdateFoodApiRequest} from '../../Infrastructure/Controllers/UpdateFood/UpdateFoodApiRequest';
+import {UpdateFoodParams} from '../../Infrastructure/Controllers/UpdateFood/UpdateFoodParams';
 
 export class UpdateFoodCommand implements ICommand {
-  public static fromJson(
-    body: UpdateFoodApiRequest,
-    params: UpdateFoodParams,
-    traceId: string
-  ): UpdateFoodCommand {
-    return new UpdateFoodCommand(params.id, body.name, body.category, body.amount, body.unit, traceId);
-  }
+    public static fromJson(
+        body: UpdateFoodApiRequest,
+        params: UpdateFoodParams,
+        traceId: string
+    ): UpdateFoodCommand {
+        return new UpdateFoodCommand(params.id, body.name, body.category, traceId);
+    }
 
-  constructor(
-    private _id: string,
-    private _name: string,
-    private _category: string,
-    private _amount: number,
-    private _unit: string,
-    private _traceId: string
-  ) {}
+    constructor(
+        private _id: string,
+        private _name: string,
+        private _category: string,
+        private _traceId: string
+    ) {
+    }
 
-  public get id(): string {
-    return this._id;
-  }
+    public get id(): string {
+        return this._id;
+    }
 
-  public get name(): string {
-    return this._name;
-  }
+    public get name(): string {
+        return this._name;
+    }
 
-  public get category(): string {
-    return this._category;
-  }
+    public get category(): string {
+        return this._category;
+    }
 
-  public get amount(): number {
-    return this._amount;
-  }
-
-  public get unit(): string {
-    return this._unit;
-  }
-
-  public get traceId(): string {
-    return this._traceId;
-  }
+    public get traceId(): string {
+        return this._traceId;
+    }
 }

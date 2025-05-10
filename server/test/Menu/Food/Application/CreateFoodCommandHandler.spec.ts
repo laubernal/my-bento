@@ -49,8 +49,6 @@ describe('CreateFoodCommandHandler', () => {
       newFood.id().value,
       newFood.name().value,
       newFood.category().value,
-      newFood.quantity().amount().value,
-      newFood.quantity().unit().value,
       'trace-id-123'
     );
 
@@ -74,8 +72,6 @@ describe('CreateFoodCommandHandler', () => {
       newFood.id().value,
       newFood.name().value,
       newFood.category().value,
-      newFood.quantity().amount().value,
-      newFood.quantity().unit().value,
       'trace-id-123'
     );
 
