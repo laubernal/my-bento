@@ -49,8 +49,6 @@ describe('UpdateFoodCommandHandler', () => {
       foodToUpdate.id().value,
       foodToUpdate.name().value,
       foodToUpdate.category().value,
-      foodToUpdate.quantity().amount().value,
-      foodToUpdate.quantity().unit().value,
       'trace-id-123'
     );
 
@@ -74,8 +72,6 @@ describe('UpdateFoodCommandHandler', () => {
       foodToUpdate.id().value,
       foodToUpdate.name().value,
       foodToUpdate.category().value,
-      foodToUpdate.quantity().amount().value,
-      foodToUpdate.quantity().unit().value,
       'trace-id-123'
     );
 

@@ -7,8 +7,6 @@ export class CreateFoodCommand implements ICommand {
       body.id,
       body.name,
       body.category,
-      body.amount,
-      body.unit,
       traceId
     );
   }
@@ -17,8 +15,6 @@ export class CreateFoodCommand implements ICommand {
     private _id: string,
     private _name: string,
     private _category: string,
-    private _amount: number,
-    private _unit: string,
     private _traceId: string
   ) {}
 
@@ -32,14 +28,6 @@ export class CreateFoodCommand implements ICommand {
 
   public get category(): string {
     return this._category;
-  }
-
-  public get amount(): number {
-    return this._amount;
-  }
-
-  public get unit(): string {
-    return this._unit;
   }
 
   public get traceId(): string {
