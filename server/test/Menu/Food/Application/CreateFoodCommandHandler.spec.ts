@@ -42,48 +42,50 @@ describe('CreateFoodCommandHandler', () => {
     jest.restoreAllMocks();
   });
 
-  it('should create a food when it does not exist already', async () => {
-    const newFood = foodStub('dc789b73-6687-4739-92ce-4373c9a0dbf2');
+  it('should create a food when it does not exist already',
+      async () => {
+        const newFood = foodStub('dc789b73-6687-4739-92ce-4373c9a0dbf2');
 
-    const command = new CreateFoodCommand(
-      newFood.id().value,
-      newFood.name().value,
-      newFood.category().value,
-      'trace-id-123'
-    );
+        const command = new CreateFoodCommand(
+            newFood.id().value,
+            newFood.name().value,
+            newFood.category().value,
+            'trace-id-123'
+        );
 
-    jest.spyOn(foodRepository, 'findOne').mockResolvedValue(undefined);
+        jest.spyOn(foodRepository, 'findOne').mockResolvedValue(undefined);
 
-    await createFoodCommandHandler.execute(command);
+        await createFoodCommandHandler.execute(command);
 
-    const filter = FoodFilter.create().withName(newFood.name());
+        const filter = FoodFilter.create().withName(newFood.name());
 
-    expect(foodRepository.findOne).toHaveBeenCalledTimes(1);
-    expect(foodRepository.findOne).toHaveBeenCalledWith(filter);
+        expect(foodRepository.findOne).toHaveBeenCalledTimes(1);
+        expect(foodRepository.findOne).toHaveBeenCalledWith(filter);
 
-    expect(foodRepository.save).toHaveBeenCalledTimes(1);
-    expect(foodRepository.save).toHaveBeenCalledWith(newFood);
-  });
+        expect(foodRepository.save).toHaveBeenCalledTimes(1);
+        expect(foodRepository.save).toHaveBeenCalledWith(newFood);
+      });
 
-  it('should throw FoodAlreadyExistsError when the food we are trying to create already exists', async () => {
-    const newFood = foodStub('dc789b73-6687-4739-92ce-4373c9a0dbf2');
+  it('should throw FoodAlreadyExistsError when the food we are trying to create already exists',
+      async () => {
+        const newFood = foodStub('dc789b73-6687-4739-92ce-4373c9a0dbf2');
 
-    const command = new CreateFoodCommand(
-      newFood.id().value,
-      newFood.name().value,
-      newFood.category().value,
-      'trace-id-123'
-    );
+        const command = new CreateFoodCommand(
+            newFood.id().value,
+            newFood.name().value,
+            newFood.category().value,
+            'trace-id-123'
+        );
 
-    jest.spyOn(foodRepository, 'findOne').mockResolvedValue(newFood);
+        jest.spyOn(foodRepository, 'findOne').mockResolvedValue(newFood);
 
-    const filter = FoodFilter.create().withName(newFood.name());
+        const filter = FoodFilter.create().withName(newFood.name());
 
-    await expect(createFoodCommandHandler.execute(command)).rejects.toThrow(FoodAlreadyExistsError);
+        await expect(createFoodCommandHandler.execute(command)).rejects.toThrow(FoodAlreadyExistsError);
 
-    expect(foodRepository.findOne).toHaveBeenCalledTimes(1);
-    expect(foodRepository.findOne).toHaveBeenCalledWith(filter);
+        expect(foodRepository.findOne).toHaveBeenCalledTimes(1);
+        expect(foodRepository.findOne).toHaveBeenCalledWith(filter);
 
-    expect(foodRepository.save).not.toHaveBeenCalled();
-  });
+        expect(foodRepository.save).not.toHaveBeenCalled();
+      });
 });
