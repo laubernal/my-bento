@@ -44,18 +44,18 @@ describe('UpdateMealCommandHandler', () => {
 
     it('should update an existing meal', async () => {
         const mealToUpdate = mealStub('d4e2c830-a5cc-47d5-ad20-5bbe41382c2f');
-        const mealFood = {
-            id: mealToUpdate.foods()[0].id().value,
-            foodId: mealToUpdate.foods()[0].foodId().value,
-            amount: mealToUpdate.foods()[0].quantity().amount().value,
-            unit: mealToUpdate.foods()[0].quantity().unit().value
-        }
+        const mealFoods = mealToUpdate.foods().map(food => ({
+            id: food.id().value,
+            foodId: food.foodId().value,
+            amount: food.quantity().amount().value,
+            unit: food.quantity().unit().value
+        }));
 
         const command = new UpdateMealCommand(
             mealToUpdate.id().value,
             mealToUpdate.name().value,
             mealToUpdate.type().value,
-            [mealFood],
+            mealFoods,
             'trace-id-123'
         );
 
@@ -170,7 +170,8 @@ describe('UpdateMealCommandHandler', () => {
         await updateMealCommandHandler.execute(command);
 
         for (const mealFood of mealFoods) {
-            expect(mealRepository.deleteMealFood).toHaveBeenCalledWith(mealFood.foodId())
+            console.log(mealFood);
+            expect(mealRepository.deleteMealFood).toHaveBeenCalledWith(mealFood.id())
         }
 
         expect(mealRepository.deleteMealFood).toHaveBeenCalledTimes(mealFoods.length);
