@@ -33,18 +33,18 @@ describe('CreateMealCommandHandler', () => {
 
     it('should create a meal when it does not exist already', async () => {
         const newMeal = mealStub('d4e2c830-a5cc-47d5-ad20-5bbe41382c2f');
-        const mealFood = {
-            id: newMeal.foods()[0].id().value,
-            foodId: newMeal.foods()[0].foodId().value,
-            amount: newMeal.foods()[0].quantity().amount().value,
-            unit: newMeal.foods()[0].quantity().unit().value
-        }
+        const mealFoods = newMeal.foods().map(food => ({
+            id: food.id().value,
+            foodId: food.foodId().value,
+            amount: food.quantity().amount().value,
+            unit: food.quantity().unit().value
+        }));
 
         const command = new CreateMealCommand(
             newMeal.id().value,
             newMeal.name().value,
             newMeal.type().value,
-            [mealFood],
+            mealFoods,
             'trace-id-123');
 
         jest.spyOn(mealRepository, 'findOne').mockResolvedValue(undefined);
