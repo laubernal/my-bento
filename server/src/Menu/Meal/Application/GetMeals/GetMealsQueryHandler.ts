@@ -19,6 +19,8 @@ export class GetMealsQueryHandler implements IQueryHandler {
   ) {}
 
   public async execute(query: GetMealsQuery): Promise<any> {
+    console.log('query.searchQuery:', query.searchQuery);
+    console.log('query.searchQuery.meal:', query.searchQuery.meal);
     const meals = await this.findMeals(query);
 
     const response = meals.map((meal: Meal) => {
@@ -35,7 +37,7 @@ export class GetMealsQueryHandler implements IQueryHandler {
       const searchQueryKeys = Object.keys(query.searchQuery);
 
       if (searchQueryKeys.includes(MealFilter.MEAL_NAME_FILTER)) {
-        filter.withName(new Name(query.searchQuery.name));
+        filter.withName(new Name(query.searchQuery.meal));
       }
 
       if (searchQueryKeys.includes(MealFilter.MEAL_TYPE_FILTER)) {

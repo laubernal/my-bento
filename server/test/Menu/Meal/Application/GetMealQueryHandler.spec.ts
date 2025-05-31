@@ -1,7 +1,7 @@
 import {GetMealQueryHandler} from "Menu/Meal/Application/GetMeal/GetMealQueryHandler";
 import {IMealRepository} from "Menu/Meal/Domain/Repository/IMealRepository";
 import {Test, TestingModule} from "@nestjs/testing";
-import {IMEAL_REPOSITORY} from "Shared/Domain/InterfacesConstants";
+import {IMEAL_REPOSITORY, MY_BENTO_LOGGER} from "Shared/Domain/InterfacesConstants";
 import {mealStub} from "../../../stubs/Meal.stub";
 import {GetMealQuery} from "Menu/Meal/Application/GetMeal/GetMealQuery";
 import {GetMealResponse} from "Menu/Meal/Application/GetMeal/GetMealResponse";
@@ -25,7 +25,13 @@ describe('GetMealQueryHandler', () => {
                     useValue: {
                         findOne: jest.fn()
                     }
-                }
+                },
+                {
+                    provide: MY_BENTO_LOGGER,
+                    useValue: {
+                        log: jest.fn(),
+                    },
+                },
             ]
         }).compile();
 

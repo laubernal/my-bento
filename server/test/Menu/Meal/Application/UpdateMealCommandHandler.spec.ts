@@ -1,7 +1,7 @@
 import {UpdateMealCommandHandler} from "Menu/Meal/Application/UpdateMeal/UpdateMealCommandHandler";
 import {IMealRepository} from "Menu/Meal/Domain/Repository/IMealRepository";
 import {Test, TestingModule} from "@nestjs/testing";
-import {IMEAL_REPOSITORY} from "Shared/Domain/InterfacesConstants";
+import {IMEAL_REPOSITORY, MY_BENTO_LOGGER} from "Shared/Domain/InterfacesConstants";
 import {mealStub} from "../../../stubs/Meal.stub";
 import {UpdateMealCommand} from "Menu/Meal/Application/UpdateMeal/UpdateMealCommand";
 import {MealFilter} from "Menu/Meal/Domain/Filter/MealFilter";
@@ -24,7 +24,13 @@ describe('UpdateMealCommandHandler', () => {
                         update: jest.fn(),
                         deleteMealFood: jest.fn(),
                     },
-                }
+                },
+                {
+                    provide: MY_BENTO_LOGGER,
+                    useValue: {
+                        log: jest.fn(),
+                    },
+                },
             ]
         }).compile();
 
