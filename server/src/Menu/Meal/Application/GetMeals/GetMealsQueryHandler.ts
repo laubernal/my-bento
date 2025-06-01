@@ -10,6 +10,8 @@ import { GetMealsQuery } from './GetMealsQuery';
 import { Name } from 'Shared/Domain/Vo/Name.vo';
 import { MealType } from 'Shared/Domain/Vo/MealType';
 import { StringVo } from 'Shared/Domain/Vo/String.vo';
+import {NumberVo} from "Shared/Domain/Vo/Number.vo";
+import {Pagination} from "Shared/Domain/Entities/Pagination";
 
 @QueryHandler(GetMealsQuery)
 export class GetMealsQueryHandler implements IQueryHandler {
@@ -19,8 +21,6 @@ export class GetMealsQueryHandler implements IQueryHandler {
   ) {}
 
   public async execute(query: GetMealsQuery): Promise<any> {
-    console.log('query.searchQuery:', query.searchQuery);
-    console.log('query.searchQuery.meal:', query.searchQuery.meal);
     const meals = await this.findMeals(query);
 
     const response = meals.map((meal: Meal) => {
@@ -42,6 +42,14 @@ export class GetMealsQueryHandler implements IQueryHandler {
 
       if (searchQueryKeys.includes(MealFilter.MEAL_TYPE_FILTER)) {
         filter.withType(new MealType(new StringVo(query.searchQuery.type)));
+      }
+
+      if (searchQueryKeys.includes(Pagination.PAGE_FILTER)) {
+        filter.paginate().setPage(new NumberVo(parseInt(query.searchQuery.page)));
+      }
+
+      if (searchQueryKeys.includes(Pagination.PER_PAGE_FILTER)) {
+        filter.setPerPage(new NumberVo(parseInt(query.searchQuery.perPage)));
       }
     }
 

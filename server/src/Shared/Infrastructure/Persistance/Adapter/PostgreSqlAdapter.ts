@@ -1,64 +1,64 @@
-import { Order } from 'Shared/Domain/Entities/Order';
-import { Pagination } from 'Shared/Domain/Entities/Pagination';
-import { NumberVo } from 'Shared/Domain/Vo/Number.vo';
+import {Order} from 'Shared/Domain/Entities/Order';
+import {Pagination} from 'Shared/Domain/Entities/Pagination';
+import {NumberVo} from 'Shared/Domain/Vo/Number.vo';
 
 export class PostgreSqlAdapter {
-  protected postgreSqlFilter = '';
+    protected postgreSqlFilter = '';
 
-  protected assign(filter: any): void {
-    this.postgreSqlFilter = Object.assign(this.postgreSqlFilter, filter);
-  }
-
-  protected applyPagination(filters: Map<string, any>) {
-    if (filters.has(Pagination.PAGINATION_FILTER)) {
-      const pagination = filters.get(Pagination.PAGINATION_FILTER);
-
-      return this.pagination(pagination);
+    protected assign(filter: any): void {
+        this.postgreSqlFilter = Object.assign(this.postgreSqlFilter, filter);
     }
 
-    return this.postgreSqlFilter;
-  }
+    protected applyPagination(filters: Map<string, any>) {
+        if (filters.has(Pagination.PAGINATION_FILTER)) {
+            const pagination = filters.get(Pagination.PAGINATION_FILTER);
 
-  protected applyOrderBy(filters: Map<string, any>) {
-    const pagination = this.applyPagination(filters);
+            return this.pagination(pagination);
+        }
 
-    if (filters.has(Order.ORDER_BY_FILTER)) {
-      const orderBy = filters.get(Order.ORDER_BY_FILTER);
-
-      return `${pagination} ORDER BY ${this.order(orderBy)}`;
+        return this.postgreSqlFilter;
     }
 
-    return this.postgreSqlFilter;
-  }
+    protected applyOrderBy(filters: Map<string, any>) {
+        const pagination = this.applyPagination(filters);
 
-  protected pagination(pagination: Pagination) {
-    const paginationFilter = pagination.build();
+        if (filters.has(Order.ORDER_BY_FILTER)) {
+            const orderBy = filters.get(Order.ORDER_BY_FILTER);
 
-    let query = '';
+            return `${pagination} ORDER BY ${this.order(orderBy)}`;
+        }
 
-    if (paginationFilter.has(Pagination.PAGE_FILTER)) {
-      const page = paginationFilter.get(Pagination.PAGE_FILTER) as NumberVo;
-      const perPage = paginationFilter.get(Pagination.PER_PAGE_FILTER) as NumberVo;
-
-      query += `OFFSET ${perPage.value * (page.value - 1)}`;
+        return this.postgreSqlFilter;
     }
 
-    if (paginationFilter.has(Pagination.PER_PAGE_FILTER)) {
-      const perPage = paginationFilter.get(Pagination.PER_PAGE_FILTER) as NumberVo;
+    protected pagination(pagination: Pagination) {
+        const paginationFilter = pagination.build();
 
-      query += `LIMIT ${perPage.value}`;
+        let query = '';
+
+        if (paginationFilter.has(Pagination.PAGE_FILTER)) {
+            const page = paginationFilter.get(Pagination.PAGE_FILTER) as NumberVo;
+            const perPage = paginationFilter.get(Pagination.PER_PAGE_FILTER) as NumberVo;
+
+            query += `OFFSET ${perPage.value * (page.value - 1)} `;
+        }
+
+        if (paginationFilter.has(Pagination.PER_PAGE_FILTER)) {
+            const perPage = paginationFilter.get(Pagination.PER_PAGE_FILTER) as NumberVo;
+
+            query += `LIMIT ${perPage.value}`;
+        }
+
+        return query.trim();
     }
 
-    return query.trim();
-  }
+    protected order(order: Order) {
+        const orderFilter = order.build();
 
-  protected order(order: Order) {
-    const orderFilter = order.build();
+        if (orderFilter.has(Order.ORDER_BY_FILTER)) {
+            const orderBy = orderFilter.get(Order.ORDER_BY_FILTER);
 
-    if (orderFilter.has(Order.ORDER_BY_FILTER)) {
-      const orderBy = orderFilter.get(Order.ORDER_BY_FILTER);
-
-      return `${orderBy}`;
+            return `${orderBy}`;
+        }
     }
-  }
 }
