@@ -34,7 +34,8 @@ export class PostgreSqlMealFilterAdapter extends PostgreSqlAdapter {
     const whereClause = conditions.length ? `WHERE ${conditions.join(' AND ')}` : '';
 
     const orderByClause = this.applyOrderBy(filters);
+    const paginationClause = this.applyPagination(filters);
 
-    return `${whereClause} ${orderByClause}`.trim();
+    return `${whereClause} ${orderByClause} ${paginationClause}`.trim();
   }
 }
