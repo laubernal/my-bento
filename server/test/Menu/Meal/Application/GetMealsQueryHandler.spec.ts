@@ -10,6 +10,7 @@ import {MealFilter} from "Menu/Meal/Domain/Filter/MealFilter";
 import {Name} from "Shared/Domain/Vo/Name.vo";
 import {MealType} from "Shared/Domain/Vo/MealType";
 import {StringVo} from "Shared/Domain/Vo/String.vo";
+import {NumberVo} from "Shared/Domain/Vo/Number.vo";
 
 describe('GetMealsQueryHandler', () => {
     let getMealsQueryHandler: GetMealsQueryHandler;
@@ -88,11 +89,15 @@ describe('GetMealsQueryHandler', () => {
             meal: 'Bocata',
             type: 'breakfast'
         }, MealFilter.create().withName(new Name('Bocata')).withType(new MealType(new StringVo('breakfast')))],
+        [{
+            page: '1',
+            perPage: '2',
+        }, MealFilter.create().paginate().setPage(new NumberVo(parseInt('1'))).setPerPage(new NumberVo(parseInt('2')))],
     ])('should call repository with correct filter for query: %o', async (
         searchQuery,
         expectedFilter
     ) => {
-       const query = new GetMealsQuery('trace-id-123', searchQuery);
+        const query = new GetMealsQuery('trace-id-123', searchQuery);
 
         const meals = [
             mealStub('d4e2c830-a5cc-47d5-ad20-5bbe41382c2f'),
