@@ -20,17 +20,29 @@ export class GetMealsQueryHandler implements IQueryHandler {
     @Inject(MY_BENTO_LOGGER) private readonly logger: IMyBentoLogger
   ) {}
 
-  public async execute(query: GetMealsQuery): Promise<any> {
-    const meals = await this.findMeals(query);
+  public async execute(query: GetMealsQuery): Promise<{ data: GetMealsResponse[],totalCount: number }> {
+    const [meals, totalCount] = await Promise.all([this.findMeals(query), this.getTotalCount(query)])
 
     const response = meals.map((meal: Meal) => {
       return GetMealsResponse.toResponse(meal);
     });
 
-    return response;
+    return {data: response, totalCount};
   }
 
   private async findMeals(query: GetMealsQuery): Promise<Meal[]> {
+    const filter = this.buildFilter(query);
+
+    return await this.mealRepository.find(filter);
+  }
+
+  private async getTotalCount(query: GetMealsQuery): Promise<number> {
+    const filter = this.buildFilter(query);
+
+    return await this.mealRepository.count(filter);
+  }
+
+  private buildFilter(query: GetMealsQuery): MealFilter {
     const filter = MealFilter.create();
 
     if (Object.entries(query.searchQuery).length) {
@@ -53,6 +65,6 @@ export class GetMealsQueryHandler implements IQueryHandler {
       }
     }
 
-    return await this.mealRepository.find(filter);
+    return filter;
   }
 }
