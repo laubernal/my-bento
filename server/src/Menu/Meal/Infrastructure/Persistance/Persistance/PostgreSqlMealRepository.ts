@@ -198,4 +198,19 @@ export class PostgreSqlMealRepository implements IMealRepository {
             throw new Error(`Meal Repository Error -- ${error}`);
         }
     }
+
+    public async count(filter: MealFilter): Promise<number> {
+        try {
+            const adapter = new PostgreSqlMealFilterAdapter(filter);
+            const adapterQuery = adapter.apply();
+
+            const countQuery = `SELECT COUNT(id) FROM meals ${adapterQuery};`;
+
+            const response = await this.databaseService.query(countQuery);
+
+            return response.rows[0].count ? parseInt(response.rows[0].count) : 0;
+        } catch (error: any) {
+            throw new Error(`Meal Repository Error -- ${error}`);
+        }
+    }
 }

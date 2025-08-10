@@ -139,4 +139,8 @@ export class MikroOrmMealRepository implements IMealRepository {
   public async deleteMealFood(id: Id): Promise<void> {
     throw new Error('Method not implemented.');
   }
+
+  count(): Promise<number> {
+    return Promise.resolve(0);
+  }
 }
