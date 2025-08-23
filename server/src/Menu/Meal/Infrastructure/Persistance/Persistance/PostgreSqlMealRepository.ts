@@ -204,7 +204,9 @@ export class PostgreSqlMealRepository implements IMealRepository {
             const adapter = new PostgreSqlMealFilterAdapter(filter);
             const adapterQuery = adapter.apply();
 
-            const countQuery = `SELECT COUNT(id) FROM meals ${adapterQuery};`;
+            const sanitizedQuery = this.removeOrderAndPagination(adapterQuery)
+
+            const countQuery = `SELECT COUNT(id) FROM meals ${sanitizedQuery};`;
 
             const response = await this.databaseService.query(countQuery);
 
@@ -212,5 +214,15 @@ export class PostgreSqlMealRepository implements IMealRepository {
         } catch (error: any) {
             throw new Error(`Meal Repository Error -- ${error}`);
         }
+    }
+
+    private removeOrderAndPagination(query: string): string {
+        let cleaned = query.replace(/ORDER BY[\s\S]*?(?=(OFFSET|LIMIT|$))/gi, "");
+
+        cleaned = cleaned.replace(/OFFSET\s+\d+/gi, "");
+
+        cleaned = cleaned.replace(/LIMIT\s+\d+/gi, "");
+
+        return cleaned.trim();
     }
 }
