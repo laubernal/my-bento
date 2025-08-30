@@ -64,7 +64,7 @@ export class PostgreSqlAdapter {
         if (orderFilter.has(Order.ORDER_DIRECTION_FILTER)) {
             const orderDirection = orderFilter.get(Order.ORDER_DIRECTION_FILTER);
 
-            query += `${orderDirection}`;
+            query += `${orderDirection?.toUpperCase()}`;
         }
 
         return query.trim();
