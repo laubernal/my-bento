@@ -25,11 +25,11 @@ export class GetMealsController {
 
       const query = GetMealsQuery.fromJson(traceId, requestQuery);
 
-      const response = await this.queryBus.execute<GetMealsQuery, GetMealsResponse[]>(query);
+      const response = await this.queryBus.execute<GetMealsQuery, { data: GetMealsResponse[],totalCount: number }>(query);
 
       this.logger.log('Sending found meals', [traceId]);
 
-      const myBentoResponse = new MyBentoResponse<GetMealsResponse[]>(response, {
+      const myBentoResponse = new MyBentoResponse<{ data: GetMealsResponse[],totalCount: number }>(response, {
         success: true,
         error: null,
       });

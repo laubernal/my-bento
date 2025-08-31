@@ -56,6 +56,14 @@ export class PostgreSqlMealRepository implements IMealRepository {
             const adapter = new PostgreSqlMealFilterAdapter(filter);
             const adapterQuery = adapter.apply();
 
+            let leftJoinClauses = '';
+
+            if (adapterQuery.includes('ORDER BY')) {
+                const orderByClause = this.removePagination(adapterQuery);
+
+                leftJoinClauses = this.prefixOrderBy(orderByClause, 'paginated_meals');
+            }
+
             const query = `
                 WITH paginated_meals AS (SELECT *
                                          FROM meals ${adapterQuery})
@@ -73,7 +81,8 @@ export class PostgreSqlMealRepository implements IMealRepository {
                        meal_foods.updated_at AS mealFood_updated_at
                 FROM paginated_meals
                          LEFT JOIN meal_foods
-                                   ON paginated_meals.id = meal_foods.meal_id;
+                                   ON paginated_meals.id = meal_foods.meal_id
+                    ${leftJoinClauses};
             `;
 
             const result = await this.databaseService.query(query);
@@ -197,5 +206,56 @@ export class PostgreSqlMealRepository implements IMealRepository {
         } catch (error: any) {
             throw new Error(`Meal Repository Error -- ${error}`);
         }
+    }
+
+    public async count(filter: MealFilter): Promise<number> {
+        try {
+            const adapter = new PostgreSqlMealFilterAdapter(filter);
+            const adapterQuery = adapter.apply();
+
+            let sanitizedQuery = this.removeOrder(adapterQuery);
+
+            sanitizedQuery = this.removePagination(sanitizedQuery);
+
+            const countQuery = `SELECT COUNT(id)
+                                FROM meals ${sanitizedQuery};`;
+
+            const response = await this.databaseService.query(countQuery);
+
+            return response.rows[0].count ? parseInt(response.rows[0].count) : 0;
+        } catch (error: any) {
+            throw new Error(`Meal Repository Error -- ${error}`);
+        }
+    }
+
+    private removeOrder(query: string): string {
+        let sanitizedQuery = query.replace(/ORDER BY[\s\S]*?(?=(OFFSET|LIMIT|$))/gi, "");
+
+        return sanitizedQuery.trim();
+    }
+
+    private removePagination(query: string): string {
+        let sanitizedQuery = query.replace(/OFFSET\s+\d+/gi, "");
+
+        sanitizedQuery = sanitizedQuery.replace(/LIMIT\s+\d+/gi, "");
+
+        return sanitizedQuery.trim();
+    }
+
+    private prefixOrderBy(orderBy: string, prefix: string): string {
+        return orderBy.replace(
+            /ORDER BY\s+([\w\s,]+)$/i,
+            (_, clause) => {
+                return "ORDER BY " +
+                    clause
+                        .split(",")
+                        .map((clause: any) => {
+                            const [column, direction] = clause.trim().split(/\s+/);
+
+                            return `${prefix}.${column} ${direction ?? ""}`.trim();
+                        })
+                        .join(", ");
+            }
+        );
     }
 }

@@ -34,15 +34,23 @@ export abstract class Filter {
   public order(): this {
     const order = new Order();
 
-    this.data.set(Order.ORDER_BY_FILTER, order);
+    this.data.set(Order.ORDER_FILTER, order);
 
     return this;
   }
 
-  public orderBy(orderBy: string[][]): this {
-    const order = this.data.get(Order.ORDER_BY_FILTER);
+  public orderBy(orderBy: string): this {
+    const order = this.data.get(Order.ORDER_FILTER);
 
-    order.orderBy(orderBy);
+    order.setOrderBy(orderBy);
+
+    return this;
+  }
+
+  public orderDirection(direction: string): this {
+    const order = this.data.get(Order.ORDER_FILTER);
+
+    order.setOrderDirection(direction);
 
     return this;
   }

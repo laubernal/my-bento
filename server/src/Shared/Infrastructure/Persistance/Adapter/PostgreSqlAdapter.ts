@@ -20,12 +20,10 @@ export class PostgreSqlAdapter {
     }
 
     protected applyOrderBy(filters: Map<string, any>) {
-        const pagination = this.applyPagination(filters);
+           if (filters.has(Order.ORDER_FILTER)) {
+            const order = filters.get(Order.ORDER_FILTER);
 
-        if (filters.has(Order.ORDER_BY_FILTER)) {
-            const orderBy = filters.get(Order.ORDER_BY_FILTER);
-
-            return `${pagination} ORDER BY ${this.order(orderBy)}`;
+            return this.order(order);
         }
 
         return this.postgreSqlFilter;
@@ -52,13 +50,23 @@ export class PostgreSqlAdapter {
         return query.trim();
     }
 
-    protected order(order: Order) {
+    protected order(order: Order): string {
         const orderFilter = order.build();
+
+        let query = '';
 
         if (orderFilter.has(Order.ORDER_BY_FILTER)) {
             const orderBy = orderFilter.get(Order.ORDER_BY_FILTER);
 
-            return `${orderBy}`;
+            query += `ORDER BY ${orderBy} `;
         }
+
+        if (orderFilter.has(Order.ORDER_DIRECTION_FILTER)) {
+            const orderDirection = orderFilter.get(Order.ORDER_DIRECTION_FILTER);
+
+            query += `${orderDirection?.toUpperCase()}`;
+        }
+
+        return query.trim();
     }
 }
