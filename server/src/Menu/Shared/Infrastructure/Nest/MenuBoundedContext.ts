@@ -12,8 +12,8 @@ import {CreateFoodController} from 'Menu/Food/Infrastructure/Controllers/CreateF
 import {MyBentoLogger} from 'Shared/Infrastructure/Logger/MyBentoLogger';
 import {
     IFOOD_REPOSITORY,
-    IMEAL_REPOSITORY,
-    MY_BENTO_LOGGER,
+    IMEAL_REPOSITORY, IMENU_REPOSITORY,
+    MY_BENTO_LOGGER
 } from 'Shared/Domain/InterfacesConstants';
 import {CreateMealCommandHandler} from 'Menu/Meal/Application/CreateMeal/CreateMealCommandHandler';
 import {GetMealsQueryHandler} from 'Menu/Meal/Application/GetMeals/GetMealsQueryHandler';
@@ -34,20 +34,27 @@ import {UpdateFoodController} from 'Menu/Food/Infrastructure/Controllers/UpdateF
 import {DeleteFoodController} from 'Menu/Food/Infrastructure/Controllers/DeleteFood/DeleteFoodController';
 import {PostgreSqlMealMapper} from 'Menu/Meal/Infrastructure/Persistance/Mapper/PostgreSqlMealMapper';
 import {PostgreSqlMealRepository} from 'Menu/Meal/Infrastructure/Persistance/Persistance/PostgreSqlMealRepository';
-import {GetFoodsByIdsController} from "Menu/Food/Infrastructure/Controllers/GetFoodsByIds/GetFoodsByIdsController";
-import {GetFoodsByIdsQueryHandler} from "Menu/Food/Application/GetFoodsByIds/GetFoodsByIdsQueryHandler";
+import {GetFoodsByIdsController} from 'Menu/Food/Infrastructure/Controllers/GetFoodsByIds/GetFoodsByIdsController';
+import {GetFoodsByIdsQueryHandler} from 'Menu/Food/Application/GetFoodsByIds/GetFoodsByIdsQueryHandler';
+import {CreateMenuCommandHandler} from 'Menu/Menu/Application/CreateMenu/CreateMenuCommandHandler';
+import {CreateMenuController} from 'Menu/Menu/Infrastructure/Controllers/CreateMenu/CreateMenuController';
+import {PostgreSqlMenuRepository} from 'Menu/Menu/Infrastructure/Persistance/PostgreSqlMenuRepository';
 
 const Repositories = [
     {
         provide: IFOOD_REPOSITORY,
         // useClass: MikroOrmFoodRepository,
-        useClass: PostgreSqlFoodRepository,
+        useClass: PostgreSqlFoodRepository
     },
     {
         provide: IMEAL_REPOSITORY,
         // useClass: MikroOrmMealRepository,
-        useClass: PostgreSqlMealRepository,
+        useClass: PostgreSqlMealRepository
     },
+    {
+        provide: IMENU_REPOSITORY,
+        useClass: PostgreSqlMenuRepository
+    }
 ];
 
 const Controllers = [
@@ -64,6 +71,8 @@ const Controllers = [
     GetMealsController,
     DeleteMealController,
     UpdateMealController,
+    // MENU
+    CreateMenuController
 ];
 
 const Handlers = [
@@ -80,6 +89,8 @@ const Handlers = [
     GetMealQueryHandler,
     UpdateMealCommandHandler,
     DeleteMealCommandHandler,
+    // MENU
+    CreateMenuCommandHandler
 ];
 
 const Mappers = [
@@ -87,21 +98,21 @@ const Mappers = [
     MealMapper,
     MealFoodMapper,
     PostgreSqlFoodMapper,
-    PostgreSqlMealMapper,
+    PostgreSqlMealMapper
 ];
 
 const Services = [
     {
         provide: MY_BENTO_LOGGER,
-        useClass: MyBentoLogger,
-    },
+        useClass: MyBentoLogger
+    }
 ];
 
 @Module({
-    imports: [CqrsModule, SharedModule],
-    controllers: [...Controllers],
-    providers: [...Repositories, ...Handlers, ...Mappers, ...Services],
-    exports: [],
-})
+            imports: [CqrsModule, SharedModule],
+            controllers: [...Controllers],
+            providers: [...Repositories, ...Handlers, ...Mappers, ...Services],
+            exports: []
+        })
 export class MenuBoundedContext {
 }
