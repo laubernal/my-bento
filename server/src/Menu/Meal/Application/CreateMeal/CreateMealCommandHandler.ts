@@ -6,7 +6,7 @@ import { IMEAL_REPOSITORY, MY_BENTO_LOGGER } from 'Shared/Domain/InterfacesConst
 import { IMyBentoLogger } from 'Shared/Domain/Interfaces/IMyBentoLogger';
 import { MealFilter } from 'Menu/Meal/Domain/Filter/MealFilter';
 import { Name } from 'Shared/Domain/Vo/Name.vo';
-import { MealAlreadyExistsError } from 'Menu/Meal/Domain/Error/MealAlreadyExists';
+import { MealAlreadyExistsError } from 'Menu/Meal/Domain/Error/MealAlreadyExistsError';
 import { MealType } from 'Shared/Domain/Vo/MealType';
 import { StringVo } from 'Shared/Domain/Vo/String.vo';
 import { Id } from 'Shared/Domain/Vo/Id.vo';

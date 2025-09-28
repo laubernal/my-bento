@@ -5,7 +5,7 @@ import {IMEAL_REPOSITORY, MY_BENTO_LOGGER} from "Shared/Domain/InterfacesConstan
 import {mealStub} from "../../../stubs/Meal.stub";
 import {CreateMealCommand} from "Menu/Meal/Application/CreateMeal/CreateMealCommand";
 import {MealFilter} from "Menu/Meal/Domain/Filter/MealFilter";
-import {MealAlreadyExistsError} from "Menu/Meal/Domain/Error/MealAlreadyExists";
+import {MealAlreadyExistsError} from "Menu/Meal/Domain/Error/MealAlreadyExistsError";
 
 describe('CreateMealCommandHandler', () => {
     let createMealCommandHandler: CreateMealCommandHandler;
