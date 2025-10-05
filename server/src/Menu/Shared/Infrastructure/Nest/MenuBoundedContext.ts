@@ -38,7 +38,8 @@ import {GetFoodsByIdsController} from 'Menu/Food/Infrastructure/Controllers/GetF
 import {GetFoodsByIdsQueryHandler} from 'Menu/Food/Application/GetFoodsByIds/GetFoodsByIdsQueryHandler';
 import {CreateMenuCommandHandler} from 'Menu/Menu/Application/CreateMenu/CreateMenuCommandHandler';
 import {CreateMenuController} from 'Menu/Menu/Infrastructure/Controllers/CreateMenu/CreateMenuController';
-import {PostgreSqlMenuRepository} from 'Menu/Menu/Infrastructure/Persistance/PostgreSqlMenuRepository';
+import {PostgreSqlMenuRepository} from 'Menu/Menu/Infrastructure/Persistance/Persistance/PostgreSqlMenuRepository';
+import {PostgreSqlMenuMapper} from 'Menu/Menu/Infrastructure/Persistance/Mapper/PostgreSqlMenuMapper';
 
 const Repositories = [
     {
@@ -98,7 +99,8 @@ const Mappers = [
     MealMapper,
     MealFoodMapper,
     PostgreSqlFoodMapper,
-    PostgreSqlMealMapper
+    PostgreSqlMealMapper,
+    PostgreSqlMenuMapper
 ];
 
 const Services = [
