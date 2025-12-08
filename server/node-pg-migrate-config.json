@@ -1,16 +1,16 @@
 {
   "schema": "public",
   "create-schema": false,
-  "migrations-dir": "src/PostgreSql/migrations",
+  "migrations-dir": "./dist/pg-migrations",
   "migrations-schema": "public",
   "create-migrations-schema": false,
   "migrations-table": "pgmigrations",
   "migration-filename-format": "utc",
-  "migration-file-language": "ts",
+  "migration-file-language": "js",
   "check-order": true,
   "verbose": true,
   "decamelize": false,
   "single-transaction": true,
-  "env-path": ".env",
-  "database-url-var": "DB_URL"
+  "envPath": ".env",
+  "database-url": "DATABASE_URL"
 }
