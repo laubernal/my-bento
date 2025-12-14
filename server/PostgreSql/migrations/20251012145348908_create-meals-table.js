@@ -1,12 +1,16 @@
-import {ColumnDefinitions, MigrationBuilder} from 'node-pg-migrate';
-
-export const shorthands: ColumnDefinitions | undefined = undefined;
-
-export async function up(pgm: MigrationBuilder): Promise<void> {
-    pgm.createTable('menus', {
+exports.up = (pgm) => {
+    pgm.createTable('meals', {
         id: {
             type: 'uuid',
             primaryKey: true
+        },
+        name: {
+            type: 'varchar(255)',
+            notNull: true
+        },
+        type: {
+            type: 'varchar(255)',
+            notNull: true
         },
         created_at: {
             type: 'timestamptz',
@@ -17,24 +21,30 @@ export async function up(pgm: MigrationBuilder): Promise<void> {
             notNull: true
         }
     });
-    
-    pgm.createTable('menus_meals', {
+
+    pgm.createTable('meal_foods', {
         id: {
             type: 'uuid',
             primaryKey: true
-        },
-        menu_id: {
-            type: 'uuid',
-            notNull: true,
-            references: 'menus',
-            onDelete: 'CASCADE'
-        },
-        date: {
-            type: 'date',
-            notNull: true
         },
         meal_id: {
             type: 'uuid',
+            notNull: true,
+            references: 'meals',
+            onDelete: 'CASCADE'
+        },
+        food_id: {
+            type: 'uuid',
+            notNull: true,
+            references: 'foods',
+            onDelete: 'CASCADE'
+        },
+        amount: {
+            type: 'integer',
+            notNull: true
+        },
+        unit: {
+            type: 'varchar(255)',
             notNull: true
         },
         created_at: {
@@ -46,11 +56,9 @@ export async function up(pgm: MigrationBuilder): Promise<void> {
             notNull: true
         }
     });
-    
-    pgm.createIndex('menus_meals', 'menu_id');
 }
 
-export async function down(pgm: MigrationBuilder): Promise<void> {
-    pgm.dropTable('menus_meals', {ifExists: true});
-    pgm.dropTable('menus', {ifExists: true});
+exports.down = (pgm) => {
+    pgm.dropTable('meal_foods', {ifExists: true, cascade: true});
+    pgm.dropTable('meals', {ifExists: true, cascade: true});
 }

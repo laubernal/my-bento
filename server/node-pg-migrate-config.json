@@ -1,7 +1,7 @@
 {
   "schema": "public",
   "create-schema": false,
-  "migrations-dir": "./dist/pg-migrations",
+  "migrations-dir": "./pg-migrations",
   "migrations-schema": "public",
   "create-migrations-schema": false,
   "migrations-table": "pgmigrations",
