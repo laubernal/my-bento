@@ -25,9 +25,23 @@ export class PostgreSqlMenuRepository implements IMenuRepository {
         try {
             const {meals, ...menu} = this.mapper.toModel(entity);
             
+            const {columns, values} = this.databaseService.getColumnsAndValuesFromModel(menu);
+            
             await this.databaseService.query('BEGIN;');
             
-            // todo: IMPLEMENT QUERY TO SAVE MENU
+            const insertMenuQuery = `INSERT INTO menus(${columns})
+                                     VALUES (${values});`;
+            
+            await this.databaseService.query(insertMenuQuery);
+            
+            for (const meal of meals) {
+                const {columns, values} = this.databaseService.getColumnsAndValuesFromModel(meal);
+                
+                const insertMealQuery = `INSERT INTO menus_meals(${columns})
+                                             VALUES (${values})`;
+                
+                await this.databaseService.query(insertMealQuery);
+            }
             
             await this.databaseService.query('COMMIT;');
         } catch (error: any) {
@@ -35,9 +49,6 @@ export class PostgreSqlMenuRepository implements IMenuRepository {
             
             throw new Error(`Menu Repository Error -- ${error}`);
         }
-        
-        
-        throw new Error('Method not implemented.');
     }
     
     public async update(entity: Menu): Promise<void> {
