@@ -40,6 +40,9 @@ import {CreateMenuCommandHandler} from 'Menu/Menu/Application/CreateMenu/CreateM
 import {CreateMenuController} from 'Menu/Menu/Infrastructure/Controllers/CreateMenu/CreateMenuController';
 import {PostgreSqlMenuRepository} from 'Menu/Menu/Infrastructure/Persistance/Persistance/PostgreSqlMenuRepository';
 import {PostgreSqlMenuMapper} from 'Menu/Menu/Infrastructure/Persistance/Mapper/PostgreSqlMenuMapper';
+import {GetMenusQueryHandler} from 'Menu/Menu/Application/GetMenus/GetMenusQueryHandler';
+import {GetMenusController} from 'Menu/Menu/Infrastructure/Controllers/GetMenus/GetMenusController';
+import {GetMealsByIdsQueryHandler} from 'Menu/Meal/Application/GetMealsByIds/GetMealsByIdsQueryHandler';
 
 const Repositories = [
     {
@@ -73,7 +76,8 @@ const Controllers = [
     DeleteMealController,
     UpdateMealController,
     // MENU
-    CreateMenuController
+    CreateMenuController,
+    GetMenusController
 ];
 
 const Handlers = [
@@ -90,8 +94,10 @@ const Handlers = [
     GetMealQueryHandler,
     UpdateMealCommandHandler,
     DeleteMealCommandHandler,
+    GetMealsByIdsQueryHandler,
     // MENU
-    CreateMenuCommandHandler
+    CreateMenuCommandHandler,
+    GetMenusQueryHandler
 ];
 
 const Mappers = [
