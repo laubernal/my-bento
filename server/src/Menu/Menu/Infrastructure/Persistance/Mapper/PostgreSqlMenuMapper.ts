@@ -10,7 +10,8 @@ export class PostgreSqlMenuMapper implements IMapper<Menu, MenuModel> {
         const meals: MenuMealModel[] = entity.meals().map((meal: Meal) => {
             return {
                 id: meal.id().value,
-                mealId: meal.meal().value,
+                meal_id: meal.meal().value,
+                menu_id: entity.id().value,
                 date: meal.date(),
                 created_at: meal.createdAt(),
                 updated_at: meal.updatedAt()
@@ -27,7 +28,7 @@ export class PostgreSqlMenuMapper implements IMapper<Menu, MenuModel> {
     
     public toDomain(model: MenuModel): Menu {
         const meals = model.meals.map((meal: MenuMealModel) => {
-            return new Meal(new Id(meal.id), meal.date, new Id(meal.mealId), meal.created_at, meal.updated_at);
+            return new Meal(new Id(meal.id), meal.date, new Id(meal.meal_id), meal.created_at, meal.updated_at);
         })
         
         return new Menu(new Id(model.id), meals, model.created_at, model.updated_at);
