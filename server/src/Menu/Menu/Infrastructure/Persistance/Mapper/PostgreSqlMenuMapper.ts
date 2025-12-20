@@ -34,4 +34,35 @@ export class PostgreSqlMenuMapper implements IMapper<Menu, MenuModel> {
         return new Menu(new Id(model.id), meals, model.created_at, model.updated_at);
     }
     
+    public queryResultToModel(result: { rows: any[]; rowCount: number | null }): {
+        [key: string]: MenuModel;
+    } {
+        const menusMap: { [key: string]: MenuModel } = {};
+        result.rows.forEach(row => {
+            const menuId = row.id;
+            
+            if (!menusMap[menuId]) {
+                menusMap[menuId] = {
+                    id: row.id,
+                    created_at: row.created_at,
+                    updated_at: row.updated_at,
+                    meals: [],
+                };
+            }
+            
+            if (row.menumeal_id) {
+                menusMap[menuId].meals.push({
+                                                id: row.menumeal_id,
+                                                meal_id: row.menumeal_meal,
+                                                menu_id: row.menumeal_food,
+                                                date: row.menumeal_date,
+                                                created_at: row.menumeal_created_at,
+                                                updated_at: row.menumeal_updated_at,
+                                            });
+            }
+        });
+        
+        return menusMap;
+    }
+    
 }
