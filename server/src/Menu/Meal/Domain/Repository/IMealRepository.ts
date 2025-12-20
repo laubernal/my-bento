@@ -5,5 +5,5 @@ import {MealFilter} from "Menu/Meal/Domain/Filter/MealFilter";
 
 export interface IMealRepository extends IRepository<Meal> {
   deleteMealFood(id: Id): Promise<void>;
-  count(filter: MealFilter): Promise<number>
+  count(filter: MealFilter): Promise<number>;
 }
