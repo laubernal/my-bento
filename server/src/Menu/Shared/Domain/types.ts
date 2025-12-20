@@ -32,3 +32,15 @@ export type MenuMealType = {
     mealId: string;
     date: Date;
 }
+
+export type FullMenuMealInfo = {
+    id: string;
+    name: string | null;
+    type: string | null;
+    date: string;
+}
+
+export type MenuWithFullMealInfo = {
+    id: string;
+    meals: FullMenuMealInfo[];
+}
