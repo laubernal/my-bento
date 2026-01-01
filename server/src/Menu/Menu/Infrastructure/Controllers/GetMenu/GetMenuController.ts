@@ -24,7 +24,6 @@ export class GetMenuController {
         
         const response = await this.queryBus.execute<GetMenuQuery, GetMenuResponse
         >(query);
-        console.log(response);
         
         const matchingMeals = await this.findMeals(traceId, response);
         
@@ -79,7 +78,7 @@ export class GetMenuController {
         
         const menuMeals: FullMenuMealInfo[] = menu.meals.map((meal: MenuMealType) => {
             const mealInfo = mealMap.get(meal.mealId);
-            console.log('meal', meal);
+            
             return {
                 id: meal.mealId.toString(),
                 name: mealInfo ? mealInfo.name : null,
