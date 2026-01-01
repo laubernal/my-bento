@@ -43,6 +43,8 @@ import {PostgreSqlMenuMapper} from 'Menu/Menu/Infrastructure/Persistance/Mapper/
 import {GetMenusQueryHandler} from 'Menu/Menu/Application/GetMenus/GetMenusQueryHandler';
 import {GetMenusController} from 'Menu/Menu/Infrastructure/Controllers/GetMenus/GetMenusController';
 import {GetMealsByIdsQueryHandler} from 'Menu/Meal/Application/GetMealsByIds/GetMealsByIdsQueryHandler';
+import {GetMenuController} from 'Menu/Menu/Infrastructure/Controllers/GetMenu/GetMenuController';
+import {GetMenuQueryHandler} from 'Menu/Menu/Application/GetMenu/GetMenuQueryHandler';
 
 const Repositories = [
     {
@@ -77,7 +79,8 @@ const Controllers = [
     UpdateMealController,
     // MENU
     CreateMenuController,
-    GetMenusController
+    GetMenusController,
+    GetMenuController
 ];
 
 const Handlers = [
@@ -97,7 +100,8 @@ const Handlers = [
     GetMealsByIdsQueryHandler,
     // MENU
     CreateMenuCommandHandler,
-    GetMenusQueryHandler
+    GetMenusQueryHandler,
+    GetMenuQueryHandler
 ];
 
 const Mappers = [
