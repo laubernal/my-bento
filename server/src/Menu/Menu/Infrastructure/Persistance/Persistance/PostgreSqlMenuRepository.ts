@@ -16,7 +16,48 @@ export class PostgreSqlMenuRepository implements IMenuRepository {
     }
     
     public async findOne(filter: MenuFilter): Promise<Menu | undefined> {
-        throw new Error('Method not implemented.');
+        try {
+            const adapter = new PostgreSqlMenuFilterAdapter(filter);
+            const adapterQuery = adapter.apply();
+            
+            const query = `WITH selected_menu AS (SELECT * FROM menus ${adapterQuery})
+                           SELECT selected_menu.id,
+                                  selected_menu.created_at,
+                                  selected_menu.updated_at,
+                COALESCE(
+                    json_agg(
+                        json_build_object(
+                            'id', menus_meals.id,
+                            'meal_id', menus_meals.meal_id,
+                            'menu_id', menus_meals.menu_id,
+                            'date', menus_meals.date,
+                            'created_at', menus_meals.created_at,
+                            'updated_at', menus_meals.updated_at
+                        )
+                    ) FILTER (WHERE menus_meals.id IS NOT NULL),
+                    '[]'
+                ) AS menus_meals
+            FROM selected_menu
+            LEFT JOIN menus_meals
+                ON selected_menu.id = menus_meals.menu_id
+            GROUP BY
+                selected_menu.id,
+                selected_menu.created_at,
+                selected_menu.updated_at;
+            `;
+            
+            const result = await this.databaseService.query(query);
+            
+            if (result.rowCount === 0) {
+                return undefined;
+            }
+            
+            const menuMap = this.mapper.queryResultToModel(result);
+            
+            return this.mapper.toDomain(Object.values(menuMap)[0]);
+        } catch (error: any) {
+            throw new Error(`Menu Repository Error -- ${error}`);
+        }
     }
     
     public async find(filter: MenuFilter): Promise<Menu[]> {
