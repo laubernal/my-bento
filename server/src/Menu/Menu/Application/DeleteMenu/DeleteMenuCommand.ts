@@ -12,7 +12,7 @@ export class DeleteMenuCommand implements ICommand {
         return this._traceId;
     }
     
-    public static fromJson(params: any, traceId: string): DeleteMenuCommand {
-        return new DeleteMenuCommand(params.id, traceId);
+    public static fromJson(id: string, traceId: string): DeleteMenuCommand {
+        return new DeleteMenuCommand(id, traceId);
     }
 }
