@@ -24,26 +24,25 @@ export class PostgreSqlMenuRepository implements IMenuRepository {
                            SELECT selected_menu.id,
                                   selected_menu.created_at,
                                   selected_menu.updated_at,
-                COALESCE(
-                    json_agg(
-                        json_build_object(
-                            'id', menus_meals.id,
-                            'meal_id', menus_meals.meal_id,
-                            'menu_id', menus_meals.menu_id,
-                            'date', menus_meals.date,
-                            'created_at', menus_meals.created_at,
-                            'updated_at', menus_meals.updated_at
-                        )
-                    ) FILTER (WHERE menus_meals.id IS NOT NULL),
-                    '[]'
-                ) AS menus_meals
-            FROM selected_menu
-            LEFT JOIN menus_meals
-                ON selected_menu.id = menus_meals.menu_id
-            GROUP BY
-                selected_menu.id,
-                selected_menu.created_at,
-                selected_menu.updated_at;
+                                  COALESCE(
+                                          json_agg(
+                                                  json_build_object(
+                                                          'id', menus_meals.id,
+                                                          'meal_id', menus_meals.meal_id,
+                                                          'menu_id', menus_meals.menu_id,
+                                                          'date', menus_meals.date,
+                                                          'created_at', menus_meals.created_at,
+                                                          'updated_at', menus_meals.updated_at
+                                                  )
+                                          ) FILTER(WHERE menus_meals.id IS NOT NULL),
+                                          '[]'
+                                  ) AS menus_meals
+                           FROM selected_menu
+                                    LEFT JOIN menus_meals
+                                              ON selected_menu.id = menus_meals.menu_id
+                           GROUP BY selected_menu.id,
+                                    selected_menu.created_at,
+                                    selected_menu.updated_at;
             `;
             
             const result = await this.databaseService.query(query);
@@ -138,7 +137,35 @@ export class PostgreSqlMenuRepository implements IMenuRepository {
     }
     
     public async delete(entity: Menu): Promise<void> {
-        throw new Error('Method not implemented.');
+        try {
+            const menu = this.mapper.toModel(entity);
+            
+            await this.databaseService.query('BEGIN;');
+            
+            for (const meal of menu.meals) {
+                const deleteMealQuery = `DELETE
+                                     FROM meals
+                                     WHERE id = '${meal.id}';`;
+                
+                await this.databaseService.query(deleteMealQuery)
+            }
+            
+            const deleteMenusMealsQuery = `DELETE
+                                     FROM menus_meals
+                                     WHERE menu_id = '${menu.id}';`;
+            
+            const deleteMenuQuery = `DELETE
+                                     FROM menus
+                                     WHERE id = '${menu.id}';`;
+            
+            await this.databaseService.query(deleteMenusMealsQuery);
+            await this.databaseService.query(deleteMenuQuery);
+            
+        } catch (error: any) {
+            await this.databaseService.query('ROLLBACK;');
+            
+            throw new Error(`Menu Repository Error -- ${error}`);
+        }
     }
     
     public async count(filter: MenuFilter): Promise<number> {
