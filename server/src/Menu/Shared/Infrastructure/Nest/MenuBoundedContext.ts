@@ -45,6 +45,8 @@ import {GetMenusController} from 'Menu/Menu/Infrastructure/Controllers/GetMenus/
 import {GetMealsByIdsQueryHandler} from 'Menu/Meal/Application/GetMealsByIds/GetMealsByIdsQueryHandler';
 import {GetMenuController} from 'Menu/Menu/Infrastructure/Controllers/GetMenu/GetMenuController';
 import {GetMenuQueryHandler} from 'Menu/Menu/Application/GetMenu/GetMenuQueryHandler';
+import {DeleteMenuController} from 'Menu/Menu/Infrastructure/Controllers/DeleteMenu/DeleteMenuController';
+import {DeleteMenuCommandHandler} from 'Menu/Menu/Application/DeleteMenu/DeleteMenuCommandHandler';
 
 const Repositories = [
     {
@@ -80,7 +82,8 @@ const Controllers = [
     // MENU
     CreateMenuController,
     GetMenusController,
-    GetMenuController
+    GetMenuController,
+    DeleteMenuController
 ];
 
 const Handlers = [
@@ -101,7 +104,8 @@ const Handlers = [
     // MENU
     CreateMenuCommandHandler,
     GetMenusQueryHandler,
-    GetMenuQueryHandler
+    GetMenuQueryHandler,
+    DeleteMenuCommandHandler
 ];
 
 const Mappers = [
