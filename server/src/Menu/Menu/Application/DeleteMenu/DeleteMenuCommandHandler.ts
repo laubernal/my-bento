@@ -16,9 +16,9 @@ export class DeleteMenuCommandHandler implements ICommandHandler {
     public async execute(command: any): Promise<any> {
         const id = new Id(command.id);
         
-        const meal = await this.findMenu(id);
+        const menu = await this.findMenu(id);
         
-        await this.repository.delete(meal);
+        await this.repository.delete(menu);
     }
     
     private async findMenu(id: Id): Promise<Menu> {

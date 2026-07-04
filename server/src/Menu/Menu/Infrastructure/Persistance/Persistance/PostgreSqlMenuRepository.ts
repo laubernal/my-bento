@@ -161,6 +161,7 @@ export class PostgreSqlMenuRepository implements IMenuRepository {
             await this.databaseService.query(deleteMenusMealsQuery);
             await this.databaseService.query(deleteMenuQuery);
             
+            await this.databaseService.query('COMMIT;');
         } catch (error: any) {
             await this.databaseService.query('ROLLBACK;');
             
