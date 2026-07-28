@@ -47,6 +47,8 @@ import {GetMenuController} from 'Menu/Menu/Infrastructure/Controllers/GetMenu/Ge
 import {GetMenuQueryHandler} from 'Menu/Menu/Application/GetMenu/GetMenuQueryHandler';
 import {DeleteMenuController} from 'Menu/Menu/Infrastructure/Controllers/DeleteMenu/DeleteMenuController';
 import {DeleteMenuCommandHandler} from 'Menu/Menu/Application/DeleteMenu/DeleteMenuCommandHandler';
+import {UpdateMenuController} from 'Menu/Menu/Infrastructure/Controllers/UpdateMenu/UpdateMenuController';
+import {UpdateMenuCommandHandler} from 'Menu/Menu/Application/UpdateMenu/UpdateMenuCommandHandler';
 
 const Repositories = [
     {
@@ -83,7 +85,8 @@ const Controllers = [
     CreateMenuController,
     GetMenusController,
     GetMenuController,
-    DeleteMenuController
+    DeleteMenuController,
+    UpdateMenuController
 ];
 
 const Handlers = [
@@ -105,7 +108,8 @@ const Handlers = [
     CreateMenuCommandHandler,
     GetMenusQueryHandler,
     GetMenuQueryHandler,
-    DeleteMenuCommandHandler
+    DeleteMenuCommandHandler,
+    UpdateMenuCommandHandler
 ];
 
 const Mappers = [
