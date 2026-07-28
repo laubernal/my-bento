@@ -133,7 +133,32 @@ export class PostgreSqlMenuRepository implements IMenuRepository {
     }
     
     public async update(entity: Menu): Promise<void> {
-        throw new Error('Method not implemented.');
+        try {
+            const {meals, ...menu} = this.mapper.toModel(entity);
+            
+            await this.databaseService.query('BEGIN;');
+            
+            const deleteQuery = `DELETE
+                                 FROM menus_meals
+                                 WHERE menu_id = '${menu.id}';`;
+            
+            await this.databaseService.query(deleteQuery);
+            
+            for (const meal of meals) {
+                const {columns, values} = this.databaseService.getColumnsAndValuesFromModel(meal);
+                
+                const insertQuery = `INSERT INTO menus_meals(${columns})
+                                     VALUES (${values});`;
+                
+                await this.databaseService.query(insertQuery);
+            }
+            
+            await this.databaseService.query('COMMIT;');
+        } catch (error: any) {
+            await this.databaseService.query('ROLLBACK;');
+            
+            throw new Error(`Menu Repository Error -- ${error}`);
+        }
     }
     
     public async delete(entity: Menu): Promise<void> {
@@ -144,15 +169,15 @@ export class PostgreSqlMenuRepository implements IMenuRepository {
             
             for (const meal of menu.meals) {
                 const deleteMealQuery = `DELETE
-                                     FROM meals
-                                     WHERE id = '${meal.id}';`;
+                                         FROM meals
+                                         WHERE id = '${meal.id}';`;
                 
-                await this.databaseService.query(deleteMealQuery)
+                await this.databaseService.query(deleteMealQuery);
             }
             
             const deleteMenusMealsQuery = `DELETE
-                                     FROM menus_meals
-                                     WHERE menu_id = '${menu.id}';`;
+                                           FROM menus_meals
+                                           WHERE menu_id = '${menu.id}';`;
             
             const deleteMenuQuery = `DELETE
                                      FROM menus
