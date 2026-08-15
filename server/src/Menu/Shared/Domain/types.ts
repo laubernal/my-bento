@@ -21,8 +21,26 @@ export type FullFoodInfo = {
 }
 
 export type MealWithFullFoodInfo = {
-    foods: FullFoodInfo[]
-    id: string
-    name: string
-    type: string
+    foods: FullFoodInfo[];
+    id: string;
+    name: string;
+    type: string;
+}
+
+export type MenuMealType = {
+    id: string;
+    mealId: string;
+    date: Date;
+}
+
+export type FullMenuMealInfo = {
+    id: string;
+    name: string | null;
+    type: string | null;
+    date: string;
+}
+
+export type MenuWithFullMealInfo = {
+    id: string;
+    meals: FullMenuMealInfo[];
 }

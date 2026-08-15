@@ -70,7 +70,6 @@ export class GetMealsQueryHandler implements IQueryHandler {
 
             if (searchQueryKeys.includes(Order.ORDER_BY_FILTER)) {
                 filter.order().orderBy(query.searchQuery.orderBy);
-
             }
 
             if (searchQueryKeys.includes(Order.ORDER_DIRECTION_FILTER)) {

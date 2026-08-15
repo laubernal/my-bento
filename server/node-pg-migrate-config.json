@@ -1,0 +1,16 @@
+{
+  "schema": "public",
+  "create-schema": false,
+  "migrations-dir": "./pg-migrations",
+  "migrations-schema": "public",
+  "create-migrations-schema": false,
+  "migrations-table": "pgmigrations",
+  "migration-filename-format": "utc",
+  "migration-file-language": "js",
+  "check-order": true,
+  "verbose": true,
+  "decamelize": false,
+  "single-transaction": true,
+  "envPath": ".env",
+  "database-url": "DATABASE_URL"
+}

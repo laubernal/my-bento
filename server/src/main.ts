@@ -10,12 +10,12 @@ import {MyBentoLogger} from 'Shared/Infrastructure/Logger/MyBentoLogger';
 
 async function bootstrap() {
     const app = await NestFactory.create(App);
-
+    
     const config = app.get(ConfigService);
     // const eventBus = app.get(EventBus);
-
+    
     // AppEventBus.instance(eventBus);
-
+    
     // app.use(
     //   CookieSession({
     //     name: 'app-session',
@@ -26,35 +26,38 @@ async function bootstrap() {
     //     httpOnly: false,
     //   })
     // );
-
+    
     // app.useGlobalInterceptors(new ErrorsInterceptor());
-
+    
     // app.enableVersioning({
     //   type: VersioningType.URI,
     // });
-
+    
     // app.setGlobalPrefix('api/v1');
-
-    const signals: NodeJS.Signals[] = ['SIGINT', 'SIGTERM'];
-
-    signals.forEach((signal) => {
-        process.on(signal, async () => {
-            console.log(`📢 ${signal} received. Starting graceful shutdown...`);
-
-            try {
-                await app.close();
-
-                console.log('✅ Application cleanup finished.');
-
-                process.exit(0);
-            } catch (err) {
-                console.error('❌ Error during shutdown', err);
-
-                process.exit(1);
-            }
+    
+    if (config.get('NODE_ENV') !== 'dev') {
+        const signals: NodeJS.Signals[] = ['SIGINT', 'SIGTERM'];
+        
+        signals.forEach((signal) => {
+            process.on(signal, async () => {
+                console.log(`📢 ${signal} received. Starting graceful shutdown...`);
+                
+                try {
+                    await app.close();
+                    
+                    console.log('✅ Application cleanup finished.');
+                    
+                    process.exit(0);
+                } catch (err) {
+                    console.error('❌ Error during shutdown', err);
+                    
+                    process.exit(1);
+                }
+            });
         });
-    });
-
+    }
+    
+    
     await app.listen(5000);
 }
 

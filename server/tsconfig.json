@@ -12,7 +12,10 @@
     "strict": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "baseUrl": ".",    
+    "baseUrl": ".",
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "types": ["node", "pg"],
     "paths": {
       "Shared/*": [
         "./src/Shared/*"

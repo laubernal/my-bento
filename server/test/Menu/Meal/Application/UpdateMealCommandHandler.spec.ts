@@ -170,7 +170,6 @@ describe('UpdateMealCommandHandler', () => {
         await updateMealCommandHandler.execute(command);
 
         for (const mealFood of mealFoods) {
-            console.log(mealFood);
             expect(mealRepository.deleteMealFood).toHaveBeenCalledWith(mealFood.id())
         }
 

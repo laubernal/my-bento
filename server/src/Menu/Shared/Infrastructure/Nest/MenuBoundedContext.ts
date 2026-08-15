@@ -12,8 +12,8 @@ import {CreateFoodController} from 'Menu/Food/Infrastructure/Controllers/CreateF
 import {MyBentoLogger} from 'Shared/Infrastructure/Logger/MyBentoLogger';
 import {
     IFOOD_REPOSITORY,
-    IMEAL_REPOSITORY,
-    MY_BENTO_LOGGER,
+    IMEAL_REPOSITORY, IMENU_REPOSITORY,
+    MY_BENTO_LOGGER
 } from 'Shared/Domain/InterfacesConstants';
 import {CreateMealCommandHandler} from 'Menu/Meal/Application/CreateMeal/CreateMealCommandHandler';
 import {GetMealsQueryHandler} from 'Menu/Meal/Application/GetMeals/GetMealsQueryHandler';
@@ -34,20 +34,37 @@ import {UpdateFoodController} from 'Menu/Food/Infrastructure/Controllers/UpdateF
 import {DeleteFoodController} from 'Menu/Food/Infrastructure/Controllers/DeleteFood/DeleteFoodController';
 import {PostgreSqlMealMapper} from 'Menu/Meal/Infrastructure/Persistance/Mapper/PostgreSqlMealMapper';
 import {PostgreSqlMealRepository} from 'Menu/Meal/Infrastructure/Persistance/Persistance/PostgreSqlMealRepository';
-import {GetFoodsByIdsController} from "Menu/Food/Infrastructure/Controllers/GetFoodsByIds/GetFoodsByIdsController";
-import {GetFoodsByIdsQueryHandler} from "Menu/Food/Application/GetFoodsByIds/GetFoodsByIdsQueryHandler";
+import {GetFoodsByIdsController} from 'Menu/Food/Infrastructure/Controllers/GetFoodsByIds/GetFoodsByIdsController';
+import {GetFoodsByIdsQueryHandler} from 'Menu/Food/Application/GetFoodsByIds/GetFoodsByIdsQueryHandler';
+import {CreateMenuCommandHandler} from 'Menu/Menu/Application/CreateMenu/CreateMenuCommandHandler';
+import {CreateMenuController} from 'Menu/Menu/Infrastructure/Controllers/CreateMenu/CreateMenuController';
+import {PostgreSqlMenuRepository} from 'Menu/Menu/Infrastructure/Persistance/Persistance/PostgreSqlMenuRepository';
+import {PostgreSqlMenuMapper} from 'Menu/Menu/Infrastructure/Persistance/Mapper/PostgreSqlMenuMapper';
+import {GetMenusQueryHandler} from 'Menu/Menu/Application/GetMenus/GetMenusQueryHandler';
+import {GetMenusController} from 'Menu/Menu/Infrastructure/Controllers/GetMenus/GetMenusController';
+import {GetMealsByIdsQueryHandler} from 'Menu/Meal/Application/GetMealsByIds/GetMealsByIdsQueryHandler';
+import {GetMenuController} from 'Menu/Menu/Infrastructure/Controllers/GetMenu/GetMenuController';
+import {GetMenuQueryHandler} from 'Menu/Menu/Application/GetMenu/GetMenuQueryHandler';
+import {DeleteMenuController} from 'Menu/Menu/Infrastructure/Controllers/DeleteMenu/DeleteMenuController';
+import {DeleteMenuCommandHandler} from 'Menu/Menu/Application/DeleteMenu/DeleteMenuCommandHandler';
+import {UpdateMenuController} from 'Menu/Menu/Infrastructure/Controllers/UpdateMenu/UpdateMenuController';
+import {UpdateMenuCommandHandler} from 'Menu/Menu/Application/UpdateMenu/UpdateMenuCommandHandler';
 
 const Repositories = [
     {
         provide: IFOOD_REPOSITORY,
         // useClass: MikroOrmFoodRepository,
-        useClass: PostgreSqlFoodRepository,
+        useClass: PostgreSqlFoodRepository
     },
     {
         provide: IMEAL_REPOSITORY,
         // useClass: MikroOrmMealRepository,
-        useClass: PostgreSqlMealRepository,
+        useClass: PostgreSqlMealRepository
     },
+    {
+        provide: IMENU_REPOSITORY,
+        useClass: PostgreSqlMenuRepository
+    }
 ];
 
 const Controllers = [
@@ -64,6 +81,12 @@ const Controllers = [
     GetMealsController,
     DeleteMealController,
     UpdateMealController,
+    // MENU
+    CreateMenuController,
+    GetMenusController,
+    GetMenuController,
+    DeleteMenuController,
+    UpdateMenuController
 ];
 
 const Handlers = [
@@ -80,6 +103,13 @@ const Handlers = [
     GetMealQueryHandler,
     UpdateMealCommandHandler,
     DeleteMealCommandHandler,
+    GetMealsByIdsQueryHandler,
+    // MENU
+    CreateMenuCommandHandler,
+    GetMenusQueryHandler,
+    GetMenuQueryHandler,
+    DeleteMenuCommandHandler,
+    UpdateMenuCommandHandler
 ];
 
 const Mappers = [
@@ -88,20 +118,21 @@ const Mappers = [
     MealFoodMapper,
     PostgreSqlFoodMapper,
     PostgreSqlMealMapper,
+    PostgreSqlMenuMapper
 ];
 
 const Services = [
     {
         provide: MY_BENTO_LOGGER,
-        useClass: MyBentoLogger,
-    },
+        useClass: MyBentoLogger
+    }
 ];
 
 @Module({
-    imports: [CqrsModule, SharedModule],
-    controllers: [...Controllers],
-    providers: [...Repositories, ...Handlers, ...Mappers, ...Services],
-    exports: [],
-})
+            imports: [CqrsModule, SharedModule],
+            controllers: [...Controllers],
+            providers: [...Repositories, ...Handlers, ...Mappers, ...Services],
+            exports: []
+        })
 export class MenuBoundedContext {
 }
