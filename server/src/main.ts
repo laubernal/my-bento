@@ -11,6 +11,11 @@ import {MyBentoLogger} from 'Shared/Infrastructure/Logger/MyBentoLogger';
 async function bootstrap() {
     const app = await NestFactory.create(App);
     
+    app.enableCors({
+      origin: 'http://localhost:5173',
+      credentials: true
+    });
+    
     const config = app.get(ConfigService);
     // const eventBus = app.get(EventBus);
     
