@@ -1,6 +1,6 @@
 import type {MealDto} from '../../api/types.ts';
 import {Loading} from '../shared/loading.tsx';
-import {Title} from '@mantine/core';
+import {Title, Text} from '@mantine/core';
 import {useApi} from '../../hooks/useApi.ts';
 import {getMeals} from '../../api/meals.ts';
 
@@ -14,9 +14,10 @@ export function MealList() {
             <Title>
                 Meals
             </Title>
-            <Loading loading={loading} />
-            {meals
-                ? meals.map((meal: MealDto) => {
+            <Loading loading={loading}/>
+            {!meals.length
+                ? <Text size="xl">No meals found</Text>
+                : meals.map((meal: MealDto) => {
                     const categoryEmoji = meal.type.toLowerCase() === 'dinner' ? '🌃' : '☀️';
 
                     return (
@@ -24,7 +25,7 @@ export function MealList() {
                             <div>{meal.name} - {categoryEmoji}</div>
                         </div>);
                 })
-                : <>No meals found</>
+                
             }
             
             {error && <p>{error}</p>}
