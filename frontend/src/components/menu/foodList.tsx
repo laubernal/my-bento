@@ -25,7 +25,7 @@ export function FoodList() {
             
             <Loading loading={loading}/>
             
-            {!foods.length
+            {!foodsGroupedByCategory.length
                 ? <Text size="xl">No foods found</Text>
                 : <Grid>
                     {foodsGroupedByCategory.map(([category, categoryFoods]) => {
@@ -37,7 +37,7 @@ export function FoodList() {
                                     <Title order={3}>{categoryEmoji} {category}</Title>
                                     {categoryFoods.map((food) => (
                                         <div key={food.id}>
-                                            <div>{food.name}</div>
+                                            <Text size="md">{food.name}</Text>
                                         </div>
                                     ))}
                                 </div>
