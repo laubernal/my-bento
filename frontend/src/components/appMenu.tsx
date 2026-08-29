@@ -30,14 +30,14 @@ export function AppMenu() {
             <Tabs.List>
                 {tabsList.map((tab: tabType) => {
                     return (
-                        <Tabs.Tab value={tab.id}>{tab.label}</Tabs.Tab>
+                        <Tabs.Tab value={tab.id} key={tab.id}>{tab.label}</Tabs.Tab>
                     )
                 })}
             </Tabs.List>
             
             {tabsList.map((tab: tabType) => {
                 return (
-                    <Tabs.Panel value={tab.id}>{tab.content}</Tabs.Panel>
+                    <Tabs.Panel value={tab.id} key={tab.id}>{tab.content}</Tabs.Panel>
                 )
             })}
             
