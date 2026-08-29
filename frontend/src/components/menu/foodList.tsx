@@ -1,5 +1,11 @@
 import {Loading} from '../shared/loading.tsx';
-import {Grid, Space, Text, Title} from '@mantine/core';
+import {
+    Button,
+    Grid,
+    Space,
+    Text,
+    Title
+} from '@mantine/core';
 import {useApi} from '../../hooks/useApi.ts';
 import {getFoods} from '../../api/foods.ts';
 import type {Food} from '../../api/types.ts';
@@ -19,14 +25,24 @@ export function FoodList() {
     
     return (
         <>
-            <Title>Foods</Title>
+            <Space h='sm'></Space>
             
-            <Space h="lg"></Space>
+            <Grid grow>
+                <Grid.Col span={10} >
+                    <Title>Foods</Title>
+                </Grid.Col>
+                
+                <Grid.Col span={0} >
+                    <Button variant='filled'>Add food</Button>
+                </Grid.Col>
+            </Grid>
+            
+            <Space h='lg'></Space>
             
             <Loading loading={loading}/>
             
             {!foodsGroupedByCategory.length
-                ? <Text size="xl">No foods found</Text>
+                ? <Text size='xl'>No foods found</Text>
                 : <Grid>
                     {foodsGroupedByCategory.map(([category, categoryFoods]) => {
                         const categoryEmoji = category.toLowerCase() === 'proteína' ? '🥩' : '🥖';
@@ -37,7 +53,7 @@ export function FoodList() {
                                     <Title order={3}>{categoryEmoji} {category}</Title>
                                     {categoryFoods.map((food) => (
                                         <div key={food.id}>
-                                            <Text size="md">{food.name}</Text>
+                                            <Text size='md'>{food.name}</Text>
                                         </div>
                                     ))}
                                 </div>

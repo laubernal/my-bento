@@ -26,7 +26,7 @@ export function AppMenu() {
     const [activeTab, setActiveTab] = React.useState<string | null>(tabsList[0].id);
     
     return (
-        <Tabs variant="outline" radius="lg" value={activeTab} onChange={setActiveTab}>
+        <Tabs variant='outline' radius='lg' value={activeTab} onChange={setActiveTab}>
             <Tabs.List>
                 {tabsList.map((tab: tabType) => {
                     return (

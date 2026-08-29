@@ -24,7 +24,7 @@ export function MealList() {
             </Title>
             <Loading loading={loading}/>
             {!mealsGroupedByType.length
-                ? <Text size="xl">No meals found</Text>
+                ? <Text size='xl'>No meals found</Text>
                 : <Grid>
                     {mealsGroupedByType.map(([type, typeMeals]) => {
                         const typeEmoji = type.toLowerCase() === 'dinner' ? '🌃' : '☀️';
@@ -35,7 +35,7 @@ export function MealList() {
                                     <Title order={3}>{typeEmoji} {type}</Title>
                                     {typeMeals.map((meal) => (
                                         <div key={meal.id}>
-                                            <Text size="md">{meal.name}</Text>
+                                            <Text size='md'>{meal.name}</Text>
                                         </div>
                                     ))}
                                 </div>
