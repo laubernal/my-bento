@@ -1,13 +1,24 @@
 import {Center, Loader} from '@mantine/core';
 
-export function Loading() {
+interface Props {
+    loading: boolean;
+}
+
+export function Loading({loading}: Props) {
     return (
-        <Center>
-            <Loader
-                color="teal"
-                type="dots"
-                size={50}
-            />
-        </Center>
+        <>
+            {loading ?
+                <Center>
+                    <Loader
+                        color="teal"
+                        type="dots"
+                        size={50}
+                    />
+                </Center>
+                : <></>
+            }
+        
+        </>
+    
     );
 }

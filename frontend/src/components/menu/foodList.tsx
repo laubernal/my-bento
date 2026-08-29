@@ -1,20 +1,22 @@
-import type {Food} from '../../api/types.ts';
 import {Loading} from '../shared/loading.tsx';
 import {Title} from '@mantine/core';
+import {useApi} from '../../hooks/useApi.ts';
+import {getFoods} from '../../api/foods.ts';
+import type {Food} from '../../api/types.ts';
 
-interface Props {
-    foods: Food[];
-    loading: boolean;
-}
+export function FoodList() {
+    const {data, loading, error} = useApi(getFoods);
 
-export function FoodList({foods, loading}: Props) {
+    const foods = data ? data : [];
+    
     return (
         <>
             <Title>
                 Foods
             </Title>
-            {!loading
-                ? foods.map((food) => {
+            <Loading loading={loading} />
+            {foods
+                ? foods.map((food: Food) => {
                     const categoryEmoji = food.category.toLowerCase() === 'proteína' ? '🥩' : '🥖';
                     
                     return (
@@ -22,8 +24,10 @@ export function FoodList({foods, loading}: Props) {
                             <div>{food.name} - {categoryEmoji}</div>
                         </div>);
                 })
-                : <Loading/>
+                : <>No foods found</>
             }
+            
+            {error && <p>{error}</p>}
         </>
     );
 }
