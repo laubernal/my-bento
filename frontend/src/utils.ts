@@ -34,5 +34,6 @@ export const ACCENT_COLORS: string[] = [
     '#344728',
     '#172a08',
     '#0b1504',
-    '#050a02'
+    '#050a02',
+    '#C9BFAF'
 ]
