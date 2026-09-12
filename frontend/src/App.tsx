@@ -4,7 +4,7 @@ import {AppMenu} from './components/appMenu.tsx';
 import {ACCENT_COLORS, BRAND_COLORS, WARM_COLORS} from './utils.ts';
 
 const theme = createTheme({
-    fontFamily: 'Fraunces, Montserrat, Open Sans, sans-serif',
+    fontFamily: 'Outfit, Fraunces, Montserrat, Open Sans, sans-serif',
     primaryColor: 'brand',
     colors: {
         brand: colorsTuple(BRAND_COLORS),
