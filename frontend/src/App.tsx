@@ -2,7 +2,6 @@ import '@mantine/core/styles.css';
 import {colorsTuple, createTheme, MantineProvider} from '@mantine/core';
 import {AppMenu} from './components/appMenu.tsx';
 import {ACCENT_COLORS, BRAND_COLORS, WARM_COLORS} from './utils.ts';
-import './global.css';
 
 const theme = createTheme({
     fontFamily: 'Fraunces, Montserrat, Open Sans, sans-serif',
