@@ -19,6 +19,7 @@ import {getFoods} from '../../api/foods.ts';
 import type {Food} from '../../api/types.ts';
 import {useState} from 'react';
 import * as React from 'react';
+import {useFocusWithin, useHover} from '@mantine/hooks';
 
 function groupFoodsByCategory(foods: Food[]): Record<string, Food[]> {
     return foods.reduce<Record<string, Food[]>>((groups, food) => {
@@ -28,6 +29,7 @@ function groupFoodsByCategory(foods: Food[]): Record<string, Food[]> {
 }
 
 type FoodCategory = "protein" | "grain" | "vegetable" | "fruit" | "dairy" | "other";
+
 interface FoodToAdd {
     name: string,
     category: string
@@ -38,6 +40,9 @@ export function FoodList() {
     const {data, loading, error} = useApi(getFoods);
     const [name, setName] = useState("")
     const [category, setCategory] = useState<FoodCategory>("protein")
+    const {  ref: addFoodButton, hovered: addFoodButtonHovered } = useHover();
+    const { ref: foodNameRef, focused: foodNameFocused } = useFocusWithin();
+    const { ref: categoryRef, focused: categoryFocused } = useFocusWithin();
     
     const categories = [
         "protein",
@@ -119,6 +124,7 @@ export function FoodList() {
                             onChange={(e) => setName(e.currentTarget.value)}
                             placeholder="e.g. Quinoa"
                             size="md"
+                            ref={foodNameRef}
                             style={{ flex: 1, minWidth: 180 }}
                             styles={{
                                 label: {
@@ -128,7 +134,7 @@ export function FoodList() {
                                     letterSpacing: "0.1em",
                                 },
                                 input: {
-                                    borderColor: theme.colors.warm[4],
+                                    borderColor: !foodNameFocused ? theme.colors.warm[4] : theme.colors.brand[3],
                                     backgroundColor: theme.colors.warm[0],
                                     borderRadius: "12px",
                                     fontSize: "0.875rem",
@@ -139,6 +145,7 @@ export function FoodList() {
                         <Select
                             label="Category"
                             value={category}
+                            rightSection={<></>}
                             onChange={(value) => {
                                 if (value) {
                                     setCategory(value as FoodCategory)
@@ -148,7 +155,8 @@ export function FoodList() {
                                 value: c,
                                 label: c.charAt(0).toUpperCase() + c.slice(1),
                             }))}
-                            size="md"
+                            size='md'
+                            ref={categoryRef}
                             styles={{
                                 label: {
                                     color: theme.colors.warm[5],
@@ -158,7 +166,7 @@ export function FoodList() {
                                     letterSpacing: "0.1em",
                                 },
                                 input: {
-                                    borderColor: theme.colors.warm[4],
+                                    borderColor: !categoryFocused ? theme.colors.warm[4] : theme.colors.brand[3],
                                     backgroundColor: theme.colors.warm[0],
                                     borderRadius: "12px",
                                     fontSize: "0.875rem",
@@ -170,8 +178,9 @@ export function FoodList() {
                             type="submit"
                             size="md"
                             radius={12}
+                            ref={addFoodButton}
                             w={{ base: "100%", sm: "auto" }}
-                            bg={theme.colors.brand[3]}
+                            bg={!addFoodButtonHovered ? theme.colors.brand[3] : theme.colors.brand[10]}
                             color={theme.colors.accent[0]}
                             fw={600}
                             fz="sm"
