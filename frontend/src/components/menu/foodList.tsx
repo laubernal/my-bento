@@ -2,7 +2,6 @@ import {Loading} from '../shared/loading.tsx';
 import {
     Button,
     Flex,
-    Grid,
     Group,
     Paper,
     Space,
@@ -68,16 +67,6 @@ export function FoodList() {
     return (
         <>
             <Space h="sm"></Space>
-            
-            <Grid grow>
-                <Grid.Col span={10}>
-                    <Title>Foods</Title>
-                </Grid.Col>
-                
-                {/*<Grid.Col span={0}>*/}
-                {/*    <Button bg={theme.colors.brand[3]} variant="filled">Add food</Button>*/}
-                {/*</Grid.Col>*/}
-            </Grid>
             
             <Paper
                 p="md"
