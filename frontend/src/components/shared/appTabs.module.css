@@ -1,0 +1,39 @@
+.list {
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    width: 100%;
+    background-color: #EDE6DA;
+    border-radius: 12px;
+
+    @media (min-width: 48em) {
+        width: fit-content;
+    }
+}
+
+.tab {
+    flex: 1;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 8px;
+    background-color: transparent;
+    color: #8B7D6E;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 200ms ease;
+
+    &:hover {
+        color: #2A1F14;
+    }
+
+    &[data-active] {
+        background-color: #FFFCF7;
+        color: #2A1F14;
+        box-shadow: var(--mantine-shadow-sm);
+    }
+
+    @media (min-width: 48em) {
+        flex: none;
+    }
+}

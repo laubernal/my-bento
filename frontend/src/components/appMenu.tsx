@@ -1,46 +1,49 @@
-import { Tabs } from '@mantine/core';
-import {FoodList} from './menu/foodList.tsx';
-import * as React from 'react';
-import {MealList} from './menu/mealList.tsx';
-
-interface tabType {
-    id: string,
-    label: string,
-    content: React.JSX.Element,
-}
-
-const tabsList = [
-    {
-        id: 'foods',
-        label: 'Foods',
-        content: <FoodList />
-    },
-    {
-        id: 'meals',
-        label: 'Meals',
-        content: <MealList />
-    },
-];
+import { AppTabs } from './shared/appTabs.tsx';
+import {
+    useMantineTheme,
+    Box,
+    Title
+} from '@mantine/core';
 
 export function AppMenu() {
-    const [activeTab, setActiveTab] = React.useState<string | null>(tabsList[0].id);
-    
+    const theme = useMantineTheme();
+
     return (
-        <Tabs variant='outline' radius='lg' value={activeTab} onChange={setActiveTab}>
-            <Tabs.List>
-                {tabsList.map((tab: tabType) => {
-                    return (
-                        <Tabs.Tab value={tab.id} key={tab.id}>{tab.label}</Tabs.Tab>
-                    )
-                })}
-            </Tabs.List>
-            
-            {tabsList.map((tab: tabType) => {
-                return (
-                    <Tabs.Panel value={tab.id} key={tab.id}>{tab.content}</Tabs.Panel>
-                )
-            })}
-            
-        </Tabs>
+        <Box
+            component="header"
+            px={{ base: 16, sm: 32 }}
+            pt={{ base: 24, sm: 32 }}
+            pb={{ base: 16, sm: 24 }}
+            style={{
+                borderBottom: `1px solid ${theme.colors.warm[4]}`,
+                backgroundColor: theme.colors.warm[0],
+            }}
+        >
+            <Box
+                maw={1400}
+                mx="auto"
+                style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 16,
+                    alignItems: 'stretch',
+                }}
+                className="sm:flex-row sm:items-end sm:gap-6"
+            >
+                <Box style={{ flex: 1 }}>
+                    <Title
+                        order={1}
+                        ff="Fraunces"
+                        fz={{ base: 24, sm: 30 }}
+                        fw={600}
+                        c={theme.colors.warm[9]}
+                        style={{ letterSpacing: '-0.025em' }}
+                    >
+                        My Bento
+                    </Title>
+                </Box>
+                <AppTabs />
+            </Box>
+        </Box>
     );
 }
