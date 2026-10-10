@@ -13,8 +13,8 @@ export function getFoodsByIds(ids: string[]): Promise<Food[]> {
     return request<Food[]>(`/api/foods-by-ids?ids=${encodeURIComponent(ids.join(','))}`);
 }
 
-export function createFood(input: CreateFoodRequest): Promise<null> {
-    return request<null>('/api/foods', {method: 'POST', body: input});
+export function createFood(input: CreateFoodRequest): Promise<void> {
+    return request<void>('/api/foods', {method: 'POST', body: input});
 }
 
 export function updateFood(id: string, input: UpdateFoodRequest): Promise<null> {

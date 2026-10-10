@@ -14,11 +14,12 @@ import {
     TextInput
 } from '@mantine/core';
 import {useApi} from '../../hooks/useApi.ts';
-import {getFoods} from '../../api/foods.ts';
+import {createFood, getFoods} from '../../api/foods.ts';
 import type {Food} from '../../api/types.ts';
 import {useState} from 'react';
 import * as React from 'react';
 import {useFocusWithin, useHover} from '@mantine/hooks';
+import {generateUuid} from '../../utils.ts';
 
 function groupFoodsByCategory(foods: Food[]): Record<string, Food[]> {
     return foods.reduce<Record<string, Food[]>>((groups, food) => {
@@ -36,7 +37,7 @@ interface FoodToAdd {
 
 export function FoodList() {
     const theme = useMantineTheme();
-    const {data, loading, error} = useApi(getFoods);
+    const {data, loading, error, refetch} = useApi(getFoods);
     const [name, setName] = useState("")
     const [category, setCategory] = useState<FoodCategory>("protein")
     const {  ref: addFoodButton, hovered: addFoodButtonHovered } = useHover();
@@ -54,9 +55,13 @@ export function FoodList() {
     const foods = data ? data : [];
     const foodsGroupedByCategory = Object.entries(groupFoodsByCategory(foods));
     
-    const onAdd = (food: FoodToAdd): void => {
-        console.log(food);
-        throw new Error('Method not implemented.');
+    const onAdd = async (food: FoodToAdd): Promise<void> => {
+        await createFood({
+            id: generateUuid(),
+            name: food.name,
+            category: food.category,
+        });
+        refetch();
     }
     
     const onDelete = (id: string): void => {
@@ -92,12 +97,16 @@ export function FoodList() {
                 
                 <Box
                     component="form"
-                    onSubmit={(e: React.SubmitEvent<HTMLFormElement>) => {
+                    onSubmit={async (e: React.SubmitEvent<HTMLFormElement>) => {
                         e.preventDefault()
                         
                         if (name.trim()) {
-                            onAdd({ name: name.trim(), category});
-                            setName('');
+                            try {
+                                await onAdd({ name: name.trim(), category});
+                                setName('');
+                            } catch (err) {
+                                console.error(err);
+                            }
                         }
                     }}
                 >
