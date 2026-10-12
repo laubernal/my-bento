@@ -22,7 +22,7 @@ export class PostgreSqlFoodFilterAdapter extends PostgreSqlAdapter {
     if (filters.has(FoodFilter.FOOD_ID_FILTER)) {
       const id = filters.get(FoodFilter.FOOD_ID_FILTER) as Id;
 
-      conditions.push(`id  '${id.value}'`);
+      conditions.push(`id = '${id.value}'`);
     }
 
     if (filters.has(FoodFilter.FOOD_IDS_FILTER)) {
