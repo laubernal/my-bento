@@ -1,24 +1,25 @@
 import {Loading} from '../shared/loading.tsx';
 import {
+    ActionIcon,
+    Box,
     Button,
     Flex,
     Group,
+    Notification,
     Paper,
-    Space,
-    Title,
-    Text,
-    useMantineTheme, ActionIcon,
-    SimpleGrid,
-    Box,
     Select,
+    SimpleGrid,
+    Space,
+    Text,
     TextInput,
-    Notification
+    Title,
+    useMantineTheme
 } from '@mantine/core';
 import {useApi} from '../../hooks/useApi.ts';
-import {createFood, getFoods} from '../../api/foods.ts';
+import {createFood, deleteFood, getFoods} from '../../api/foods.ts';
 import type {Food} from '../../api/types.ts';
-import {useState} from 'react';
 import * as React from 'react';
+import {useState} from 'react';
 import {useFocusWithin, useHover} from '@mantine/hooks';
 import {generateUuid} from '../../utils.ts';
 
@@ -29,7 +30,7 @@ function groupFoodsByCategory(foods: Food[]): Record<string, Food[]> {
     }, {});
 }
 
-type FoodCategory = "protein" | "grain" | "vegetable" | "fruit" | "dairy" | "other";
+type FoodCategory = 'protein' | 'grain' | 'vegetable' | 'fruit' | 'dairy' | 'other';
 
 interface FoodToAdd {
     name: string,
@@ -39,22 +40,22 @@ interface FoodToAdd {
 export function FoodList() {
     const theme = useMantineTheme();
     const {data, loading, error, refetch} = useApi(getFoods);
-    const [name, setName] = useState("")
-    const [category, setCategory] = useState<FoodCategory>("protein")
-    const {  ref: addFoodButton, hovered: addFoodButtonHovered } = useHover();
-    const { ref: foodNameRef, focused: foodNameFocused } = useFocusWithin();
-    const { ref: categoryRef, focused: categoryFocused } = useFocusWithin();
+    const [name, setName] = useState('');
+    const [category, setCategory] = useState<FoodCategory>('protein');
+    const {ref: addFoodButton, hovered: addFoodButtonHovered} = useHover();
+    const {ref: foodNameRef, focused: foodNameFocused} = useFocusWithin();
+    const {ref: categoryRef, focused: categoryFocused} = useFocusWithin();
     const [showNotification, setShowNotification] = useState<boolean>(false);
     const [notification, setNotification] = useState<Record<string, string>>({title: '', message: ''});
     
     const categories = [
-        "protein",
-        "grain",
-        "vegetable",
-        "fruit",
-        "dairy",
-        "other",
-    ] as FoodCategory[]
+        'protein',
+        'grain',
+        'vegetable',
+        'fruit',
+        'dairy',
+        'other'
+    ] as FoodCategory[];
     const foods = data ? data : [];
     const foodsGroupedByCategory = Object.entries(groupFoodsByCategory(foods));
     
@@ -62,7 +63,7 @@ export function FoodList() {
         const foodToAdd = {
             id: generateUuid(),
             name: food.name,
-            category: food.category,
+            category: food.category
         };
         try {
             await createFood(foodToAdd);
@@ -71,18 +72,27 @@ export function FoodList() {
             
             if (error.message === 'Food already exists error') {
                 setNotification({
-                    title: 'Oops, something went wrong',
-                    message: 'Food already exists'
+                  title: 'Oops, something went wrong',
+                  message: 'Food already exists'
                 });
             }
         }
         refetch();
-    }
+    };
     
-    const onDelete = (id: string): void => {
-        console.log(id);
-        throw new Error('Method not implemented.');
-    }
+    const onDelete = async (id: string): Promise<void> => {
+        try {
+            await deleteFood(id);
+        } catch (error) {
+            setShowNotification(true);
+            
+            setNotification({
+              title: 'Oops, something went wrong',
+              message: `${error.message}`
+            });
+        }
+        refetch();
+    };
     
     return (
         <>
@@ -95,8 +105,8 @@ export function FoodList() {
                 withBorder
                 styles={{
                     root: {
-                        borderColor: theme.colors.warm[4],
-                    },
+                        borderColor: theme.colors.warm[4]
+                    }
                 }}
             >
                 <Title
@@ -113,11 +123,11 @@ export function FoodList() {
                 <Box
                     component="form"
                     onSubmit={async (e: React.SubmitEvent<HTMLFormElement>) => {
-                        e.preventDefault()
+                        e.preventDefault();
                         
                         if (name.trim()) {
                             try {
-                                await onAdd({ name: name.trim(), category});
+                                await onAdd({name: name.trim(), category});
                                 setName('');
                             } catch (err) {
                                 console.error(err);
@@ -126,9 +136,9 @@ export function FoodList() {
                     }}
                 >
                     <Flex
-                        direction={{ base: "column", sm: "row" }}
+                        direction={{base: 'column', sm: 'row'}}
                         gap="sm"
-                        align={{ base: "stretch", sm: "flex-end" }}
+                        align={{base: 'stretch', sm: 'flex-end'}}
                         wrap="wrap"
                     >
                         <TextInput
@@ -138,20 +148,20 @@ export function FoodList() {
                             placeholder="e.g. Quinoa"
                             size="md"
                             ref={foodNameRef}
-                            style={{ flex: 1, minWidth: 180 }}
+                            style={{flex: 1, minWidth: 180}}
                             styles={{
                                 label: {
                                     color: theme.colors.warm[5],
-                                    fontSize: "0.75rem",
+                                    fontSize: '0.75rem',
                                     fontWeight: 600,
-                                    letterSpacing: "0.1em",
+                                    letterSpacing: '0.1em'
                                 },
                                 input: {
                                     borderColor: !foodNameFocused ? theme.colors.warm[4] : theme.colors.brand[3],
                                     backgroundColor: theme.colors.warm[0],
-                                    borderRadius: "12px",
-                                    fontSize: "0.875rem",
-                                },
+                                    borderRadius: '12px',
+                                    fontSize: '0.875rem'
+                                }
                             }}
                         />
                         
@@ -161,29 +171,29 @@ export function FoodList() {
                             rightSection={<></>}
                             onChange={(value) => {
                                 if (value) {
-                                    setCategory(value as FoodCategory)
+                                    setCategory(value as FoodCategory);
                                 }
                             }}
                             data={categories.map((c) => ({
                                 value: c,
-                                label: c.charAt(0).toUpperCase() + c.slice(1),
+                                label: c.charAt(0).toUpperCase() + c.slice(1)
                             }))}
-                            size='md'
+                            size="md"
                             ref={categoryRef}
                             styles={{
                                 label: {
                                     color: theme.colors.warm[5],
-                                    fontSize: "0.75rem",
+                                    fontSize: '0.75rem',
                                     fontWeight: 600,
-                                    textTransform: "uppercase",
-                                    letterSpacing: "0.1em",
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '0.1em'
                                 },
                                 input: {
                                     borderColor: !categoryFocused ? theme.colors.warm[4] : theme.colors.brand[3],
                                     backgroundColor: theme.colors.warm[0],
-                                    borderRadius: "12px",
-                                    fontSize: "0.875rem",
-                                },
+                                    borderRadius: '12px',
+                                    fontSize: '0.875rem'
+                                }
                             }}
                         />
                         
@@ -192,7 +202,7 @@ export function FoodList() {
                             size="md"
                             radius={12}
                             ref={addFoodButton}
-                            w={{ base: "100%", sm: "auto" }}
+                            w={{base: '100%', sm: 'auto'}}
                             bg={!addFoodButtonHovered ? theme.colors.brand[3] : theme.colors.brand[10]}
                             color={theme.colors.accent[0]}
                             fw={600}
@@ -229,7 +239,7 @@ export function FoodList() {
                             pb="xs"
                             c={theme.colors.warm[9]}
                             style={{
-                                borderBottom: `1px solid ${theme.colors.warm[4]}`,
+                                borderBottom: `1px solid ${theme.colors.warm[4]}`
                             }}
                         >
                             {category}
@@ -246,7 +256,7 @@ export function FoodList() {
                         </Title>
                         
                         <SimpleGrid
-                            cols={{ base: 1, sm: 3, lg: 4 }}
+                            cols={{base: 1, sm: 3, lg: 4}}
                             spacing="xs"
                         >
                             {categoryFoods.map((food) => (
@@ -259,8 +269,8 @@ export function FoodList() {
                                     withBorder
                                     styles={{
                                         root: {
-                                            borderColor: theme.colors.warm[4],
-                                        },
+                                            borderColor: theme.colors.warm[4]
+                                        }
                                     }}
                                 >
                                     <Group justify="space-between" align="center">
@@ -281,8 +291,8 @@ export function FoodList() {
                                             styles={{
                                                 root: {
                                                     fontSize: '1rem',
-                                                    lineHeight: 1,
-                                                },
+                                                    lineHeight: 1
+                                                }
                                             }}
                                         >
                                             ×
@@ -297,10 +307,10 @@ export function FoodList() {
             
             {showNotification && notification &&
                 <Notification
-                  withBorder
-                  title={notification.title}
-                  color={theme.colors.brand[10]}
-                  onClose={() => setShowNotification(false)}
+                    withBorder
+                    title={notification.title}
+                    color={theme.colors.brand[10]}
+                    onClose={() => setShowNotification(false)}
                 >
                     {notification.message}
                 </Notification>

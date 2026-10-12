@@ -21,6 +21,6 @@ export function updateFood(id: string, input: UpdateFoodRequest): Promise<null> 
     return request<null>(`/api/foods/${id}`, {method: 'PUT', body: input});
 }
 
-export function deleteFood(id: string): Promise<null> {
-    return request<null>(`/api/foods/${id}`, {method: 'DELETE'});
+export function deleteFood(id: string): Promise<void> {
+    return request<void>(`/api/foods/${id}`, {method: 'DELETE'});
 }
