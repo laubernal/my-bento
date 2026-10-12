@@ -11,7 +11,8 @@ import {
     SimpleGrid,
     Box,
     Select,
-    TextInput
+    TextInput,
+    Notification
 } from '@mantine/core';
 import {useApi} from '../../hooks/useApi.ts';
 import {createFood, getFoods} from '../../api/foods.ts';
@@ -43,6 +44,8 @@ export function FoodList() {
     const {  ref: addFoodButton, hovered: addFoodButtonHovered } = useHover();
     const { ref: foodNameRef, focused: foodNameFocused } = useFocusWithin();
     const { ref: categoryRef, focused: categoryFocused } = useFocusWithin();
+    const [showNotification, setShowNotification] = useState<boolean>(false);
+    const [notification, setNotification] = useState<Record<string, string>>({title: '', message: ''});
     
     const categories = [
         "protein",
@@ -56,11 +59,23 @@ export function FoodList() {
     const foodsGroupedByCategory = Object.entries(groupFoodsByCategory(foods));
     
     const onAdd = async (food: FoodToAdd): Promise<void> => {
-        await createFood({
+        const foodToAdd = {
             id: generateUuid(),
             name: food.name,
             category: food.category,
-        });
+        };
+        try {
+            await createFood(foodToAdd);
+        } catch (error) {
+            setShowNotification(true);
+            
+            if (error.message === 'Food already exists error') {
+                setNotification({
+                    title: 'Oops, something went wrong',
+                    message: 'Food already exists'
+                });
+            }
+        }
         refetch();
     }
     
@@ -279,6 +294,17 @@ export function FoodList() {
                     </Box>
                 ))}
             </Flex>
+            
+            {showNotification && notification &&
+                <Notification
+                  withBorder
+                  title={notification.title}
+                  color={theme.colors.brand[10]}
+                  onClose={() => setShowNotification(false)}
+                >
+                    {notification.message}
+                </Notification>
+            }
         </>
     );
 }
